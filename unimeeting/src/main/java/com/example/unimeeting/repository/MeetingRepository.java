@@ -15,14 +15,14 @@ public interface MeetingRepository extends JpaRepository<Meeting, Integer> {
     public List<String> findDistinctCategoryBy();
 
     // 모든 meeting글에서 검색
-    public List<Meeting> findByTitleContainsOrContentContains(String title,String content);
+    public List<Meeting> findAllByTitleContainingOrContentContaining(String title,String content);
 
-    // 해당 category 내의 meeting글에서 검색
-//    @Query("select m from Meeting m  where m.category=:category and (title like %:title% or content_text like %:content%)")
-//    public List<Meeting> searchMeetingInCategory(@Param("category") String category, @Param("title") String title, @Param("content") String content);
-//
-//    // idx의 글의 작성자가 user_nickname인지 확인
-//    // meeting 글 상세 보기 페이지에서 버튼
-//    public boolean existsByIdxAndUserNickname(int idx, String user_nickname);
+//     해당 category 내의 meeting글에서 검색
+    @Query("select m from Meeting m  where m.category=:category and (title like %:title% or content like %:content%)")
+    public List<Meeting> searchMeetingInCategory(@Param("category") String category, @Param("title") String title, @Param("content") String content);
+
+    // idx의 글의 작성자가 user_nickname인지 확인
+    // meeting 글 상세 보기 페이지에서 버튼
+    public boolean existsByIdxAndUserNickname(int idx, String user_nickname);
 
 }
