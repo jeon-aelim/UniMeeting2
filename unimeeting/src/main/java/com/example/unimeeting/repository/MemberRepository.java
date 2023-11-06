@@ -1,4 +1,9 @@
 package com.example.unimeeting.repository;
 
-public interface MemberRepository {
+import com.example.unimeeting.domain.Member;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface MemberRepository extends JpaRepository<Member, Integer> {
+
+
 }
