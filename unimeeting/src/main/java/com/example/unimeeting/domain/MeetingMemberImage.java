@@ -18,7 +18,7 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @Table(name="meeting")
-public class MeetingMJ {
+public class MeetingMemberImage {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id;
