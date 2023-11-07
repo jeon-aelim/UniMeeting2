@@ -14,9 +14,20 @@ public class MeetingMemberImageTest {
   @Autowired
   MeetingMemberImageRepository mr;
 
+//  @Test
+//  void showAll(){
+//    List<MeetingMemberImage> list = mr.findAll();
+//    list.stream().forEach(System.out::println);
+//  }
+  static String nickname = "aa";
+  @Test
+  void count(){
+    int cnt = mr.countByNickname(nickname);
+    System.out.println(cnt);
+  }
   @Test
   void show(){
-    List<MeetingMemberImage> list = mr.findByNickname("도히");
+    List<MeetingMemberImage> list = mr.findByNickname(nickname);
     list.stream().forEach(System.out::println);
   }
 }
