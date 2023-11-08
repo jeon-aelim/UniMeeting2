@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @Setter
 @ToString
 @NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Meeting {
 
     @Id
@@ -22,6 +23,7 @@ public class Meeting {
     private String content;
     private String category;
     private Integer recruits;
+    private String location;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH-mm")
     @Column(name = "start_datetime")
@@ -36,11 +38,12 @@ public class Meeting {
     private User user;
 
     @Builder
-    public Meeting(String title, String content, String category, Integer recruits, LocalDateTime startDatetime, LocalDateTime createdDatetime){
+    public Meeting(String title, String content, String category, Integer recruits,String location, LocalDateTime startDatetime, LocalDateTime createdDatetime){
         this.title = title;
         this.content = content;
         this.category = category;
         this.recruits = recruits;
+        this.location = location;
         this.startDatetime = startDatetime;
         this.createdDatetime = createdDatetime;
     }

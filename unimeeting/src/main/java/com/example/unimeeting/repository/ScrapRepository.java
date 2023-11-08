@@ -1,4 +1,9 @@
 package com.example.unimeeting.repository;
 
-public interface ScrapRepository {
+import com.example.unimeeting.domain.Scrap;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface ScrapRepository extends JpaRepository<Scrap, Integer> {
+        public boolean existsByMeetingIdxAndUserIdx(Integer meeting_idx, Integer user_idx);
+        public void deleteByMeetingIdxAndUserIdx(Integer meeting_idx, Integer user_idx);
 }
