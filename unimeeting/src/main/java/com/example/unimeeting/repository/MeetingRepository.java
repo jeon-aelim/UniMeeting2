@@ -1,6 +1,23 @@
 package com.example.unimeeting.repository;
 
-public interface MeetingRepository {
+import com.example.unimeeting.domain.Meeting;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import java.util.List;
+public interface MeetingRepository extends JpaRepository<Meeting, Integer>{
+
+    public List<Meeting> findAll(); //전체
+
+    public List<Meeting> findAllByTitleContainingOrContentContaining(String title,String content); //검색
+
+//    public List<Meeting> 인기순
+    public List<Meeting> findAllByOrderByTitle(); //제목
+    public List<Meeting> findAllByOrderByCreatedDatetime(); //시간
+
+
+
     /*@Select("select * from meeting left join meeting_image on meeting.idx = meeting_image.meeting_idx group by meeting.idx") //전체
     public List<InfoDTO> listM();
 
