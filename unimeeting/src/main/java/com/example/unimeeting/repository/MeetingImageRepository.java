@@ -12,6 +12,6 @@ public interface MeetingImageRepository extends JpaRepository<MeetingImage, Inte
 
 //   public List<String> findImageUrlByMeetingIdx(Integer idx);
 //    image_url 의 list만 가져오는 것 불가능
-    @Query("select i.imageUrl from MeetingImage i where i.meeting.idx = :idx")
+    @Query("select i.imageUrl from MeetingImage i where i.meetingIdx = :idx")
     public List<String> findImageUrlByMeetingIdx(@Param("idx") Integer idx);
 }

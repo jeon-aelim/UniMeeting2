@@ -4,6 +4,7 @@ import com.example.unimeeting.domain.Meeting;
 import com.example.unimeeting.domain.Scrap;
 import com.example.unimeeting.domain.User;
 import com.example.unimeeting.repository.ScrapRepository;
+import com.example.unimeeting.repository.UserRepository;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -24,6 +25,9 @@ public class ScrapRepositoryTest {
     @Autowired
     ScrapRepository repository;
 
+    @Autowired
+    UserRepository user_repository;
+
     @Test
     @Order(1)
     public void existsByMeetingIdxAndUserIdx() {
@@ -43,24 +47,10 @@ public class ScrapRepositoryTest {
     @Transactional
     @Rollback(value = false)
     public void save() {
-        Meeting meeting = new Meeting();
-        meeting.setIdx(87);
-
-        User user = User.builder()
-                .userId("aelim")
-                .password("1234")
-                .email("devaelim@gmail.com")
-                .nickname("aa")
-                .phoneNumber("01092708011")
-                .category("코딩")
-                .build();
-//        user.setIdx(52);
-        meeting.setCreatedDatetime(LocalDateTime.now());
-        meeting.setUser(user);
 
         Scrap scrap = new Scrap();
-        scrap.setUser(user);
-        scrap.setMeeting(meeting);
+        scrap.setUser(user_repository.findByUserId("aelim").get());
+        scrap.setMeetingIdx(87);
         repository.save(scrap);
 
     }

@@ -20,7 +20,9 @@ public class Scrap {
     @JoinColumn(name = "user_idx")
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "meeting_idx")
-    private Meeting meeting;
+//    @ManyToOne
+//    @JoinColumn(name = "meeting_idx")
+//    private Meeting meeting;
+    @Column(name = "meeting_idx")
+    private Integer meetingIdx;
 }

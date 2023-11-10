@@ -3,6 +3,7 @@ package com.example.unimeeting;
 import com.example.unimeeting.domain.Meeting;
 import com.example.unimeeting.domain.User;
 import com.example.unimeeting.repository.MeetingRepository;
+import com.example.unimeeting.repository.UserRepository;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -19,6 +20,8 @@ import java.util.List;
 public class MeetingRepositoryTest {
     @Autowired
     MeetingRepository repository;
+    @Autowired
+    UserRepository user_repository;
     @BeforeEach()
     void pr() {
         System.out.println("=".repeat(80));
@@ -65,19 +68,9 @@ public class MeetingRepositoryTest {
                 .startDatetime(LocalDateTime.now())
                 .build();
 
-        User user = User.builder()
-                .userId("aelim")
-                .password("1234")
-                .email("devaelim@gmail.com")
-                .nickname("aa")
-                .phoneNumber("01092708011")
-                .category("코딩")
-                .build();
-//        user.setIdx(123);
+
         meeting.setCreatedDatetime(LocalDateTime.now());
-        meeting.setUser(user);
-        System.out.println(user);
-        System.out.println(meeting);
+        meeting.setUser(user_repository.findByUserId("aelim").get());
         repository.save(meeting);
         System.out.println(meeting.getIdx());
     }

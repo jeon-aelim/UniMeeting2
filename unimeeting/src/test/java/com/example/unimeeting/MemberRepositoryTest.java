@@ -4,6 +4,7 @@ import com.example.unimeeting.domain.Meeting;
 import com.example.unimeeting.domain.Member;
 import com.example.unimeeting.domain.User;
 import com.example.unimeeting.repository.MemberRepository;
+import com.example.unimeeting.repository.UserRepository;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -22,7 +23,8 @@ import java.time.LocalDateTime;
 public class MemberRepositoryTest {
     @Autowired
     MemberRepository repository;
-
+@Autowired
+    UserRepository user_repository;
     @Test
     @Order(1)
     public void existsByMeetingIdxAndUserIdx(){
@@ -50,8 +52,6 @@ public class MemberRepositoryTest {
     @Transactional
     @Rollback(value = false)
     public void save(){
-        Meeting meeting = new Meeting();
-        meeting.setIdx(87);
 
         User user = User.builder()
                 .userId("aelim")
@@ -62,15 +62,13 @@ public class MemberRepositoryTest {
                 .category("코딩")
                 .build();
 //        user.setIdx(52);
-        meeting.setCreatedDatetime(LocalDateTime.now());
-        meeting.setUser(user);
 
-        System.out.println(user);
-        System.out.println(meeting);
+//        System.out.println(user);
+//        System.out.println(save);
 
         Member member = new Member();
-        member.setUser(user);
-        member.setMeeting(meeting);
+        member.setUser(user_repository.findByUserId("aelim").get());
+        member.setMeetingIdx(87);
         repository.save(member);
     }
 
