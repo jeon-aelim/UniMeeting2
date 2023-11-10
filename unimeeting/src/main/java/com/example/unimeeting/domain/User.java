@@ -12,8 +12,6 @@ import java.util.List;
 @Entity
 @Table(name = "user")
 @Getter
-@Setter
-@ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User implements UserDetails {
     @Id

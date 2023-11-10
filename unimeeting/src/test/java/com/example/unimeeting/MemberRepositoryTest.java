@@ -61,7 +61,7 @@ public class MemberRepositoryTest {
                 .phoneNumber("01092708011")
                 .category("코딩")
                 .build();
-        user.setIdx(52);
+//        user.setIdx(52);
         meeting.setCreatedDatetime(LocalDateTime.now());
         meeting.setUser(user);
 

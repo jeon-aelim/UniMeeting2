@@ -73,7 +73,7 @@ public class MeetingRepositoryTest {
                 .phoneNumber("01092708011")
                 .category("코딩")
                 .build();
-        user.setIdx(123);
+//        user.setIdx(123);
         meeting.setCreatedDatetime(LocalDateTime.now());
         meeting.setUser(user);
         System.out.println(user);
