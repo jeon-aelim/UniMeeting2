@@ -41,7 +41,7 @@ public class ScrapRepositoryTest {
     @Test
     @Order(3)
     @Transactional
-    @Rollback(value = false)
+//    @Rollback(value = false)
     public void save() {
         Meeting meeting = new Meeting();
         meeting.setIdx(87);

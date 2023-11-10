@@ -25,5 +25,17 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Builder
 public class MeetingMemberImage {
   private int idx;
+  private String title;
+  private String category;
+  private String loaction;
 
+  private LocalDateTime startDatetime;
+  private LocalDateTime createdDatetime;
+
+  private String writer_nickname;
+
+  private String img_url;
+
+  private int now_recruits;
+  private int recruits;
 }
