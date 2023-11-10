@@ -21,7 +21,7 @@ public class BoardImage {
     @Column(name = "image_url")
     private String imageUrl;
 
-    @OneToOne
-    @JoinColumn(name = "board_idx")
-    private Board board;
+//    @OneToOne
+    @Column(name = "board_idx")
+    private Integer boardIdx;
 }

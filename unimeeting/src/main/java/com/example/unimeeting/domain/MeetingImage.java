@@ -20,7 +20,8 @@ public class MeetingImage {
     @Column(name = "image_url")
     private String imageUrl;
 
-    @OneToOne
-    @JoinColumn(name = "meeting_idx")
-    private Meeting meeting;
+//    @OneToOne
+//    @JoinColumn(name = "meeting_idx")
+    @Column(name = "meeting_idx")
+    private Integer meetingIdx;
 }
