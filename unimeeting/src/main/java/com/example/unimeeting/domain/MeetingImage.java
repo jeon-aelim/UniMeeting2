@@ -5,10 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-<<<<<<< HEAD
-=======
-
->>>>>>> main
 @Entity
 @Table(name="meeting_image")
 @Getter
@@ -23,14 +19,8 @@ public class MeetingImage {
     @Column(name = "image_url")
     private String imageUrl;
 
-<<<<<<< HEAD
-    @OneToOne
-    @JoinColumn(name = "meeting_idx")
-    private Meeting meeting;
-=======
 //    @OneToOne
 //    @JoinColumn(name = "meeting_idx")
     @Column(name = "meeting_idx")
     private Integer meetingIdx;
->>>>>>> main
 }

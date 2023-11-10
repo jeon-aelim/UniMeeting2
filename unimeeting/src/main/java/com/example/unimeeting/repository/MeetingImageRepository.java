@@ -5,10 +5,6 @@ import jakarta.persistence.Tuple;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-<<<<<<< HEAD
-public interface MeetingImageRepository extends JpaRepository<MeetingImage, Integer> {
-
-=======
 
 import java.util.List;
 
@@ -18,5 +14,4 @@ public interface MeetingImageRepository extends JpaRepository<MeetingImage, Inte
 //    image_url 의 list만 가져오는 것 불가능
     @Query("select i.imageUrl from MeetingImage i where i.meetingIdx = :idx")
     public List<String> findImageUrlByMeetingIdx(@Param("idx") Integer idx);
->>>>>>> main
 }
