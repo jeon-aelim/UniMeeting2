@@ -25,7 +25,7 @@ public class Board {
     private LocalDateTime createdDatetime;
 
     @ManyToOne
-    @JoinColumn(name = "writer_ nickname", referencedColumnName = "nickname")
+    @JoinColumn(name = "writer_nickname", referencedColumnName = "nickname")
     private User user;
 
     @Builder
