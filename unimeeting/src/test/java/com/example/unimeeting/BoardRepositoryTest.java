@@ -35,7 +35,7 @@ public class BoardRepositoryTest {
         List<Board> board =BoardRepository.selectList("free","취미");
         board.stream().forEach(System.out::println);
     }
-    //
+    ////
     @Test
     @Order(2)
     public void selectBoard(){
