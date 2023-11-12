@@ -54,7 +54,7 @@ public class BoardRepositoryTest {
                 .createdDatetime(LocalDateTime.now())
                 .build();
 
-
+        //
         board.setCreatedDatetime(LocalDateTime.now());
         board.setUser(userrepository.findByUserId("hapal").get());
         BoardRepository.save(board);
