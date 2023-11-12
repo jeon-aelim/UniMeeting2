@@ -13,6 +13,8 @@ import java.util.List;
 @Entity
 @Table(name = "user")
 @Getter
+@Setter
+@Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User implements UserDetails {
     @Id
