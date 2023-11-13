@@ -36,6 +36,7 @@ public interface MeetingRepository extends JpaRepository<Meeting, Integer> {
 //    List<Meeting> findByUserId(int userIdx);
     public List<Meeting> findByUserNickname(String nickname);
 
+
     @Query("select m from Meeting m where m.idx in (select s.meetingIdx from Scrap s where s.user.idx = :idx)")
     public List<Meeting> searchMeetingInScrapIDX(int idx);
 }
