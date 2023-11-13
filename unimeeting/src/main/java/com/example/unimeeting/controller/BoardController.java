@@ -22,9 +22,11 @@ public class BoardController {
         this.boardService=boardService;
         this.currentUserProvider = currentUserProvider;
     }
+
     @GetMapping("/boards/{type}")
-    public List<Board> getAllBoards(@PathVariable String type, @RequestParam(required = false) String search) {
-        return boardService.findByType(type, search);
+    public ResponseEntity<List<Board>> getAllBoards(@PathVariable String type, @RequestParam(required = false) String search) {
+        List<Board> board = boardService.findByType(type,search);
+        return ResponseEntity.ok(board);
     }
     @GetMapping("/boards/{id}")
     public ResponseEntity<Board> getBoardById(@PathVariable int id) {
