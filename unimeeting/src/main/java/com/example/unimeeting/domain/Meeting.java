@@ -35,7 +35,7 @@ public class Meeting {
     @Column(name = "created_datetime")
     private LocalDateTime createdDatetime;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "writer_nickname", referencedColumnName = "nickname")
     private User user;
 
