@@ -22,24 +22,29 @@ public class BoardController {
         this.boardService=boardService;
         this.currentUserProvider = currentUserProvider;
     }
-
+    //=============글 목 ===========//
     @GetMapping("/boards/{type}")
     public ResponseEntity<List<Board>> getAllBoards(@PathVariable String type, @RequestParam(required = false) String search) {
         List<Board> board = boardService.findByType(type,search);
         return ResponseEntity.ok(board);
     }
+
+
+    //=============글 상세 ===========//
     @GetMapping("/boards/{id}")
     public ResponseEntity<Board> getBoardById(@PathVariable int id) {
         Board board = boardService.findById(id);
         return ResponseEntity.ok(board);
     }
-
+    //=============글 쓰기 ===========//
     @PostMapping("/boards")
     public ResponseEntity<String> createBoard(@RequestBody Board board) {
         boardService.save(board);
         return ResponseEntity.status(HttpStatus.CREATED).body("Board created successfully");
     }
 
+
+    //=============글 수정 ===========//
     @PutMapping("/boards/{id}")
     public ResponseEntity<String> updateBoard(@PathVariable int id, @RequestBody Board board) {
         if (!isAuthorized(id, currentUserProvider.getCurrentUserNickname())) {
@@ -48,7 +53,7 @@ public class BoardController {
         boardService.update(id, board);
         return ResponseEntity.ok("Board updated successfully");
     }
-
+    //=============글 삭제 ==============//
     @DeleteMapping("/boards/{id}")
     public ResponseEntity<String> deleteBoard(@PathVariable int id) {
         if (!isAuthorized(id, currentUserProvider.getCurrentUserNickname())) {
