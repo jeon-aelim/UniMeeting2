@@ -1,7 +1,6 @@
 package com.example.unimeeting;
 
 import com.example.unimeeting.domain.Board;
-import com.example.unimeeting.domain.Meeting;
 import com.example.unimeeting.repository.BoardRepository;
 import com.example.unimeeting.repository.UserRepository;
 import org.junit.jupiter.api.*;

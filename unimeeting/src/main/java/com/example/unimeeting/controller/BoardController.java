@@ -13,13 +13,13 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/board")
+@RequestMapping("/boards")
 public class BoardController {
     private final BoardService boardService;
 
 
     //=============글 목 ===========//
-    @GetMapping("/boards/{type}")
+    @GetMapping("/type/{type}")
     public ResponseEntity<List<Board>> getAllBoards(@PathVariable String type, @RequestParam(required = false) String search) {
         List<Board> board = boardService.findByType(type,search);
         return ResponseEntity.ok(board);
@@ -27,7 +27,7 @@ public class BoardController {
 
 
     //=============글 상세 ===========//
-    @GetMapping("/boards/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Board> getBoardById(@PathVariable int id) {
         Board board = boardService.findById(id);
         return ResponseEntity.ok(board);

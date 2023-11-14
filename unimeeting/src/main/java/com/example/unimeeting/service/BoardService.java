@@ -28,10 +28,9 @@ public class BoardService {
         boardRepository.deleteById((int) id);
     }
     @Transactional
-    public Board update(long id, Board request) {
+    public void update(long id, Board request) {
         Board board = boardRepository.findById((int) id)
                 .orElseThrow(() -> new IllegalArgumentException("not found : " + id));
         board.update(request.getTitle(), request.getContent());
-        return board;
     }
 }

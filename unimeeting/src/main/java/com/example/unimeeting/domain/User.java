@@ -6,6 +6,7 @@ import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Collection;
 import java.util.List;
@@ -39,16 +40,21 @@ public class User implements UserDetails {
 
     @Column(name = "phone_number", nullable = false)
     private String phoneNumber;
+    @Column(nullable = false)
+    private String role;
 
     @Builder
-    public User(String userId, String password, String nickname, String email, String category, String phoneNumber) {
+    public User(Integer idx,String userId, String password, String nickname, String email, String category, String phoneNumber,String role) {
+        this.idx=idx;
         this.userId = userId;
         this.password = password;
         this.nickname = nickname;
         this.email = email;
         this.category = category;
         this.phoneNumber = phoneNumber;
+        this.role=role;
     }
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -84,6 +90,8 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-
-
+    ///////////////
+    public static User createUser(String userId, String password, PasswordEncoder passwordEncoder, String nickname, String email, String category, String phoneNumber,String role) {
+        return new User(null, userId, passwordEncoder.encode(password), nickname,email,category,phoneNumber,role);
+    }
 }
