@@ -24,30 +24,37 @@ public class MainControllertest {
 
 
     @Test
-    @Order(1)
+    @Order(1) //dh
     public void findAll() {
         List<Meeting> list = repository.findAll();
         list.forEach(System.out::println);
     }
+
+//    @Test
+//    @Order(1) //dh
+//    public void findAllByOrderByScrab() {
+//        List<Meeting> list = repository.findAllByOrderByScrab();
+//        list.forEach(System.out::println);
+//    }
     @Test
-    @Order(2)
+    @Order(2) //dh
     public void findAllByTitleContainingOrContentContaining(){
         List<Meeting> list = repository.findAllByTitleContainingOrContentContaining("","");
         list.forEach(System.out::println);
     }
-//
-////    @Test
-////    @Order(3)
-////    public void {}
-//
+
+//    @Test
+//    @Order(3) //dh
+//    public void {}
+
     @Test
-    @Order(4)
+    @Order(4) //dh
     public void findAllByOrderByTitle(){
         List<Meeting> list = repository.findAllByOrderByTitle();
         list.forEach(System.out::println);
     }
     @Test
-    @Order(5)
+    @Order(5) //dh
     public void findAllByOrderByCreatedDatetime() {
         List<Meeting> list = repository.findAllByOrderByCreatedDatetime();
         list.forEach(System.out::println);
