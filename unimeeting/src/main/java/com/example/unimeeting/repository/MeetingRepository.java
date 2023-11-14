@@ -15,17 +15,7 @@ public interface MeetingRepository extends JpaRepository<Meeting, Integer> {
     @Query("select distinct m.category from Meeting m order by m.category")
     public List<String> findDistinctCategoryBy();
 
-    // 모든 meeting글에서 검색 dh
-    public List<Meeting> findAllByTitleContainingOrContentContaining(String title,String content); //검색어
-
-    @Query("select s from Scrap s ")
-    public List<Meeting> findAllByOrderByScrab(); //인기순 dh
-
-
-    public List<Meeting> findAllByOrderByTitle(); //제목 dh
-    public List<Meeting> findAllByOrderByCreatedDatetime(); //시간 dh
-
-//     해당 category 내의 meeting글에서 검색
+    // 해당 category 내의 meeting글에서 검색
     @Query("select m from Meeting m  where m.category=:category and (title like %:title% or content like %:content%)")
     public List<Meeting> searchMeetingInCategory(@Param("category") String category, @Param("title") String title, @Param("content") String content);
 
@@ -43,4 +33,31 @@ public interface MeetingRepository extends JpaRepository<Meeting, Integer> {
     // 스크랩한 소모임 리스트
     @Query("select m from Meeting m where m.idx in (select s.meetingIdx from Scrap s where s.user.idx = :idx)")
     public List<Meeting> searchMeetingInScrapIDX(int idx);
+
+
+    // main page에 사용
+    // 모든 meeting글에서 검색
+    public List<Meeting> findAllByTitleContainingOrContentContaining(String title,String content); //검색어
+
+    //인기순으로 정렬
+    @Query("select m from Meeting m left join Scrap s on m.idx = s.meetingIdx")
+    public List<Meeting> findAllByOrderByScrab();
+    //제목순으로 정렬
+    public List<Meeting> findAllByOrderByTitle();
+    //시간순으로 정렬
+    public List<Meeting> findAllByOrderByCreatedDatetime();
+
+    //검색 결과만 정렬
+    @Query("select m from Meeting m left join Scrap s on m.idx = s.meetingIdx")
+    public List<Meeting> searchMeetingByOrderByScrab(String title,String content);
+    @Query("select m from Meeting m where m.title like %:keyword% or m.content like %:keyword% order by trim(m.title) asc")
+    public List<Meeting> searchMeetingByOrderByTitle(@Param("keyword") String keyword);
+    @Query("select m from Meeting m where m.title like %:keyword% or m.content like %:keyword% order by m.createdDatetime asc")
+    public List<Meeting> searchMeetingByOrderByCreatedDatetime(@Param("keyword") String keyword);
+
+    //@Select("select m from meeting m left join (select m.idx, count(*) scrap_cnt from scrap s group by m.idx) as c on m.idx = c.meeting_idx order by scrap_cnt desc") // 인기순
+
+
+
+
 }

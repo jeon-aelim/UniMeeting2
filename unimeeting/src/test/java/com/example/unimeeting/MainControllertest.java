@@ -24,39 +24,53 @@ public class MainControllertest {
 
 
     @Test
-    @Order(1) //dh
+    @Order(1)
     public void findAll() {
         List<Meeting> list = repository.findAll();
         list.forEach(System.out::println);
     }
-
-//    @Test
-//    @Order(1) //dh
-//    public void findAllByOrderByScrab() {
-//        List<Meeting> list = repository.findAllByOrderByScrab();
-//        list.forEach(System.out::println);
-//    }
+    
     @Test
-    @Order(2) //dh
+    @Order(2)
     public void findAllByTitleContainingOrContentContaining(){
         List<Meeting> list = repository.findAllByTitleContainingOrContentContaining("","");
         list.forEach(System.out::println);
     }
 
+    @Test
+    @Order(3)
+    public void findAllByOrderByScrab() {
+        List<Meeting> list = repository.findAllByOrderByScrab();
+        list.forEach(System.out::println);
+    }
 //    @Test
 //    @Order(3) //dh
 //    public void {}
 
     @Test
-    @Order(4) //dh
+    @Order(4)
     public void findAllByOrderByTitle(){
         List<Meeting> list = repository.findAllByOrderByTitle();
         list.forEach(System.out::println);
     }
     @Test
-    @Order(5) //dh
+    @Order(5)
     public void findAllByOrderByCreatedDatetime() {
         List<Meeting> list = repository.findAllByOrderByCreatedDatetime();
+        list.forEach(System.out::println);
+    }
+
+    @Test
+    @Order(6)
+    public void searchMeetingByOrderByTitle() {
+        List<Meeting> list = repository.searchMeetingByOrderByTitle("환영합니다");
+        list.forEach(System.out::println);
+    }
+
+    @Test
+    @Order(7)
+    public void searchMeetingByOrderByCreatedDatetime() {
+        List<Meeting> list = repository.searchMeetingByOrderByCreatedDatetime("환영합니다");
         list.forEach(System.out::println);
     }
 }
