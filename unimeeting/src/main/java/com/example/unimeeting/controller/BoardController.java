@@ -4,7 +4,6 @@ import com.example.unimeeting.domain.Board;
 import com.example.unimeeting.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +16,7 @@ import java.util.List;
 @RequestMapping("/board")
 public class BoardController {
     private final BoardService boardService;
+
 
     //=============글 목 ===========//
     @GetMapping("/boards/{type}")
@@ -50,11 +50,8 @@ public class BoardController {
     //=============글 삭제 ==============//
     @DeleteMapping("/boards/{id}")
     public ResponseEntity<String> deleteBoard(@PathVariable int id) {
-
         boardService.deleteById(id);
         return ResponseEntity.ok("Board deleted successfully");
     }
-
-    // Helper 메서드: 게시글 작성자 확인
 
 }
