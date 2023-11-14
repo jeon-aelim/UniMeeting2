@@ -57,6 +57,9 @@
   <component name="ExternalProjectsManager">
     <system id="GRADLE">
       <state>
+        <task path="$PROJECT_DIR$/unimeeting">
+          <activation />
+        </task>
         <projects_view>
           <tree_state>
             <expand />
@@ -120,7 +123,10 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
+<<<<<<< HEAD
     "git-widget-placeholder": "Merging main",
+=======
+>>>>>>> f6633ed (d)
     "last_opened_file_path": "/Users/dhongwooking/Desktop/workspace/KosaMiniProject1/UniMeeting2",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -131,6 +137,7 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+<<<<<<< HEAD
   <component name="RunManager" selected="JUnit.All in unimeeting.unimeeting.test">
     <configuration name="All in unimeeting.unimeeting.test" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="unimeeting.unimeeting.test" />
@@ -139,6 +146,54 @@
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
+=======
+  <component name="RunManager" selected="Spring Boot.UnimeetingApplication">
+    <configuration name="Tests in 'unimeeting.test'" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/unimeeting" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="UserRepositoryTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/unimeeting" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;com.example.unimeeting.UserRepositoryTest&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
+>>>>>>> f6633ed (d)
     </configuration>
     <configuration name="UnimeetingApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
@@ -150,7 +205,12 @@
     </configuration>
     <recent_temporary>
       <list>
+<<<<<<< HEAD
         <item itemvalue="JUnit.All in unimeeting.unimeeting.test" />
+=======
+        <item itemvalue="Gradle.UserRepositoryTest" />
+        <item itemvalue="Gradle.Tests in 'unimeeting.test'" />
+>>>>>>> f6633ed (d)
       </list>
     </recent_temporary>
   </component>
@@ -166,6 +226,7 @@
       <workItem from="1699353618163" duration="2320000" />
       <workItem from="1699428401956" duration="164000" />
       <workItem from="1699428601304" duration="7754000" />
+      <workItem from="1699921912997" duration="3424000" />
     </task>
     <servers />
   </component>

@@ -1,0 +1,83 @@
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"AutoImportSettings\">\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\n  </component>\n  <component name=\"ChangeListManager\">\n    <list default=\"true\" id=\"b16459e7-0cbb-415d-b78e-e065b8c9fad1\" name=\"Changes\" comment=\"\">\n      <change beforePath=\"$PROJECT_DIR$/unimeeting/build.gradle\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/unimeeting/build.gradle\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/unimeeting/src/main/java/com/example/unimeeting/UnimeetingApplication.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/unimeeting/src/main/java/com/example/unimeeting/UnimeetingApplication.java\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/unimeeting/src/main/java/com/example/unimeeting/controller/UserController.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/unimeeting/src/main/java/com/example/unimeeting/controller/UserController.java\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/unimeeting/src/main/java/com/example/unimeeting/domain/Board.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/unimeeting/src/main/java/com/example/unimeeting/domain/Board.java\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/unimeeting/src/main/java/com/example/unimeeting/repository/UserRepository.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/unimeeting/src/main/java/com/example/unimeeting/repository/UserRepository.java\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/unimeeting/src/main/resources/application.properties\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/unimeeting/src/main/resources/application.properties\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/unimeeting/src/test/java/com/example/unimeeting/UserRepositoryTest.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/unimeeting/src/test/java/com/example/unimeeting/UserRepositoryTest.java\" afterDir=\"false\" />\n    </list>\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\n  </component>\n  <component name=\"ExternalProjectsData\">\n    <projectState path=\"$PROJECT_DIR$/unimeeting\">\n      <ProjectState />\n    </projectState>\n  </component>\n  <component name=\"ExternalProjectsManager\">\n    <system id=\"GRADLE\">\n      <state>\n        <projects_view>\n          <tree_state>\n            <expand />\n            <select />\n          </tree_state>\n        </projects_view>\n      </state>\n    </system>\n  </component>\n  <component name=\"FileTemplateManagerImpl\">\n    <option name=\"RECENT_TEMPLATES\">\n      <list>\n        <option value=\"HTML File\" />\n        <option value=\"Class\" />\n      </list>\n    </option>\n  </component>\n  <component name=\"Git.Settings\">\n    <option name=\"RECENT_BRANCH_BY_REPOSITORY\">\n      <map>\n        <entry key=\"$PROJECT_DIR$\" value=\"main\" />\n      </map>\n    </option>\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\n  </component>\n  <component name=\"GitHubPullRequestSearchHistory\">{\n  &quot;lastFilter&quot;: {\n    &quot;state&quot;: &quot;OPEN&quot;,\n    &quot;assignee&quot;: &quot;HAPALPAL&quot;\n  }\n}</component>\n  <component name=\"GithubPullRequestsUISettings\">\n    <option name=\"selectedUrlAndAccountId\">\n      <UrlAndAccount>\n        <option name=\"accountId\" value=\"74f77e1f-40b2-4ac8-b552-c8492ad7f4ea\" />\n        <option name=\"url\" value=\"https://github.com/jeon-aelim/UniMeeting2.git\" />\n      </UrlAndAccount>\n    </option>\n  </component>\n  <component name=\"MarkdownSettingsMigration\">\n    <option name=\"stateVersion\" value=\"1\" />\n  </component>\n  <component name=\"ProjectColorInfo\">{\n  &quot;associatedIndex&quot;: 0\n}</component>\n  <component name=\"ProjectId\" id=\"2XnSb9bco2KZmQqAEHwu3ave8Zm\" />\n  <component name=\"ProjectLevelVcsManager\">\n    <ConfirmationsSetting value=\"1\" id=\"Add\" />\n  </component>\n  <component name=\"ProjectViewState\">\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\n    <option name=\"showLibraryContents\" value=\"true\" />\n  </component>\n  <component name=\"PropertiesComponent\">{\n  &quot;keyToString&quot;: {\n    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,\n    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,\n    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,\n    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,\n    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,\n    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,\n    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,\n    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,\n    &quot;git-widget-placeholder&quot;: &quot;DW&quot;,\n    &quot;last_opened_file_path&quot;: &quot;/Users/dhongwooking/Desktop/workspace/KosaMiniProject1/UniMeeting2&quot;,\n    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,\n    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,\n    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,\n    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,\n    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,\n    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.project.gradle&quot;,\n    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;\n  }\n}</component>\n  <component name=\"RunManager\">\n    <configuration name=\"UnimeetingApplication\" type=\"SpringBootApplicationConfigurationType\" factoryName=\"Spring Boot\" nameIsGenerated=\"true\">\n      <option name=\"FRAME_DEACTIVATION_UPDATE_POLICY\" value=\"UpdateClassesAndResources\" />\n      <module name=\"unimeeting.main\" />\n      <option name=\"SPRING_BOOT_MAIN_CLASS\" value=\"com.example.unimeeting.UnimeetingApplication\" />\n      <method v=\"2\">\n        <option name=\"Make\" enabled=\"true\" />\n      </method>\n    </configuration>\n  </component>\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\n  <component name=\"TaskManager\">\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\n      <changelist id=\"b16459e7-0cbb-415d-b78e-e065b8c9fad1\" name=\"Changes\" comment=\"\" />\n      <created>1699263420257</created>\n      <option name=\"number\" value=\"Default\" />\n      <option name=\"presentableId\" value=\"Default\" />\n      <updated>1699263420257</updated>\n      <workItem from=\"1699263422200\" duration=\"3681000\" />\n      <workItem from=\"1699353618163\" duration=\"2320000\" />\n      <workItem from=\"1699428401956\" duration=\"164000\" />\n      <workItem from=\"1699428601304\" duration=\"7754000\" />\n    </task>\n    <servers />\n  </component>\n  <component name=\"TypeScriptGeneratedFilesManager\">\n    <option name=\"version\" value=\"3\" />\n  </component>\n  <component name=\"Vcs.Log.Tabs.Properties\">\n    <option name=\"TAB_STATES\">\n      <map>\n        <entry key=\"MAIN\">\n          <value>\n            <State>\n              <option name=\"FILTERS\">\n                <map>\n                  <entry key=\"branch\">\n                    <value>\n                      <list>\n                        <option value=\"origin/DW\" />\n                      </list>\n                    </value>\n                  </entry>\n                </map>\n              </option>\n            </State>\n          </value>\n        </entry>\n      </map>\n    </option>\n  </component>\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision efd9d97d73a2581a52e400bcaa02017975c432a9)
++++ b/.idea/workspace.xml	(date 1699781474244)
+@@ -4,15 +4,7 @@
+     <option name="autoReloadType" value="SELECTIVE" />
+   </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="b16459e7-0cbb-415d-b78e-e065b8c9fad1" name="Changes" comment="">
+-      <change beforePath="$PROJECT_DIR$/unimeeting/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/unimeeting/build.gradle" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/unimeeting/src/main/java/com/example/unimeeting/UnimeetingApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/unimeeting/src/main/java/com/example/unimeeting/UnimeetingApplication.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/unimeeting/src/main/java/com/example/unimeeting/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/unimeeting/src/main/java/com/example/unimeeting/controller/UserController.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/unimeeting/src/main/java/com/example/unimeeting/domain/Board.java" beforeDir="false" afterPath="$PROJECT_DIR$/unimeeting/src/main/java/com/example/unimeeting/domain/Board.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/unimeeting/src/main/java/com/example/unimeeting/repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/unimeeting/src/main/java/com/example/unimeeting/repository/UserRepository.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/unimeeting/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/unimeeting/src/main/resources/application.properties" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/unimeeting/src/test/java/com/example/unimeeting/UserRepositoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/unimeeting/src/test/java/com/example/unimeeting/UserRepositoryTest.java" afterDir="false" />
+-    </list>
++    <list default="true" id="b16459e7-0cbb-415d-b78e-e065b8c9fad1" name="Changes" comment="" />
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+@@ -79,27 +71,26 @@
+     <option name="hideEmptyMiddlePackages" value="true" />
+     <option name="showLibraryContents" value="true" />
+   </component>
+-  <component name="PropertiesComponent">{
+-  &quot;keyToString&quot;: {
+-    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+-    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+-    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+-    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+-    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+-    &quot;git-widget-placeholder&quot;: &quot;DW&quot;,
+-    &quot;last_opened_file_path&quot;: &quot;/Users/dhongwooking/Desktop/workspace/KosaMiniProject1/UniMeeting2&quot;,
+-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.project.gradle&quot;,
+-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
++  <component name="PropertiesComponent"><![CDATA[{
++  "keyToString": {
++    "DefaultHtmlFileTemplate": "HTML File",
++    "RequestMappingsPanelOrder0": "0",
++    "RequestMappingsPanelOrder1": "1",
++    "RequestMappingsPanelWidth0": "75",
++    "RequestMappingsPanelWidth1": "75",
++    "RunOnceActivity.OpenProjectViewOnStart": "true",
++    "RunOnceActivity.ShowReadmeOnStart": "true",
++    "WebServerToolWindowFactoryState": "false",
++    "last_opened_file_path": "/Users/dhongwooking/Desktop/workspace/KosaMiniProject1/UniMeeting2",
++    "node.js.detected.package.eslint": "true",
++    "node.js.detected.package.tslint": "true",
++    "node.js.selected.package.eslint": "(autodetect)",
++    "node.js.selected.package.tslint": "(autodetect)",
++    "nodejs_package_manager_path": "npm",
++    "settings.editor.selected.configurable": "preferences.keymap",
++    "vue.rearranger.settings.migration": "true"
+   }
+-}</component>
++}]]></component>
+   <component name="RunManager">
+     <configuration name="UnimeetingApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+       <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
+@@ -121,7 +112,7 @@
+       <workItem from="1699263422200" duration="3681000" />
+       <workItem from="1699353618163" duration="2320000" />
+       <workItem from="1699428401956" duration="164000" />
+-      <workItem from="1699428601304" duration="7754000" />
++      <workItem from="1699428601304" duration="18154000" />
+     </task>
+     <servers />
+   </component>
