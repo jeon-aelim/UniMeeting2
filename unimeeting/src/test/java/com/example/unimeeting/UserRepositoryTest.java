@@ -2,6 +2,7 @@ package com.example.unimeeting;
 
 import com.example.unimeeting.domain.User;
 import com.example.unimeeting.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,4 +57,32 @@ public class UserRepositoryTest {
         List<User> user = userRepository.findByUserIdStartingWithOrNicknameStartingWith("hapal","1234");
         user.stream().forEach(System.out::println);
     }
+
+    @Test
+    @Order(6)
+    @Transactional
+    void update(){
+        try {
+            User user = userRepository.findById(53).get();
+            user.setNickname("맹꽁");
+            user.setUserId("maeng");
+        } catch(Exception e) {
+            System.out.println("수정 실패");
+            return;
+        }
+        System.out.println(userRepository.findById(53).get());
+    }
+
+    @Test
+    @Order(7)
+    @Transactional
+    void delete(){
+        try {
+            userRepository.deleteById(53);
+        } catch(Exception e) {
+            System.out.println("삭제 실패");
+        }
+        System.out.println(userRepository.findById(5));
+    }
+
 }
