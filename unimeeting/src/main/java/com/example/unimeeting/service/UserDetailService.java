@@ -15,10 +15,6 @@ public class UserDetailService implements UserDetailsService {
 
     private final UserRepository repository;
 
-    @Autowired
-    public UserDetailService(UserRepository repository){
-        this.repository=repository;
-    }
     @Override
     public User loadUserByUsername(String user_id){
         return repository.findByUserId(user_id)
