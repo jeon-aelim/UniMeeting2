@@ -1,9 +1,15 @@
 package com.example.unimeeting;
 
 import com.example.unimeeting.domain.Meeting;
+import com.example.unimeeting.domain.MeetingImage;
+import com.example.unimeeting.domain.Member;
 import com.example.unimeeting.domain.User;
+import com.example.unimeeting.dto.MeetingWithDetailsDTO;
+import com.example.unimeeting.repository.MeetingImageRepository;
 import com.example.unimeeting.repository.MeetingRepository;
+import com.example.unimeeting.repository.MemberRepository;
 import com.example.unimeeting.repository.UserRepository;
+import java.util.ArrayList;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -20,6 +26,12 @@ import java.util.List;
 public class MeetingRepositoryTest {
     @Autowired
     MeetingRepository repository;
+    @Autowired
+    MeetingImageRepository imageR;
+    @Autowired
+    MemberRepository memberR;
+
+
     @Autowired
     UserRepository user_repository;
     @BeforeEach()
@@ -99,5 +111,64 @@ public class MeetingRepositoryTest {
         oldMeeting.setContent("updateTest");
 
         System.out.println(repository.findById(87));
+    }
+
+    @Test
+    @Order(9)
+    void test1(){
+        List<Meeting> list = repository.searchMeetingInMemberIDX(52);
+        List<MeetingWithDetailsDTO> list1 = new ArrayList<>();
+        MeetingWithDetailsDTO dto;
+
+        for(int i=0; i<list.size(); i++){
+            Meeting m = list.get(i);
+            List<String> imgUrls = imageR.findImageUrlByMeetingIdx(m.getIdx());
+            String imgUrl = imgUrls.isEmpty() ? "":imgUrls.get(0);
+            dto = new MeetingWithDetailsDTO(m, memberR.countByMeetingIdx(m.getIdx()) ,imgUrl);
+            list1.add(dto);
+        }
+
+        list1.stream().forEach(l -> {
+            System.out.println(l.getIdx()+"//" +l.getMemberNowRecruits() + l.getImageUrl());
+        });
+    }
+
+    @Test
+    @Order(10)
+    void test2(){
+        List<Meeting> list = repository.findByUserNickname("도히");
+        List<MeetingWithDetailsDTO> list1 = new ArrayList<>();
+        MeetingWithDetailsDTO dto;
+
+        for(int i=0; i<list.size(); i++){
+            Meeting m = list.get(i);
+            List<String> imgUrls = imageR.findImageUrlByMeetingIdx(m.getIdx());
+            String imgUrl = imgUrls.isEmpty() ? "":imgUrls.get(0);
+            dto = new MeetingWithDetailsDTO(m, memberR.countByMeetingIdx(m.getIdx()) ,imgUrl);
+            list1.add(dto);
+        }
+
+        list1.stream().forEach(l -> {
+            System.out.println(l.getIdx()+"//" +l.getMemberNowRecruits() + l.getImageUrl());
+        });
+    }
+    @Test
+    @Order(11)
+    void test3(){
+        List<Meeting> list = repository.searchMeetingInScrapIDX(52);
+        List<MeetingWithDetailsDTO> list1 = new ArrayList<>();
+        MeetingWithDetailsDTO dto;
+
+        for(int i=0; i<list.size(); i++){
+            Meeting m = list.get(i);
+            List<String> imgUrls = imageR.findImageUrlByMeetingIdx(m.getIdx());
+            String imgUrl = imgUrls.isEmpty() ? "":imgUrls.get(0);
+            dto = new MeetingWithDetailsDTO(m, memberR.countByMeetingIdx(m.getIdx()) ,imgUrl);
+            list1.add(dto);
+        }
+
+        list1.stream().forEach(l -> {
+            System.out.println(l.getIdx()+"//" +l.getMemberNowRecruits() + l.getImageUrl());
+        });
     }
 }

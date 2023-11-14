@@ -1,6 +1,7 @@
 package com.example.unimeeting.repository;
 
 import com.example.unimeeting.domain.Meeting;
+import com.example.unimeeting.dto.MeetingWithDetailsDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -25,4 +26,14 @@ public interface MeetingRepository extends JpaRepository<Meeting, Integer> {
     // meeting 글 상세 보기 페이지에서 버튼
     public boolean existsByIdxAndUserNickname(int idx, String user_nickname);
 
+    // 참여한 소모임 리스트
+    @Query("select m from Meeting m where m.idx in (select mb.meetingIdx from Member mb where mb.user.idx = :idx)")
+    public List<Meeting> searchMeetingInMemberIDX(int idx);
+
+    // 생성한 소모임 리스트
+    public List<Meeting> findByUserNickname(String nickname);
+
+    // 스크랩한 소모임 리스트
+    @Query("select m from Meeting m where m.idx in (select s.meetingIdx from Scrap s where s.user.idx = :idx)")
+    public List<Meeting> searchMeetingInScrapIDX(int idx);
 }

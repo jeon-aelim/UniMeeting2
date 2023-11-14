@@ -1,6 +1,5 @@
 package com.example.unimeeting.config;
 
-import com.example.unimeeting.service.CurrentUserProvider;
 import com.example.unimeeting.service.UserDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -18,12 +17,11 @@ public class WebSecurityConfig {
 
     private final UserDetailService userService;
 
+
     @Bean
     public WebSecurityCustomizer configure() {
         return (web) -> web.ignoring()
-                .requestMatchers("/images/**")
-                .requestMatchers("/js/**")
-                .requestMatchers("/css/**");
+                .requestMatchers("/**");
     }
 
     @Bean
@@ -44,10 +42,7 @@ public class WebSecurityConfig {
                 .csrf().disable()
                 .build();
     }
-    @Bean
-    public CurrentUserProvider currentUserProvider() {
-        return new CurrentUserProvider();
-    }
+
     @Bean
     public AuthenticationManager authenticationManager(HttpSecurity http, BCryptPasswordEncoder bCryptPasswordEncoder, UserDetailService userDetailService) throws Exception {
         return http.getSharedObject(AuthenticationManagerBuilder.class)
@@ -61,5 +56,4 @@ public class WebSecurityConfig {
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 }

@@ -45,7 +45,7 @@ public class ScrapRepositoryTest {
     @Test
     @Order(3)
     @Transactional
-    @Rollback(value = false)
+//    @Rollback(value = false)
     public void save() {
 
         Scrap scrap = new Scrap();
