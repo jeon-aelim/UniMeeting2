@@ -20,12 +20,13 @@ public class Board {
     private String title;
     private String content;
     private String type;
+
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH-mm")
     @Column(name = "created_datetime")
     private LocalDateTime createdDatetime;
 
     @ManyToOne
-    @JoinColumn(name = "writer_ nickname", referencedColumnName = "nickname")
+    @JoinColumn(name = "writer_nickname", referencedColumnName = "nickname")
     private User user;
 
     @Builder
@@ -35,6 +36,15 @@ public class Board {
         this.type = type;
         this.createdDatetime = createdDatetime;
     }
-
+    public void update(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
+    public Board toEntity() {
+        return Board.builder()
+                .title(title)
+                .content(content)
+                .build();
+    }
 
 }

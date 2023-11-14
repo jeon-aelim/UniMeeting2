@@ -1,6 +1,9 @@
 package com.example.unimeeting.domain;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -14,7 +17,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Meeting {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idx;
@@ -33,7 +35,7 @@ public class Meeting {
     @Column(name = "created_datetime")
     private LocalDateTime createdDatetime;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "writer_nickname", referencedColumnName = "nickname")
     private User user;
 
@@ -49,3 +51,4 @@ public class Meeting {
     }
 
 }
+

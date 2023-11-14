@@ -1,6 +1,7 @@
 package com.example.unimeeting.domain;
 
 import jakarta.persistence.*;
+
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -12,7 +13,10 @@ import java.util.List;
 @Entity
 @Table(name = "user")
 @Getter
+@Setter
+@Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

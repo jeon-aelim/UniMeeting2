@@ -17,12 +17,11 @@
 //
 //    private final UserDetailService userService;
 //
+//
 //    @Bean
 //    public WebSecurityCustomizer configure() {
 //        return (web) -> web.ignoring()
-//                .requestMatchers("/images/**")
-//                .requestMatchers("/js/**")
-//                .requestMatchers("/css/**");
+//                .requestMatchers("/**");
 //    }
 //
 //    @Bean

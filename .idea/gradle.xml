@@ -4,9 +4,14 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
+<<<<<<< HEAD
         <option name="delegatedBuild" value="false" />
         <option name="testRunner" value="PLATFORM" />
         <option name="externalProjectPath" value="$PROJECT_DIR$/unimeeting" />
+=======
+        <option name="externalProjectPath" value="$PROJECT_DIR$/unimeeting" />
+        <option name="gradleJvm" value="17 (2)" />
+>>>>>>> 2abe5a192af1f4195c2e9b96ce6f2aaf11ba0adb
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$/unimeeting" />
