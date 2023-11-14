@@ -43,7 +43,7 @@ public class UserController {
         Optional<User> user = userDetailService.findByEmail(email);
         return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
-    //아이디 비밀번호로 가입
+    //===============로그인=================//
     @PostMapping("/authenticate")
     public ResponseEntity<String> authenticateUser(@RequestParam String user_id, @RequestParam String password) {
         if (userDetailService.findByUserIdAndPassword(user_id, password).isPresent()) {
@@ -59,6 +59,7 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 
+    //===============회원가입=============//
     @PostMapping("/register")
     public ResponseEntity<String> register(User user) {
         try {

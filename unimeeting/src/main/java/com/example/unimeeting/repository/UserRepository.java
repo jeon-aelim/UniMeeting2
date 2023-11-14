@@ -12,7 +12,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     Optional<User> findByUserId(String user_id);
 
     // 닉네임으로 사용자 찾기
-    Optional<User> findByNickname(String nickname);
+    User findByNickname(String nickname);
 
     // 이메일로 사용자 찾기
     Optional<User> findByEmail(String email);

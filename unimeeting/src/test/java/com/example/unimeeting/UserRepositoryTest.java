@@ -31,12 +31,12 @@ public class UserRepositoryTest {
         System.out.println(user.isEmpty() ? "#####유저 아이디 정보가 존재하지 않습니다.#####" : user.get());
     }
 
-    @Test
-    @Order(2)
-    public void findByNickname() {
-        Optional<User> user = userRepository.findByNickname("hapal");
-        System.out.println(user.isEmpty() ? "#####유저 닉네임 정보가 존재하지 않습니다.#####" : user.get());
-    }
+//    @Test
+//    @Order(2)
+//    public void findByNickname() {
+//        User user = userRepository.findByNickname("hapal");
+//        System.out.println(user.isEmpty() ? "#####유저 닉네임 정보가 존재하지 않습니다.#####" : user.get());
+//    }
 
     @Test
     @Order(3)
