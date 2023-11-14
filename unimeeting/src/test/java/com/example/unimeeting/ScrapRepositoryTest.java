@@ -16,6 +16,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @DataJpaTest
@@ -54,4 +55,11 @@ public class ScrapRepositoryTest {
         repository.save(scrap);
 
     }
+
+//    @Test
+//    @Order(4) //dh
+//    public void findAll() {
+//        List<Scrap> list = repository.findAll();
+//        list.forEach(System.out::println);
+//    }
 }

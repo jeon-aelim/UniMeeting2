@@ -1,5 +1,5 @@
 package com.example.unimeeting.repository;
-
+import com.example.unimeeting.domain.Scrap;
 import com.example.unimeeting.domain.Meeting;
 import com.example.unimeeting.dto.MeetingWithDetailsDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,8 +15,15 @@ public interface MeetingRepository extends JpaRepository<Meeting, Integer> {
     @Query("select distinct m.category from Meeting m order by m.category")
     public List<String> findDistinctCategoryBy();
 
-    // 모든 meeting글에서 검색
-    public List<Meeting> findAllByTitleContainingOrContentContaining(String title,String content);
+    // 모든 meeting글에서 검색 dh
+    public List<Meeting> findAllByTitleContainingOrContentContaining(String title,String content); //검색어
+
+    @Query("select s from Scrap s ")
+    public List<Meeting> findAllByOrderByScrab(); //인기순 dh
+
+
+    public List<Meeting> findAllByOrderByTitle(); //제목 dh
+    public List<Meeting> findAllByOrderByCreatedDatetime(); //시간 dh
 
 //     해당 category 내의 meeting글에서 검색
     @Query("select m from Meeting m  where m.category=:category and (title like %:title% or content like %:content%)")
