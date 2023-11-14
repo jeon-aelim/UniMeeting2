@@ -2,6 +2,7 @@ package com.example.unimeeting.controller;
 
 import com.example.unimeeting.domain.Board;
 import com.example.unimeeting.service.BoardService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,13 +12,11 @@ import java.util.List;
 
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/board")
 public class BoardController {
     private final BoardService boardService;
 
-    public BoardController(BoardService boardService) {
-        this.boardService = boardService;
-    }
 
     //=============글 목 ===========//
     @GetMapping("/boards/{type}")

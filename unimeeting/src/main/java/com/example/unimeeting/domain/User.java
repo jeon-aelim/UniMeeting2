@@ -16,6 +16,7 @@ import java.util.List;
 @Setter
 @Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
