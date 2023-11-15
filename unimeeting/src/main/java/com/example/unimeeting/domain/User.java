@@ -13,8 +13,6 @@ import java.util.List;
 @Entity
 @Table(name = "user")
 @Getter
-@Setter
-@Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString
 public class User implements UserDetails {
@@ -41,7 +39,8 @@ public class User implements UserDetails {
     private String phoneNumber;
 
     @Builder
-    public User(String userId, String password, String nickname, String email, String category, String phoneNumber) {
+    public User(Integer idx, String userId, String password, String nickname, String email, String category, String phoneNumber) {
+        this.idx = idx;// security 구현 전 테스트
         this.userId = userId;
         this.password = password;
         this.nickname = nickname;

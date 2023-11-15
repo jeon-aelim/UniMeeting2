@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name="meeting")
 @Getter
-@Setter
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
@@ -40,7 +39,7 @@ public class Meeting {
     private User user;
 
     @Builder
-    public Meeting(String title, String content, String category, Integer recruits,String location, LocalDateTime startDatetime, LocalDateTime createdDatetime){
+    public Meeting(String title, String content, String category, Integer recruits,String location, LocalDateTime startDatetime, LocalDateTime createdDatetime, User user){
         this.title = title;
         this.content = content;
         this.category = category;
@@ -48,6 +47,16 @@ public class Meeting {
         this.location = location;
         this.startDatetime = startDatetime;
         this.createdDatetime = createdDatetime;
+        this.user = user;
+    }
+
+    public void update(String title, String content, String category, Integer recruits,String location, LocalDateTime startDatetime) {
+        this.title = title;
+        this.content = content;
+        this.category = category;
+        this.recruits = recruits;
+        this.location = location;
+        this.startDatetime = startDatetime;
     }
 
 }
