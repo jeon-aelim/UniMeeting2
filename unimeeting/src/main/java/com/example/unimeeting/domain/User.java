@@ -101,4 +101,9 @@ public class User implements UserDetails {
     public static User createUser(String userId, String password, PasswordEncoder passwordEncoder, String nickname, String email, String category, String phoneNumber,String role) {
         return new User(null, userId, passwordEncoder.encode(password), nickname,email,category,phoneNumber,role);
     }
+    @Data
+    public static class LoginRequestDto {
+        private String username;
+        private String password;
+    }
 }
