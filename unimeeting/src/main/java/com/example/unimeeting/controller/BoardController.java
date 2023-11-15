@@ -18,8 +18,6 @@ import java.util.List;
 @RequestMapping("/boards")
 public class BoardController {
     private final BoardService boardService;
-    private final UserRepository userRepository;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     //=============글 목 ===========//
     @GetMapping("/type/{type}")

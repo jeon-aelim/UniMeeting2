@@ -15,7 +15,6 @@ import java.util.Optional;
 public class UserDetailService implements UserDetailsService {
 
     private final UserRepository repository;
-    private final PasswordEncoder passwordEncoder;
 
     @Override
     public User loadUserByUsername(String user_id) {
@@ -65,15 +64,6 @@ public class UserDetailService implements UserDetailsService {
                 .ifPresent(m-> {
                     throw new IllegalStateException("이미 존재하는 이메일입니다.");
                 });
-    }
-    public int register(String userId, String password, String nickname, String email, String category, String phoneNumber, String role){
-        User user = User.createUser(userId,password,passwordEncoder,nickname,email,category,phoneNumber,"user");
-        validateDuplicateemail(user);
-        validateDuplicatenickname(user);
-        validateDuplicateUserId(user);
-        repository.save(user);
-        return user.getIdx();
-
     }
 
 }

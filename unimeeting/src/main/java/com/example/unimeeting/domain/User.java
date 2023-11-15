@@ -25,7 +25,7 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idx;
 
-    @Column(name = "user_id", nullable = false)
+    @Column(name = "user_id", nullable = false,unique = true)
     private String userId;
 
     @Column(nullable = false)
@@ -103,4 +103,5 @@ public class User implements UserDetails {
     public static User createUser(String userId, String password, PasswordEncoder passwordEncoder, String nickname, String email, String category, String phoneNumber, String role) {
         return new User(null, userId, passwordEncoder.encode(password), nickname, email, category, phoneNumber, role);
     }
+
 }
