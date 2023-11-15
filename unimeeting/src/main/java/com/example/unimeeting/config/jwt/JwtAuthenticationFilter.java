@@ -25,7 +25,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFilter {//UsernamePasswordAuthenticationFilter{
 
     private final AuthenticationManager authenticationManager;
-    private static final AntPathRequestMatcher DEFAULT_ANT_PATH_REQUEST_MATCHER = new AntPathRequestMatcher("/api/v1/login",
+    private static final AntPathRequestMatcher DEFAULT_ANT_PATH_REQUEST_MATCHER = new AntPathRequestMatcher("/user/login",
             "POST");
 
     public JwtAuthenticationFilter(AuthenticationManager authenticationManager) {
@@ -59,7 +59,7 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
                         loginRequestDto.getUserId(),
                         loginRequestDto.getPassword());
 
-        System.out.println("JwtAuthenticationFilter : 토큰생성완료");
+        System.out.println("JwtAuthenticationFilter : 토큰생성완료");//요까지댐
 
         // authenticate() 함수가 호출 되면 AuthenticationProvider가 UserDetailsService 객체의
         // loadUserByUsername(토큰의 첫 번째 파라미터 값) 를 호출하고
@@ -73,8 +73,8 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
         Authentication authentication =
                 authenticationManager.authenticate(authenticationToken);
 
-        MyUserDetails principalDetailis = (MyUserDetails) authentication.getPrincipal();
-        System.out.println("Authentication : "+principalDetailis.getUser().getUsername());//Username 리턴값은 userID로 오는중
+        MyUserDetails principalDetails = (MyUserDetails) authentication.getPrincipal();
+        System.out.println("Authentication : "+principalDetails.getUser().getUsername());//Username 리턴값은 userID로 오는중
         return authentication;
     }
 
@@ -85,13 +85,13 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
                                             Authentication authResult) throws IOException, ServletException {
         System.out.println("successfulAuthentication ");
 
-        MyUserDetails principalDetailis = (MyUserDetails) authResult.getPrincipal();
+        MyUserDetails principalDetails = (MyUserDetails) authResult.getPrincipal();
 
         String jwtToken = JWT.create()
-                .withSubject(principalDetailis.getUsername())
+                .withSubject(principalDetails.getUsername())
                 .withExpiresAt(new Date(System.currentTimeMillis()+JwtProperties.EXPIRATION_TIME))
-                .withClaim("idx", principalDetailis.getUser().getIdx())
-                .withClaim("userId", principalDetailis.getUser().getUsername())
+                .withClaim("idx", principalDetails.getUser().getIdx())
+                .withClaim("userId", principalDetails.getUser().getUsername())
                 .sign(Algorithm.HMAC512(JwtProperties.SECRET));
 
         response.addHeader(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX+jwtToken);

@@ -51,7 +51,7 @@ public class SpringSecurityConfig {
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilter(jwtAuthorizationFilter())
                 .authorizeRequests()
-                .requestMatchers("/api/v1/home", "/api/v1/join", "/api/v1/login", "/api/vi/logout").permitAll()
+                .requestMatchers("/boards/**","/user/login","/user/join").permitAll()
                 .anyRequest().authenticated();
         return http.build();
     }
@@ -65,7 +65,7 @@ public class SpringSecurityConfig {
 
     @Bean
     public JwtAuthorizationFilter jwtAuthorizationFilter() throws Exception {
-        return new JwtAuthorizationFilter(authenticationManagerBean(), myUserRepository);
+        return new JwtAuthorizationFilter(authenticationManagerBean(), UserRepository);
     }
 }
 

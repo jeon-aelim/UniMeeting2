@@ -29,7 +29,7 @@ public class UserDetailService implements UserDetailsService {
         return repository.findByUserId(user_id);
     }
 
-    public User findByNickname(String nickname) {
+    public Optional<User> findByNickname(String nickname) {
         return repository.findByNickname(nickname);
     }
 
@@ -54,12 +54,12 @@ public class UserDetailService implements UserDetailsService {
         });
     }
 
-//    private void validateDuplicatenickname(User user){
-//        repository.findByNickname(user.getNickname())
-//                .ifPresent(m-> {
-//                    throw new IllegalStateException("이미 존재하는 닉네임입니다.");
-//                });
-//    }
+    private void validateDuplicatenickname(User user){
+        repository.findByNickname(user.getNickname())
+                .ifPresent(m-> {
+                    throw new IllegalStateException("이미 존재하는 닉네임입니다.");
+                });
+    }
     private void validateDuplicateemail(User user){
         repository.findByEmail(user.getEmail())
                 .ifPresent(m-> {

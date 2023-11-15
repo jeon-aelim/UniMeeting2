@@ -46,23 +46,24 @@ public class User implements UserDetails {
     private String role;
 
     @Builder
-    public User(Integer idx,String userId, String password, String nickname, String email, String category, String phoneNumber,String role) {
-        this.idx=idx;
+    public User(Integer idx, String userId, String password, String nickname, String email, String category, String phoneNumber, String role) {
+        this.idx = idx;
         this.userId = userId;
         this.password = password;
         this.nickname = nickname;
         this.email = email;
         this.category = category;
         this.phoneNumber = phoneNumber;
-        this.role=role;
+        this.role = role;
     }
 
-    public List<String> getRoleList(){
-        if(this.role.length() > 0){
+    public List<String> getRoleList() {
+        if (this.role.length() > 0) {
             return Arrays.asList(this.role.split(","));
         }
         return new ArrayList<>();
     }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("user"));
@@ -97,13 +98,9 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
     ///////////////
-    public static User createUser(String userId, String password, PasswordEncoder passwordEncoder, String nickname, String email, String category, String phoneNumber,String role) {
-        return new User(null, userId, passwordEncoder.encode(password), nickname,email,category,phoneNumber,role);
-    }
-    @Data
-    public static class LoginRequestDto {
-        private String username;
-        private String password;
+    public static User createUser(String userId, String password, PasswordEncoder passwordEncoder, String nickname, String email, String category, String phoneNumber, String role) {
+        return new User(null, userId, passwordEncoder.encode(password), nickname, email, category, phoneNumber, role);
     }
 }

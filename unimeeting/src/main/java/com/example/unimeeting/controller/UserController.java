@@ -1,19 +1,23 @@
 package com.example.unimeeting.controller;
 
 import com.example.unimeeting.domain.User;
+import com.example.unimeeting.repository.UserRepository;
 import com.example.unimeeting.service.UserDetailService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.*;
-import com.example.unimeeting.domain.User;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,6 +27,11 @@ import java.util.Optional;
 @RequestMapping("/user")
 public class UserController {
     private final UserDetailService userDetailService;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final UserRepository userRepository;
+
+
+
     //아이디로 사용자 확인
     @GetMapping("/{user_id}")
     public ResponseEntity<User> getUserById(@PathVariable String user_id) {
@@ -35,6 +44,7 @@ public class UserController {
     @GetMapping("/nickname/{nickname}")
     public ResponseEntity<User> getUserByNickname(@PathVariable String nickname) {
         Optional<User> user = userDetailService.findByNickname(nickname);
+        ResponseEntity<User> responseEntity;
         return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
     //이메일로 사용자 확인
@@ -69,11 +79,15 @@ public class UserController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-
-
-
-
-
-
-
+    @PostMapping("join")
+    public String join(@RequestBody User user) {
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        user.setRole("USER");
+        userRepository.save(user);
+        return "회원 가입 완료";
+    }
+    @PostMapping("/login")
+    public String login() {
+        return "토큰 발행 완료";
+    }
 }

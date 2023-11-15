@@ -12,6 +12,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -47,7 +48,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter{
                 .getClaim("nickname").asString();
         System.out.println("nickname : "+nickname);
         if(nickname != null) {
-            User user = userRepository.findByNickname(nickname);
+            User user = userRepository.findByNickname(nickname).get();
             System.out.println("User : "+user);
             // 인증은 토큰 검증시 끝. 인증을 하기 위해서가 아닌 스프링 시큐리티가 수행해주는 권한 처리를 위해
             // 아래와 같이 토큰을 만들어서 Authentication 객체를 강제로 만들고 그걸 세션에 저장!
