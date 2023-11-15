@@ -26,7 +26,7 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
 
     private final AuthenticationManager authenticationManager;
     private static final AntPathRequestMatcher DEFAULT_ANT_PATH_REQUEST_MATCHER = new AntPathRequestMatcher("/user/login",
-            "POST");
+            "POST");/////////////
 
     public JwtAuthenticationFilter(AuthenticationManager authenticationManager) {
         super(DEFAULT_ANT_PATH_REQUEST_MATCHER, authenticationManager);
@@ -42,7 +42,7 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
 
         System.out.println("JwtAuthenticationFilter : 진입");
 
-        // request에 있는 userId password를 파싱해서 자바 Object로 받기
+        // request에 있는 username과 password를 파싱해서 자바 Object로 받기
         ObjectMapper om = new ObjectMapper();
         LoginRequestDto loginRequestDto = null;
         try {
@@ -59,7 +59,7 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
                         loginRequestDto.getUserId(),
                         loginRequestDto.getPassword());
 
-        System.out.println("JwtAuthenticationFilter : 토큰생성완료");//요까지댐
+        System.out.println("JwtAuthenticationFilter : 토큰생성완료");
 
         // authenticate() 함수가 호출 되면 AuthenticationProvider가 UserDetailsService 객체의
         // loadUserByUsername(토큰의 첫 번째 파라미터 값) 를 호출하고
@@ -69,12 +69,11 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
 
         // Tip: AuthenticationProvider의 디폴트 서비스는 UserDetailsService 타입
         // Tip: AuthenticationProvider의 디폴트 암호화 방식은 BCryptPasswordEncoder 타입
-
         Authentication authentication =
                 authenticationManager.authenticate(authenticationToken);
 
-        MyUserDetails principalDetails = (MyUserDetails) authentication.getPrincipal();
-        System.out.println("Authentication : "+principalDetails.getUser().getUsername());//Username 리턴값은 userID로 오는중
+        MyUserDetails principalDetailis = (MyUserDetails) authentication.getPrincipal();
+        System.out.println("Authentication : "+principalDetailis.getUser().getUserId());
         return authentication;
     }
 
@@ -91,7 +90,7 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
                 .withSubject(principalDetails.getUsername())
                 .withExpiresAt(new Date(System.currentTimeMillis()+JwtProperties.EXPIRATION_TIME))
                 .withClaim("idx", principalDetails.getUser().getIdx())
-                .withClaim("userId", principalDetails.getUser().getUsername())
+                .withClaim("userId", principalDetails.getUser().getUserId())
                 .sign(Algorithm.HMAC512(JwtProperties.SECRET));
 
         response.addHeader(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX+jwtToken);

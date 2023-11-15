@@ -25,7 +25,7 @@ public class MeetingController {
     private final MeetingService meetingService;
 
     // Security 구현 전 테스트용 user 객체
-    User user = new User(52, "aelim", "1234", "aa", "devaelim@gmail.com", "코딩", "01092708011");
+    User user = new User(52, "aelim", "1234", "aa", "devaelim@gmail.com", "코딩", "01092708011", "USER");
 
     // 미팅 글 리스트 조회
     @GetMapping

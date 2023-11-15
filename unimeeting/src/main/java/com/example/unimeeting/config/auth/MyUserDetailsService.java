@@ -15,10 +15,12 @@ public class MyUserDetailsService implements UserDetailsService{
     private final UserRepository userRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String nickname) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String user_id) throws UsernameNotFoundException {
         System.out.println("PrincipalDetailsService : 진입");
-        User user = userRepository.findByNickname(nickname).get();
 
+        User user = userRepository.findByUserId(user_id)
+                .orElseThrow(IllegalArgumentException::new);
+        System.out.println(user);
         return new MyUserDetails(user);
     }
 }

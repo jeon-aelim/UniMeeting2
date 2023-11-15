@@ -50,7 +50,7 @@ public class SpringSecurityConfig {
                 .httpBasic().disable()
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilter(jwtAuthorizationFilter())
-                .authorizeRequests()
+                .authorizeHttpRequests()
                 .requestMatchers("/boards/**","/user/login","/user/join").permitAll()
                 .anyRequest().authenticated();
         return http.build();
