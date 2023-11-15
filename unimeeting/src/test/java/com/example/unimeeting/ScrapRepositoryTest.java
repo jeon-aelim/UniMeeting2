@@ -56,10 +56,10 @@ public class ScrapRepositoryTest {
 
     }
 
-//    @Test
-//    @Order(4) //dh
-//    public void findAll() {
-//        List<Scrap> list = repository.findAll();
-//        list.forEach(System.out::println);
-//    }
+    @Test
+    @Order(4) //dh
+    public void findAll() {
+        List<Scrap> list = repository.findAll();
+        list.forEach(System.out::println);
+    }
 }
