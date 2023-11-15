@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @NoArgsConstructor
 @Getter
@@ -13,6 +14,7 @@ public class MeetingResponse {
 
     private int idx;
     private String title;
+    private String content;
     private String category;
     private Integer recruits;
     private String location;
@@ -21,13 +23,14 @@ public class MeetingResponse {
     private String writerNickname;
 
     private Integer currentRecruits;
-    private String[] images;
+    private List<String> images;
     private boolean isWriter;
     private boolean isApplicant;
 
-    public MeetingResponse(Meeting meeting, Integer currentRecruits, String[] images, String nickname, Boolean isApplicant){
+    public MeetingResponse(Meeting meeting, Integer currentRecruits, List<String> images, Boolean isWriter, Boolean isApplicant){
         this.idx = meeting.getIdx();
         this.title = meeting.getTitle();
+        this.content = meeting.getContent();
         this.category = meeting.getCategory();
         this.recruits = meeting.getRecruits();
         this.location = meeting.getLocation();
@@ -37,7 +40,7 @@ public class MeetingResponse {
 
         this.currentRecruits = currentRecruits;
         this.images = images;
-        this.isWriter = nickname.equals(this.writerNickname);
+        this.isWriter = isWriter;
         this.isApplicant = isApplicant;
 
     }
