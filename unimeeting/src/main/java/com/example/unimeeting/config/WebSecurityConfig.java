@@ -15,7 +15,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class WebSecurityConfig {
 
-    private final UserDetailService userService;
+//    private final UserDetailService userService;
 
 
     @Bean
@@ -24,33 +24,33 @@ public class WebSecurityConfig {
                 .requestMatchers("/**");
     }
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        return http
-                .authorizeRequests()
-                .requestMatchers("/user/login", "/user/signup").permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .formLogin()
-                .loginPage("/user/login")
-                .defaultSuccessUrl("/main")
-                .and()
-                .logout()
-                .logoutSuccessUrl("/user/login")
-                .invalidateHttpSession(true)
-                .and()
-                .csrf().disable()
-                .build();
-    }
-
-    @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity http, BCryptPasswordEncoder bCryptPasswordEncoder, UserDetailService userDetailService) throws Exception {
-        return http.getSharedObject(AuthenticationManagerBuilder.class)
-                .userDetailsService(userService)
-                .passwordEncoder(bCryptPasswordEncoder)
-                .and()
-                .build();
-    }
+//    @Bean
+//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+//        return http
+//                .authorizeRequests()
+//                .requestMatchers("/user/login", "/user/signup").permitAll()
+//                .anyRequest().authenticated()
+//                .and()
+//                .formLogin()
+//                .loginPage("/user/login")
+//                .defaultSuccessUrl("/main")
+//                .and()
+//                .logout()
+//                .logoutSuccessUrl("/user/login")
+//                .invalidateHttpSession(true)
+//                .and()
+//                .csrf().disable()
+//                .build();
+//    }
+//
+//    @Bean
+//    public AuthenticationManager authenticationManager(HttpSecurity http, BCryptPasswordEncoder bCryptPasswordEncoder, UserDetailService userDetailService) throws Exception {
+//        return http.getSharedObject(AuthenticationManagerBuilder.class)
+//                .userDetailsService(userService)
+//                .passwordEncoder(bCryptPasswordEncoder)
+//                .and()
+//                .build();
+//    }
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
