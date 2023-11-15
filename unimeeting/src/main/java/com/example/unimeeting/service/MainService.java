@@ -22,10 +22,10 @@ public class MainService {
         return meetingRepository.searchByList(keyword);
     }
 
-    public List<Meeting> meetingpopular(){
-
-        return meetingRepository.findAllByOrderByScrab();
-    }
+//    public List<Meeting> meetingpopular(){
+//
+//        return meetingRepository.findAllByOrderByScrab();
+//    }
 
     public List<Meeting> meetingtitle(){
 

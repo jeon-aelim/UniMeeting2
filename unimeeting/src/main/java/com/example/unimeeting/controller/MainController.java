@@ -38,12 +38,12 @@ public class MainController {
 
         return entity;
     }
-    @GetMapping("/meetings/popular")
-    public ResponseEntity<List<Meeting>> popularSort() {
-        ResponseEntity<List<Meeting>> entity = new ResponseEntity<>(service.meetingpopular(), HttpStatus.OK);
-
-        return entity;
-    }
+//    @GetMapping("/meetings/popular")
+//    public ResponseEntity<List<Meeting>> popularSort() {
+//        ResponseEntity<List<Meeting>> entity = new ResponseEntity<>(service.meetingpopular(), HttpStatus.OK);
+//
+//        return entity;
+//    }
     @GetMapping("/meetings/title")
     public ResponseEntity<List<Meeting>> titleSort() {
         ResponseEntity<List<Meeting>> entity = new ResponseEntity<>(service.meetingtitle(), HttpStatus.OK);

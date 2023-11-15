@@ -44,9 +44,9 @@ public interface MeetingRepository extends JpaRepository<Meeting, Integer> {
     public List<Meeting> searchByList(@Param("keyword") String keyword); //검색어
 
     //인기순으로 정렬
-    @Query("select m from meeting m left join (select m.idx, count(*) from scrap s group by m.idx) " +
-            "as c on m.idx = c.meeting_idx order by scrap_cnt desc")
-    public List<Meeting> findAllByOrderByScrab();
+//    @Query("select m from Meeting m left join (select m.idx, count(*) from Scrap s group by m.idx) " +
+//            "as c on m.idx = c.meeting_idx order by scrap_cnt desc")
+//    public List<Meeting> findAllByOrderByScrab();
     //제목순으로 정렬
     @Query("select m from Meeting m order by trim(m.title) asc")
     public List<Meeting> findAllByOrderByTitle();
