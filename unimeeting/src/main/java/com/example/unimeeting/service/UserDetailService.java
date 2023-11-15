@@ -74,15 +74,15 @@ public class UserDetailService implements UserDetailsService {
 //                    throw new IllegalStateException("이미 존재하는 이메일입니다.");
 //                });
 //    }
-//    public int register(String userId, String password, String nickname, String email, String category, String phoneNumber, String role){
-//        User user = User.createUser(userId,password,passwordEncoder,nickname,email,category,phoneNumber,"user");
-//        validateDuplicateemail(user);
-//        validateDuplicatenickname(user);
-//        validateDuplicateUserId(user);
-//        repository.save(user);
-//        return user.getIdx();
-//
-//    }
+    public int register(String userId, String password, String nickname, String email, String category, String phoneNumber, String role){
+        User user = User.createUser(userId,password,passwordEncoder,nickname,email,category,phoneNumber,"user");
+        validateDuplicateemail(user);
+        validateDuplicatenickname(user);
+        validateDuplicateUserId(user);
+        repository.save(user);
+        return user.getIdx();
+
+    }
 //
 //}
 //=======

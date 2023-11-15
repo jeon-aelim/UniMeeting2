@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name="meeting")
 @Getter
+@Setter
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
