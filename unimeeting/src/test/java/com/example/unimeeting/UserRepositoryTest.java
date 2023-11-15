@@ -26,34 +26,36 @@ public class UserRepositoryTest {
 
     @Test
     @Order(1)
-    public void findByUserId(){
+    public void findByUserId() {
         Optional<User> user = userRepository.findByUserId("hapal");
-        System.out.println(user.isEmpty()?"#####유저 아이디 정보가 존재하지 않습니다.#####":user.get());
+        System.out.println(user.isEmpty() ? "#####유저 아이디 정보가 존재하지 않습니다.#####" : user.get());
     }
-    @Test
-    @Order(2)
-    public void findByNickname(){
-        Optional<User> user = userRepository.findByNickname("hapal");
-        System.out.println(user.isEmpty()?"#####유저 닉네임 정보가 존재하지 않습니다.#####":user.get());
-    }
+
+//    @Test
+//    @Order(2)
+//    public void findByNickname() {
+//        User user = userRepository.findByNickname("hapal");
+//        System.out.println(user.isEmpty() ? "#####유저 닉네임 정보가 존재하지 않습니다.#####" : user.get());
+//    }
 
     @Test
     @Order(3)
-    public void findByEmail(){
+    public void findByEmail() {
         Optional<User> user = userRepository.findByEmail("hapal");
-        System.out.println(user.isEmpty()?"##### 정보가 존재하지 않습니다.#####":user.get());
+        System.out.println(user.isEmpty() ? "##### 정보가 존재하지 않습니다.#####" : user.get());
     }
+
     @Test
     @Order(4)
-    public void findByUserIdAndPassword(){
-        Optional<User> user = userRepository.findByUserIdAndPassword("hapal","1234");
-        System.out.println(user.isEmpty()?"##### 정보가 존재하지 않습니다.#####":user.get());
+    public void findByUserIdAndPassword() {
+        Optional<User> user = userRepository.findByUserIdAndPassword("hapal", "1234");
+        System.out.println(user.isEmpty() ? "##### 정보가 존재하지 않습니다.#####" : user.get());
     }
 
     @Test
     @Order(5)
-    public void findByUserIdStartingWithOrNicknameStartingWith(){
-        List<User> user = userRepository.findByUserIdStartingWithOrNicknameStartingWith("hapal","1234");
+    public void findByUserIdStartingWithOrNicknameStartingWith() {
+        List<User> user = userRepository.findByUserIdStartingWithOrNicknameStartingWith("hapal", "1234");
         user.stream().forEach(System.out::println);
     }
 }

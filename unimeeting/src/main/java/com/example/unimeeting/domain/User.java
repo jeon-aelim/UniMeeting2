@@ -25,7 +25,7 @@ public class User  {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idx;
 
-    @Column(name = "user_id", nullable = false)
+    @Column(name = "user_id", nullable = false,unique = true)
     private String userId;
 
     @Column(nullable = false)
@@ -55,6 +55,7 @@ public class User  {
         this.category = category;
         this.phoneNumber = phoneNumber;
         this.role = role;
+
     }
 
     public List<String> getRoleList() {
@@ -67,3 +68,4 @@ public class User  {
         return new User(null, userId, passwordEncoder.encode(password), nickname, email, category, phoneNumber, role);
     }
 }
+
