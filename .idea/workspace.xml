@@ -5,16 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b16459e7-0cbb-415d-b78e-e065b8c9fad1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/unimeeting/src/main/java/com/example/unimeeting/dto/AddMeetingRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/unimeeting/src/main/java/com/example/unimeeting/dto/UpdateMeetingRequest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unimeeting/src/main/java/com/example/unimeeting/config/WebSecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/unimeeting/src/main/java/com/example/unimeeting/config/WebSecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unimeeting/src/main/java/com/example/unimeeting/controller/MeetingController.java" beforeDir="false" afterPath="$PROJECT_DIR$/unimeeting/src/main/java/com/example/unimeeting/controller/MeetingController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unimeeting/src/main/java/com/example/unimeeting/domain/Meeting.java" beforeDir="false" afterPath="$PROJECT_DIR$/unimeeting/src/main/java/com/example/unimeeting/domain/Meeting.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unimeeting/src/main/java/com/example/unimeeting/domain/Member.java" beforeDir="false" afterPath="$PROJECT_DIR$/unimeeting/src/main/java/com/example/unimeeting/domain/Member.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unimeeting/src/main/java/com/example/unimeeting/domain/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/unimeeting/src/main/java/com/example/unimeeting/domain/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unimeeting/src/main/java/com/example/unimeeting/dto/MeetingResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/unimeeting/src/main/java/com/example/unimeeting/dto/MeetingResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unimeeting/src/main/java/com/example/unimeeting/service/MeetingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/unimeeting/src/main/java/com/example/unimeeting/service/MeetingService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
