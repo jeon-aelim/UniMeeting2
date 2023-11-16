@@ -14,7 +14,7 @@ public class CorsConfig {
         config.addAllowedOrigin("http://localhost:5173"); // e.g. http://domain1.com
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
-        source.registerCorsConfiguration("/meetings/**", config);// /api/** 패턴의 엔드포인트에 대한 CORS패턴 등록 수정해야함
+        source.registerCorsConfiguration("/**", config);// /api/** 패턴의 엔드포인트에 대한 CORS패턴 등록 수정해야함
         return new CorsFilter(source);
     }
 }
