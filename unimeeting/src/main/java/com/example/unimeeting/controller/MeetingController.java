@@ -27,6 +27,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/meetings")
+@CrossOrigin(origins = "*")
 @RequiredArgsConstructor
 public class MeetingController {
 
@@ -35,9 +36,16 @@ public class MeetingController {
     // Security 구현 전 테스트용 user 객체
     User user = new User(52, "aelim", "1234", "aa", "devaelim@gmail.com", "코딩", "01092708011", "USER");
 
+    @GetMapping("/category")
+    public ResponseEntity<List<String>> getCategory(){
+        return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(meetingService.findCatogory());
+    }
+
     // 미팅 글 리스트 조회
     @GetMapping
-    public ResponseEntity<List<MeetingWithDetailsDTO>> getMeetings(@RequestParam(required = false) String category,
+    public ResponseEntity<List<MeetingWithDetailsDTO>> getMeetings(@RequestParam(value ="ctgr", required = false) String category,
                                                                    @RequestParam(defaultValue = "") String search){
         List<MeetingWithDetailsDTO> response;
 
