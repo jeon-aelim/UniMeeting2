@@ -28,7 +28,7 @@
       }
     )
     function getMeeting(s, url) {
-        url = "http://192.168.3.123:8090/mypage/meetings/";
+        url = "http://localhost:8090/mypage/meetings/";
         cleardiv()
         switch(s){
             case "attend":

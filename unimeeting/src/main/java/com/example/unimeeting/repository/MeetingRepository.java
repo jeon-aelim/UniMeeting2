@@ -25,14 +25,14 @@ public interface MeetingRepository extends JpaRepository<Meeting, Integer> {
 
     // 참여한 소모임 리스트
     @Query("select m from Meeting m where m.idx in (select mb.meetingIdx from Member mb where mb.user.idx = :idx)")
-    public List<Meeting> searchMeetingInMemberIDX(int idx);
+    public List<Meeting> searchMeetingInMemberIDX(@Param("idx") int idx);
 
     // 생성한 소모임 리스트
     public List<Meeting> findByUserNickname(String nickname);
 
     // 스크랩한 소모임 리스트
     @Query("select m from Meeting m where m.idx in (select s.meetingIdx from Scrap s where s.user.idx = :idx)")
-    public List<Meeting> searchMeetingInScrapIDX(int idx);
+    public List<Meeting> searchMeetingInScrapIDX(@Param("idx") int idx);
 
     // 모든 meeting글에서 검색 dh
     public List<Meeting> findAllByTitleContainingOrContentContaining(String title,String content); //검색어
