@@ -46,6 +46,7 @@ public interface MeetingRepository extends JpaRepository<Meeting, Integer> {
     //인기순으로 정렬
 
 //    @Query("select m from Meeting m left join (select m.idx, count(*) from Scrap s group by m.idx) " +
+
 //            "as c on m.idx = c.meeting_idx order by scrap_cnt desc")
 //    public List<Meeting> findAllByOrderByScrab();
     //제목순으로 정렬

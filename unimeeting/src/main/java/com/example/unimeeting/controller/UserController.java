@@ -73,7 +73,7 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<String> register(User user) {
         try {
-            userDetailService.register(user.getUserId(), user.getPassword(),user.getNickname(),user.getCategory(),user.getPhoneNumber(),user.getRole(),user.getEmail());
+            userDetailService.register(user.getUserId(), user.getPassword(),user.getNickname(),user.getEmail(), user.getCategory(),user.getPhoneNumber(),user.getRole());
             return ResponseEntity.ok("성공적으로 회원 가입이 진행되었습니다.");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());

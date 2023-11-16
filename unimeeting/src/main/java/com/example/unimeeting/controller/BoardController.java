@@ -19,7 +19,7 @@ import java.util.List;
 public class BoardController {
     private final BoardService boardService;
 
-    //=============글 목 ===========//
+    //=============글 목록 ===========//
     @GetMapping("/type/{type}")
     public ResponseEntity<List<Board>> getAllBoards(@PathVariable String type, @RequestParam(required = false) String search) {
         List<Board> board = boardService.findByType(type,search);
