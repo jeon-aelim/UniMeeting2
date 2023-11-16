@@ -1,12 +1,50 @@
 <template>
     모임 페이지
-    <div>
-        <!-- 모임 상세페이지 이동 router -->
-        <router-link :to="`meeting/${idx}`">{{ idx }}</router-link>
-        <div class="모임 칸" v-for="(key, index) in 5"> <router-link :to="`meeting/${key+60}`">{{ key+60 }}</router-link> </div>
+    <div class="page-container">
+        <Side @chage-category="chageCategory"></Side>
+
+        <div class="contents-right">
+            <div class="meeting-search">
+                <form id="search" method="get" th:action="@{/meeting{ctgr}(ctgr=${path_ctgr})}">
+                    <div class="search-label">
+                        <label><input id="search-submit" type="image" src="src/assets/images/icon-search.png" alt="검색"></label>
+                        <label><input id="search-text" name="search" required /><br></label>
+                    </div>
+                    <!--                <input type="submit" value="검색" />-->
+                </form>
+                <!-- Insert Meeting Button -->
+                <button class="make-meeting-button" onclick="location.href = '/meeting/goInsertMet'" >모임 만들기</button>
+            </div>
+
+            <Contain :category="getCategory"></Contain>
+        </div>
     </div>
 </template>
 
 <script setup>
-    let idx = 55
+    import Side from '@/components/MeetingSide.vue';
+    import Contain from '@/components/MeetingContain.vue';
+    import { ref, computed } from 'vue';
+
+    let category = ref("")
+    function chageCategory(data){
+        category.value = data
+    }
+
+    const getCategory = computed(() => category.value);
+
 </script>
+
+<style>
+    @import '@/assets/css/meeting.css';
+    @import '@/assets/css/meetingBox.css';
+    .page-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        /* background-color: aquamarine; */
+        position: relative;
+        /* width: 1440px;
+        height: 880px; */
+    }
+</style>

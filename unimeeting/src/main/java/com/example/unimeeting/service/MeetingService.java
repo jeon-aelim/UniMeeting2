@@ -24,6 +24,10 @@ public class MeetingService {
     private final MemberRepository memberRepository;
     private final ScrapRepository scrapRepository;
 
+    public List<String> findCatogory(){
+        return meetingRepository.findDistinctCategoryBy();
+    }
+
     public Meeting findById(Integer id){
         return meetingRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("not found : " + id));
