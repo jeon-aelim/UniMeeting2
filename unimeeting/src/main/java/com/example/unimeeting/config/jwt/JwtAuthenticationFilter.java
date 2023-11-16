@@ -15,12 +15,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
 
 public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFilter {//UsernamePasswordAuthenticationFilter{
 
@@ -30,7 +30,6 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
 
     public JwtAuthenticationFilter(AuthenticationManager authenticationManager) {
         super(DEFAULT_ANT_PATH_REQUEST_MATCHER, authenticationManager);
-        System.out.println("객체 생성");
         this.authenticationManager = authenticationManager;
     }
 
@@ -60,7 +59,7 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
                         loginRequestDto.getPassword());
 
         System.out.println("JwtAuthenticationFilter : 토큰생성완료");
-
+        System.out.println(authenticationToken);
         // authenticate() 함수가 호출 되면 AuthenticationProvider가 UserDetailsService 객체의
         // loadUserByUsername(토큰의 첫 번째 파라미터 값) 를 호출하고
         // UserDetails를 리턴받아서 토큰의 두 번째 파라미터(credential)값과

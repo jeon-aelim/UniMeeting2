@@ -87,7 +87,7 @@ public class UserController {
         userRepository.save(user);
         return "회원 가입 완료";
     }
-    @PostMapping("/login")
+    @PostMapping("login")
     public String login() {
         return "토큰 발행 완료";
     }

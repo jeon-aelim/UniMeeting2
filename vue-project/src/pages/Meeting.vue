@@ -8,5 +8,5 @@
 </template>
 
 <script setup>
-    let idx = 55
+    let idx = 55;
 </script>

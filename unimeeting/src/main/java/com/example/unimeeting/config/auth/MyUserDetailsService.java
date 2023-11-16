@@ -16,11 +16,9 @@ public class MyUserDetailsService implements UserDetailsService{
 
     @Override
     public UserDetails loadUserByUsername(String user_id) throws UsernameNotFoundException {
-        System.out.println("PrincipalDetailsService : 진입");
+        System.out.println("PrincipalDetailsService : in UserDetailsService");
+        UserDetails user = new MyUserDetails(userRepository.findByUserId(user_id).get());
 
-        User user = userRepository.findByUserId(user_id)
-                .orElseThrow(IllegalArgumentException::new);
-        System.out.println(user);
-        return new MyUserDetails(user);
+        return user;
     }
 }
