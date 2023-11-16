@@ -12,10 +12,10 @@
                 <router-link class="nav_text" to="/meetings">모임</router-link>
             </div>
             <div class="nav_div">
-                <router-link class="nav_text" to="/board">자유게시판</router-link>
+                <router-link class="nav_text" to="/boards/type/free">자유게시판</router-link>
             </div>
             <div class="nav_div">
-                <router-link class="nav_text" to="/notice" >공지사항</router-link>
+                <router-link class="nav_text" to="/boards/type/notice" >공지사항</router-link>
             </div>
 
             <div v-if="user">
