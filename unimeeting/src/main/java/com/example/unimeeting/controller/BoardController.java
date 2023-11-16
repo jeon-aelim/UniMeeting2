@@ -49,7 +49,7 @@ public class BoardController {
         return ResponseEntity.ok("Board updated successfully");
     }
     //=============글 삭제 ==============//
-    @DeleteMapping("/boards/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteBoard(@PathVariable int id) {
         boardService.deleteById(id);
         return ResponseEntity.ok("Board deleted successfully");
