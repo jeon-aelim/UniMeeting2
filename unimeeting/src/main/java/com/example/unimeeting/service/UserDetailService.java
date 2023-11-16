@@ -35,8 +35,6 @@ public class UserDetailService implements UserDetailsService {
     public Optional<User> findByNickname(String nickname) {
         return repository.findByNickname(nickname);
     }
-//<<<<<<< HEAD
-//
     public Optional<User> findByEmail(String email) {
         return repository.findByEmail(email);
     }
@@ -49,7 +47,6 @@ public class UserDetailService implements UserDetailsService {
     public List<User> findByUserIdStartingWithOrNicknameStartingWith(String user_id, String nickname) {
         return repository.findByUserIdStartingWithOrNicknameStartingWith(user_id, nickname);
     }
-    //////////////////////////////////////////////////////////////////////////////////
 
     private void validateDuplicateUserId(User user) {
         repository.findByUserId(user.getUserId())
@@ -79,44 +76,4 @@ public class UserDetailService implements UserDetailsService {
         return user.getIdx();
 
     }
-//
-//}
-//=======
-//
-//    public Optional<User> findByEmail(String email) {
-//        return repository.findByEmail(email);
-//    }
-//
-//    public Optional<User> findByUserIdAndPassword(String user_id, String password) {
-//        return repository.findByUserIdAndPassword(user_id, password);
-//    }
-//
-//
-//    public List<User> findByUserIdStartingWithOrNicknameStartingWith(String user_id, String nickname) {
-//        return repository.findByUserIdStartingWithOrNicknameStartingWith(user_id, nickname);
-//    }
-//    //////////////////////////////////////////////////////////////////////////////////
-//
-//    private void validateDuplicateUserId(User user) {
-//        repository.findByUserId(user.getUserId())
-//                .ifPresent(m-> {
-//            throw new IllegalStateException("이미 존재하는 아이디입니다.");
-//        });
-//    }
-//
-//    private void validateDuplicatenickname(User user){
-//        repository.findByNickname(user.getNickname())
-//                .ifPresent(m-> {
-//                    throw new IllegalStateException("이미 존재하는 닉네임입니다.");
-//                });
-//    }
-//    private void validateDuplicateemail(User user){
-//        repository.findByEmail(user.getEmail())
-//                .ifPresent(m-> {
-//                    throw new IllegalStateException("이미 존재하는 이메일입니다.");
-//                });
-//    }
-//
 }
-
-
