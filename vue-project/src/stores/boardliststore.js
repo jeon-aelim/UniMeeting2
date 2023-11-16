@@ -35,6 +35,25 @@ export const useBoardListStore = defineStore('boardList', {
         }
       },
 
+      async deleteBoard(boardIdx) {
+        try {
+          await axios.delete(`http://localhost:8090/boards/${boardIdx}`);
+          
+          // 성공적으로 삭제되면 스토어에서도 제거
+          this.boards = this.boards.filter(board => board.idx !== boardIdx);
+          
+          // 선택된 게시글 초기화
+          this.currentBoard = {};
+          
+          console.log('게시글 삭제 성공');
+  
+          // 삭제 후 목록 화면으로 이동
+          this.$router.push(`/boards/type/${this.currentBoard.type}`);
+        } catch (error) {
+          console.error('게시글 삭제 동안 오류 발생:', error);
+        }
+      },
+
 
   },
 });

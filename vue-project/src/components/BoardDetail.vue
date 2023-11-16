@@ -12,7 +12,7 @@
       <p class="mt-4">{{ currentBoard.content }}</p>
     </div>
 
-    <router-link class="btn btn-danger btn-delete" :to="{ path: `/board/delete/${currentBoard.idx}/${currentBoard.type}` }" >삭제</router-link
+    <router-link @click="deleteCurrentBoard" class="btn btn-danger btn-delete" :to="{ path: `/boards/type/${currentBoard.type}` }" >삭제</router-link
     >
     <router-link class="btn btn-danger btn-delete" :to="{ path: `/updateWrite.html` }" >수정</router-link
     >
@@ -36,7 +36,22 @@ export default {
       const boardListStore = useBoardListStore();
       await boardListStore.fetchBoardDetail(this.$route.params.idx);
     },
+    async deleteCurrentBoard() {
+      const boardListStore = useBoardListStore();
+      const boardIdx = this.$route.params.idx;
+
+      try {
+        // Vuex 스토어를 통해 게시글 삭제
+        await boardListStore.deleteBoard(boardIdx);
+        
+        // 삭제 후 목록 화면으로 이동
+        this.$router.push(`/boards/type/${this.currentBoard.type}`);
+      } catch (error) {
+        console.error('게시글 삭제 동안 오류 발생:', error);
+      }
+    },
   },
+
   async mounted() {
     // 게시글 상세 정보를 가져옵니다.
     await this.fetchBoardDetail();
