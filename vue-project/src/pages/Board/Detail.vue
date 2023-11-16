@@ -10,7 +10,6 @@
 <script>
 // @ is an alias to /src
 import BoardDetail from '@/components/BoardDetail.vue';
-
 export default {
   name: 'Board',
   components: {

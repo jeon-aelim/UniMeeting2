@@ -28,7 +28,7 @@ export const useBoardListStore = defineStore('boardList', {
           // Axios를 사용하여 특정 게시글의 상세 정보를 가져옴.
           const response = await axios.get(`http://localhost:8090/boards/${boardIdx}`);
   
-          this.correntBoard = response.data;
+          this.currentBoard = response.data;
           console.log('게시글 상세 정보', response.data);
         } catch (error) {
           console.error('게시글 상세 정보를 가져오는 동안 오류 발생:', error);
