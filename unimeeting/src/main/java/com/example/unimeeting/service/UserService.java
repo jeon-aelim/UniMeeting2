@@ -13,11 +13,15 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-
     public int save(AddUserRequest dto) {
         return userRepository.save(User.builder()
                 .email(dto.getEmail())
                 .password(bCryptPasswordEncoder.encode(dto.getPassword()))
                 .build()).getIdx();
+    }
+
+    public User findByUserId(String user_id){
+        return userRepository.findByUserId(user_id)
+                .orElseThrow(() -> new IllegalArgumentException("Unexpected user"));
     }
 }

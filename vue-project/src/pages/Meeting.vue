@@ -25,7 +25,6 @@
     import Side from '@/components/MeetingSide.vue';
     import Contain from '@/components/MeetingContain.vue';
     import { ref, computed } from 'vue';
-
     let category = ref("")
     function chageCategory(data){
         category.value = data
@@ -35,15 +34,15 @@
 
 </script>
 
-<style>
+<style >
     @import '@/assets/css/meeting.css';
     @import '@/assets/css/meetingBox.css';
     .page-container {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
+        display: flex !important;
+        flex-direction: row !important;
+        justify-content: center !important;
         /* background-color: aquamarine; */
-        position: relative;
+        position: relative !important;
         /* width: 1440px;
         height: 880px; */
     }

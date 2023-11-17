@@ -3,15 +3,10 @@ package com.example.unimeeting.controller;
 import com.example.unimeeting.domain.User;
 import com.example.unimeeting.repository.UserRepository;
 import com.example.unimeeting.service.UserDetailService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,8 +24,6 @@ public class UserController {
     private final UserDetailService userDetailService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final UserRepository userRepository;
-
-
 
     //아이디로 사용자 확인
     @GetMapping("/{user_id}")
@@ -89,6 +82,7 @@ public class UserController {
     }
     @PostMapping("login")
     public String login() {
+
         return "토큰 발행 완료";
     }
 }

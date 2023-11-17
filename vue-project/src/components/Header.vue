@@ -38,6 +38,6 @@
     let user = false;
 </script>
 
-<style>
+<style scoped>
 @import '@/assets/css/nav.css';
 </style>

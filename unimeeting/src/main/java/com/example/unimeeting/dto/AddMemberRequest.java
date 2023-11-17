@@ -4,9 +4,11 @@ import com.example.unimeeting.domain.Member;
 import com.example.unimeeting.domain.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @NoArgsConstructor
 @Getter
+@Setter
 public class AddMemberRequest {
     private Integer meeting_idx;
     private User user;

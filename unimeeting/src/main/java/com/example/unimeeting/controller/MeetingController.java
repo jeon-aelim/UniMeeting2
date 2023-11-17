@@ -1,8 +1,12 @@
 package com.example.unimeeting.controller;
 
+import com.auth0.jwt.interfaces.Claim;
 import com.example.unimeeting.domain.Meeting;
 import com.example.unimeeting.dto.MeetingResponse;
+import com.example.unimeeting.service.JwtService;
+import com.example.unimeeting.service.JwtServiceImpl;
 import com.example.unimeeting.service.MeetingService;
+import io.jsonwebtoken.Claims;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,7 +23,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartRequest;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -32,9 +40,10 @@ import java.util.Map;
 public class MeetingController {
 
     private final MeetingService meetingService;
+    private final JwtService jwtService;
 
     // Security 구현 전 테스트용 user 객체
-    User user = new User(52, "aelim", "1234", "aa", "devaelim@gmail.com", "코딩", "01092708011", "USER");
+    User user = new User(54, "dohoi", "1234", "도히", "dohoi@gmail.com", "코딩,요리,게임", "01022222222", "USER");
 
     @GetMapping("/category")
     public ResponseEntity<List<String>> getCategory(){
@@ -71,13 +80,17 @@ public class MeetingController {
     // 미팅 글 생성
     // JsonFormat, String 타입으로 전달되는 createdDateTime 을  LocalDateTime 타입으로 인식하기 위해 설정
     @PostMapping
-    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm")
-    public ResponseEntity<Meeting> uploadMeeting(@RequestBody AddMeetingRequest request){
-        Meeting meeting = meetingService.addMeeting(request, user);
+//    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm")
+    public ResponseEntity<CudResponse> uploadMeeting(@RequestBody AddMeetingRequest request,@RequestPart List<MultipartFile> mreq){
+        CudResponse cudResponse = new CudResponse();
+
+        cudResponse.setSuccess(meetingService.addMeeting(request, user, mreq));
+        cudResponse.setMessage(meetingService.addMeeting(request, user, mreq) ? "글이 작성되었습니다.": "작성 도중 오류가 발생했습니다.");
+
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(meeting);
+                .body(cudResponse);
     }
 
     // 수정할 글 불러오기
@@ -120,8 +133,9 @@ public class MeetingController {
     }
 
     @PostMapping("/apply")
-    public ResponseEntity<Member> addMember(@RequestBody AddMemberRequest request){
-        Member response = meetingService.addMember(request);
+    public ResponseEntity<Member> addMember(@RequestHeader (value = "Authorization", required = false) String token, @RequestBody AddMemberRequest request){
+        int user_idx = jwtService.getId(token);
+        Member response = meetingService.addMember(request, user_idx);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -130,16 +144,25 @@ public class MeetingController {
 
     @PutMapping("/apply/{idx}")
     @Transactional
-    public ResponseEntity<Member> acceptAcceptApply(@PathVariable int idx){
-        Member response = meetingService.updateMember(idx);
-
+    public ResponseEntity<CudResponse> acceptAcceptApply(@PathVariable int idx){
+        HttpStatus status;
+        CudResponse response = new CudResponse();
+        if (meetingService.updateMember(idx)){
+            status = HttpStatus.OK;
+            response.setSuccess(true);
+            response.setMessage("완료되었습니다.");
+        }else{
+            status = HttpStatus.BAD_REQUEST;
+            response.setSuccess(false);
+            response.setMessage("처리 도중 오류 발생");
+        }
         return ResponseEntity
-                .status(HttpStatus.OK)
+                .status(status)
                 .body(response);
     }
 
     // User = 신청자 or 글 작성자
-    @DeleteMapping("apply/{idx}")
+    @DeleteMapping("/apply/{idx}")
     public ResponseEntity<CudResponse> deleteMember(@PathVariable int idx){
         HttpStatus status;
         CudResponse response = new CudResponse();
@@ -156,6 +179,18 @@ public class MeetingController {
                 .status(status)
                 .body(response);
     }
+
+    @GetMapping("/applicants/{idx}")
+    public  ResponseEntity<List<MemberResponse>> getMember(@PathVariable int idx){
+        List<MemberResponse> list = meetingService.getMember(idx);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(list);
+    }
+
+
+
 
 }
 

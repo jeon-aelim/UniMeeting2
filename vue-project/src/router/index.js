@@ -6,6 +6,7 @@ import login from '@/pages/Login.vue'
 import join from '@/pages/CreateAccount.vue'
 import mypage from '@/pages/Mypage.vue'
 import meetingView from '@/pages/MeetingView.vue'
+import createMeeting from '@/pages/createMeeting.vue'
 
 import Free from '@/pages/Board/Free.vue'
 import Notice from '@/pages/Board/Notice.vue'
@@ -22,7 +23,7 @@ const router = createRouter({
         { path: '/meeting/:idx', component: meetingView},
         { path: '/boards/type/free', component: Free },
         { path: '/boards/type/notice', component: Notice },
-        { path: '/boards/:idx', component: Detail },
+        { path: '/meeting/upload', component: createMeeting },
         // { path: '/boards/type/notice', component: Notice },
         // { path: '/boards/:idx', component:BoardDetail},
     ]

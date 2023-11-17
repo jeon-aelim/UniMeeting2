@@ -1,10 +1,8 @@
 package com.example.unimeeting.domain;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
+
 @Entity
 @Table(name="meeting_image")
 @Getter
@@ -23,4 +21,10 @@ public class MeetingImage {
 //    @JoinColumn(name = "meeting_idx")
     @Column(name = "meeting_idx")
     private Integer meetingIdx;
+
+    @Builder
+    public MeetingImage(String imageUrl, Integer meetingIdx){
+        this.imageUrl = imageUrl;
+        this.meetingIdx = meetingIdx;
+    }
 }
