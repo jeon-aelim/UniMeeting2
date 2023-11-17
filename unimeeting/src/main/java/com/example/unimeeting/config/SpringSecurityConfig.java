@@ -2,6 +2,7 @@ package com.example.unimeeting.config;
 
 import com.example.unimeeting.config.jwt.JwtAuthenticationFilter;
 import com.example.unimeeting.config.jwt.JwtAuthorizationFilter;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,8 +27,8 @@ public class SpringSecurityConfig {
     @Autowired
     private CorsConfig corsConfig;
 
-    @Autowired
-    private AuthenticationConfiguration authenticationConfiguration;
+//    @Autowired
+//    private AuthenticationConfiguration authenticationConfiguration;
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -42,8 +43,8 @@ public class SpringSecurityConfig {
                 .and()
                 .formLogin().disable()
                 .httpBasic().disable()
-                .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-                .addFilter(jwtAuthorizationFilter())
+//                .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+//                .addFilter(jwtAuthorizationFilter())
                 .authorizeHttpRequests()
                 .requestMatchers("/**").permitAll()
 //                .requestMatchers("/**").permitAll()
@@ -51,17 +52,17 @@ public class SpringSecurityConfig {
         return http.build();
     }
 
-    @Bean
-    public JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
-        System.out.println("등록");
-        JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationConfiguration.getAuthenticationManager());
-        return jwtAuthenticationFilter;
-    }
-
-    @Bean
-    public JwtAuthorizationFilter jwtAuthorizationFilter() throws Exception {
-        return new JwtAuthorizationFilter(authenticationConfiguration.getAuthenticationManager(), UserRepository);
-    }
+//    @Bean
+//    public JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
+//        System.out.println("등록");
+//        JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationConfiguration.getAuthenticationManager());
+//        return jwtAuthenticationFilter;
+//    }
+//
+//    @Bean
+//    public JwtAuthorizationFilter jwtAuthorizationFilter() throws Exception {
+//        return new JwtAuthorizationFilter(authenticationConfiguration.getAuthenticationManager(), UserRepository);
+//    }
 }
 
 
