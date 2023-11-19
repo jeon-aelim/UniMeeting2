@@ -23,7 +23,7 @@ const router = createRouter({
         { path: '/meeting/:idx', component: meetingView},
         { path: '/boards/type/free', component: Free },
         { path: '/boards/type/notice', component: Notice },
-        { path: '/meeting/upload', component: createMeeting },
+        { path: '/meeting/goInsertMet', component: createMeeting },
         // { path: '/boards/type/notice', component: Notice },
         // { path: '/boards/:idx', component:BoardDetail},
     ]

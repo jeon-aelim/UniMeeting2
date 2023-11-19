@@ -7,6 +7,8 @@ import com.example.unimeeting.service.JwtService;
 import com.example.unimeeting.service.JwtServiceImpl;
 import com.example.unimeeting.service.MeetingService;
 import io.jsonwebtoken.Claims;
+import jakarta.validation.Valid;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -79,13 +81,16 @@ public class MeetingController {
 
     // 미팅 글 생성
     // JsonFormat, String 타입으로 전달되는 createdDateTime 을  LocalDateTime 타입으로 인식하기 위해 설정
-    @PostMapping
+    @PostMapping(consumes = "multipart/form-data")
 //    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm")
-    public ResponseEntity<CudResponse> uploadMeeting(@RequestBody AddMeetingRequest request,@RequestPart List<MultipartFile> mreq){
-        CudResponse cudResponse = new CudResponse();
+    public ResponseEntity<CudResponse> uploadMeeting(@RequestPart(value = "meetingData") @Valid AddMeetingRequest request, @RequestPart(value = "file", required = false) MultipartFile[] mreq) {
 
-        cudResponse.setSuccess(meetingService.addMeeting(request, user, mreq));
-        cudResponse.setMessage(meetingService.addMeeting(request, user, mreq) ? "글이 작성되었습니다.": "작성 도중 오류가 발생했습니다.");
+        CudResponse cudResponse = new CudResponse();
+        System.out.println("여기까지는 문제 없음-----------------------------------------------");
+        System.out.println(request);
+        boolean isSuc = meetingService.addMeeting(request, user, mreq);
+        cudResponse.setSuccess(isSuc);
+        cudResponse.setMessage(isSuc ? "글이 작성되었습니다.": "작성 도중 오류가 발생했습니다.");
 
 
         return ResponseEntity

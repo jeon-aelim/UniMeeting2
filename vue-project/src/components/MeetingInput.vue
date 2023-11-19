@@ -107,27 +107,33 @@ const images = reactive([]);
 
 const submitMeeting = () => {
     let formData = new FormData();
-    
-    // 모든 선택된 파일을 FormData에 추가
-    images.values.forEach((file, index) => {
-        formData.append(index, file);
-    });
+
+    if (images.values.length !== 0) {
+        images.values.forEach((file, index) => {
+            formData.append('file', file); // 'file'이라는 키를 사용하여 파일 추가
+        });
+    }
 
     const formattedData = {
         ...addMeeting,
         startDatetime: addMeeting.startDatetime + 'T00:00', // Add a default time, adjust as needed
-        images: formData
     };
-    axios({
-        method: "POST",
-        url:"http://localhost:8090/meetings",
-        data : formattedData,
-        contentType: "multipart/form-data"
+
+    // 파일과 다른 데이터를 함께 보내기 위해 FormData를 사용하고, 헤더 설정
+    
+    formData.append('meetingData', new Blob([JSON.stringify(formattedData)], { type: 'application/json' }));
+    console.log(formData)
+    axios.post("http://localhost:8090/meetings", formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data;    boundary=----WebKitFormBoundaryYourBoundary',
+        },
     }).then((resp) => {
         window.alert(resp.message);
-    })
-    .catch((e) => console.log(e))
+    }).catch((e) => console.log(e));
 }
+
+
+
 
 const handleFileChange = (event) => {
     images.values = Array.from(event.target.files);

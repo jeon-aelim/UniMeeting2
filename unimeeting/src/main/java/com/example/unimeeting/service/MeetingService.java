@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartRequest;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -76,18 +77,18 @@ public class MeetingService {
         return list;
     }
 
-    public Boolean addMeeting(AddMeetingRequest request, User user, List<MultipartFile> mreq){
+    public Boolean addMeeting(AddMeetingRequest request, User user, MultipartFile[] mreq){
         try{
             Meeting meeting = meetingRepository.save(request.toEntity(user));
             int meeting_idx = meeting.getIdx();
-            List<MultipartFile> list = mreq;
-            if(!list.isEmpty()){
+            List<MultipartFile> list = Arrays.stream(mreq).toList();
+            if(list != null){
 
                 String path = "/images/" + meeting_idx;
                 // 상대 경로를 찾는 함수인 getRealPath()는 프로젝트 폴더 구조에서 resources가 아닌 webapp 폴더를 우선으로 찾고
                 //  해당 폴더가 존재하지 않으면 위와 같이 임시 폴더를 찾아간다.
                 // webapp 폴더를 만드는 방법도 있으나, Spring Boot는 jar로 배포되기 때문에 webapp 폴더를 만든다면 정상 배포 되지 않는다.
-                String realPath = "C:/UniMeetingFile" + path;
+                String realPath = "C:/kosastudy/unimeeting/unimeeting/src/main/resources/static" + path;
                 File isDir = new File(realPath);
                 if (!isDir.isDirectory()) {
                     isDir.mkdirs();
