@@ -74,11 +74,11 @@ public class UserDetailService implements UserDetailsService {
 //                    throw new IllegalStateException("이미 존재하는 이메일입니다.");
 //                });
 //    }
-    public int register(String userId, String password, String nickname, String email, String category, String phoneNumber, String role){
-        User user = User.createUser(userId,password,passwordEncoder,nickname,email,category,phoneNumber,"user");
-        validateDuplicateemail(user);
-        validateDuplicatenickname(user);
-        validateDuplicateUserId(user);
+    public int register(String userId, String password, String nickname, String email, String category, String phoneNumber){
+        User user = User.createUser(userId,password,passwordEncoder,nickname,email,category,phoneNumber,"USER");
+//        validateDuplicateemail(user);
+//        validateDuplicatenickname(user);
+//        validateDuplicateUserId(user);
         repository.save(user);
         return user.getIdx();
 
@@ -101,25 +101,25 @@ public class UserDetailService implements UserDetailsService {
     }
     //////////////////////////////////////////////////////////////////////////////////
 
-    private void validateDuplicateUserId(User user) {
-        repository.findByUserId(user.getUserId())
-                .ifPresent(m-> {
-            throw new IllegalStateException("이미 존재하는 아이디입니다.");
-        });
-    }
-
-    private void validateDuplicatenickname(User user){
-        repository.findByNickname(user.getNickname())
-                .ifPresent(m-> {
-                    throw new IllegalStateException("이미 존재하는 닉네임입니다.");
-                });
-    }
-    private void validateDuplicateemail(User user){
-        repository.findByEmail(user.getEmail())
-                .ifPresent(m-> {
-                    throw new IllegalStateException("이미 존재하는 이메일입니다.");
-                });
-    }
+//    private void validateDuplicateUserId(User user) {
+//        repository.findByUserId(user.getUserId())
+//                .ifPresent(m-> {
+//            throw new IllegalStateException("이미 존재하는 아이디입니다.");
+//        });
+//    }
+//
+//    private void validateDuplicatenickname(User user){
+//        repository.findByNickname(user.getNickname())
+//                .ifPresent(m-> {
+//                    throw new IllegalStateException("이미 존재하는 닉네임입니다.");
+//                });
+//    }
+//    private void validateDuplicateemail(User user){
+//        repository.findByEmail(user.getEmail())
+//                .ifPresent(m-> {
+//                    throw new IllegalStateException("이미 존재하는 이메일입니다.");
+//                });
+//    }
 
 }
 

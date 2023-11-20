@@ -23,7 +23,7 @@ import java.util.List;
 public class User  {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idx;
+    private Integer idx;
 
     @Column(name = "user_id", nullable = false,unique = true)
     private String userId;
@@ -54,7 +54,7 @@ public class User  {
         this.email = email;
         this.category = category;
         this.phoneNumber = phoneNumber;
-        this.role = role;
+        this.role = "USER";
 
     }
 

@@ -34,7 +34,7 @@ public class BoardController {
         return ResponseEntity.ok(board);
     }
     //=============글 쓰기 ===========//
-    @PostMapping("/boards")
+    @PostMapping("/write")
     public ResponseEntity<String> createBoard(@RequestBody Board board) {
         boardService.save(board);
         return ResponseEntity.status(HttpStatus.CREATED).body("Board created successfully");
@@ -43,7 +43,7 @@ public class BoardController {
 
     //=============글 수정 ===========//
 
-    @PutMapping("/boards/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<String> updateBoard(@PathVariable int id, @RequestBody Board board) {
         boardService.update(id, board);
         return ResponseEntity.ok("Board updated successfully");
