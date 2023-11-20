@@ -37,13 +37,15 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
 	// 인증 요청시에 실행되는 함수 => /login
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
-			throws AuthenticationException {
+			throws AuthenticationException, IOException {
 
 		System.out.println("JwtAuthenticationFilter : 진입");
 
 		// request에 있는 username과 password를 파싱해서 자바 Object로 받기
 		ObjectMapper om = new ObjectMapper();
 		LoginRequestDto loginRequestDto = null;
+		System.out.println(request.getAttribute("userId"));
+			System.out.println("--------------------------------------");
 		try {
 			loginRequestDto = om.readValue(request.getInputStream(), LoginRequestDto.class);
 		} catch (Exception e) {

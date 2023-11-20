@@ -1,10 +1,7 @@
 package com.example.unimeeting.service;
 
 
-import com.example.unimeeting.domain.Meeting;
-import com.example.unimeeting.domain.MeetingImage;
-import com.example.unimeeting.domain.Member;
-import com.example.unimeeting.domain.User;
+import com.example.unimeeting.domain.*;
 import com.example.unimeeting.dto.*;
 import com.example.unimeeting.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +34,13 @@ public class MeetingService {
                 .orElseThrow(() -> new IllegalArgumentException("not found : " + id));
     }
 
-    public MeetingResponse getMeetingOne(Integer id, User user){
+//    public MeetingResponse getMeetingOne(Integer id, Integer user_idx){
+//        User user = userRepository.findById(user_idx)
+//                .orElseThrow(() -> new IllegalArgumentException);
+
+    public MeetingResponse getMeetingOne(Integer id, int user_idx){
+        User user = userRepository.findById(user_idx)
+                .orElseThrow(()-> new IllegalArgumentException());
         MeetingResponse ms = new MeetingResponse(meetingRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("not found : " + id)),
                 memberRepository.countByMeetingIdx(id),
@@ -81,8 +84,9 @@ public class MeetingService {
         try{
             Meeting meeting = meetingRepository.save(request.toEntity(user));
             int meeting_idx = meeting.getIdx();
+
+            if(mreq != null){
             List<MultipartFile> list = Arrays.stream(mreq).toList();
-            if(list != null){
 
                 String path = "/images/" + meeting_idx;
                 // 상대 경로를 찾는 함수인 getRealPath()는 프로젝트 폴더 구조에서 resources가 아닌 webapp 폴더를 우선으로 찾고
@@ -146,10 +150,10 @@ public class MeetingService {
         return isSuccess;
     }
 
-    public Member addMember(AddMemberRequest addMemberRequest,Integer user_idx){
-        User user = userRepository.findById(user_idx)
-                .orElseThrow(()-> new IllegalArgumentException());
-
+    public Member addMember(Integer meeting_idx,Integer user_idx){
+        User user = userRepository.findById(user_idx).get();
+        AddMemberRequest addMemberRequest = new AddMemberRequest();
+        addMemberRequest.setMeetingIdx(meeting_idx);
         addMemberRequest.setUser(user);
         return memberRepository.save(addMemberRequest.toEntity());
     }
@@ -167,10 +171,11 @@ public class MeetingService {
         return isSuccess;
     }
 
-    public boolean deleteMember(Integer id){
+    public boolean deleteMember(Integer meeting_idx, Integer user_idx){
         boolean isSuccess = false;
-        if (memberRepository.findById(id).isPresent()) {
-            memberRepository.deleteById(id);
+        Member member = memberRepository.findByMeetingIdxAndUserIdx(meeting_idx, user_idx);
+        if (member!=null) {
+            memberRepository.deleteById(member.getIdx());
             isSuccess = true;
         }
         return isSuccess;
@@ -182,4 +187,36 @@ public class MeetingService {
                 .forEach(member ->  list.add(new MemberResponse(member)));
         return list;
     }
+
+    public boolean addScrap(Integer meeting_id,Integer user_idx){
+        boolean success = false;
+        try{
+            User user = userRepository.findById(user_idx)
+                    .orElseThrow(()-> new IllegalArgumentException());
+            Scrap scrap = new Scrap(user, meeting_id);
+            success = true;
+            scrapRepository.save(scrap);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return success;
+    }
+
+    public boolean deleteScrap(Integer meeting_id, Integer user_idx){
+        boolean success = false;
+        try{
+            Scrap scrap = scrapRepository.findByMeetingIdxAndUserIdx(meeting_id, user_idx);
+            if(scrap!=null){
+                success= true;
+                scrapRepository.deleteById(scrap.getIdx());
+            }else{
+                success = false;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return  success;
+    }
+
 }

@@ -30,7 +30,7 @@
                         <button type="button" class="btn btn-danger" @click="deleteMeeting">삭제
                         </button>
                         <button type="button" class="btn btn-success"
-                            th:onclick="|location.href='@{/updateMetForm.html}'|">수정
+                            @click="$router.push('/meeting/goUpdateMet/' +idx)">수정
                         </button>
                     </div>
                     <!--                신청 현황 offcanvas 열기 버튼-->
@@ -49,18 +49,18 @@
                     </div>
                     <div class="col-auto offset-md-4" v-else>
                         <a class="btn btn-primary btn-lg px-4 btn-color"
-                        @click="">신청 취소</a>
+                        @click="deleteApply('applicant')">신청 취소</a>
                     </div>
 
                     <!--                and th:if=${scrap} -> 해당 소모임에 스크랩을 하지 않은 경우, 스크랩 버튼 보이기 -->
                     <!--                and th:unless=${scrap} -> 해당 소모임에 스크랩을 한 경우, 스크랩 취소 버튼 보이기 -->
                     <div class="col-auto" v-if="!scrap">
                     <a class="btn btn-primary btn-lg px-4 btn-color"
-                    @click="">스크랩</a>
+                    @click="scraping">스크랩</a>
                 </div>
                 <div class="col-auto" v-else>
                     <a class="btn btn-primary btn-lg px-4 btn-color"
-                    @click="">스크랩 취소</a>
+                    @click="cancelScrap">스크랩 취소</a>
                 </div>
                 </div>
             </div>
@@ -115,7 +115,7 @@
                                     <template v-if="member.accepted == 0">
                                         <a @click='acceptApply(true, member.idx, member.nickname)'
                                         class="btn btn-primary me-1">수락</a>
-                                        <a @click="declineApply(member.idx, member.nickname)"
+                                        <a @click="deleteApply('writer', member.userIdx, member.nickname)"
                                         class="btn btn-primary">거절</a>
                                     </template>
                                     <a v-else
@@ -134,8 +134,12 @@
     </div>
 </template>
 <script setup>
-import { ref, onBeforeMount } from 'vue';
+import { ref, onBeforeMount, defineProps } from 'vue';
 import { api } from '@/common.js'
+import axios from 'axios';
+
+const props = defineProps(['meeting_idx']);
+let meeting_idx = props.meeting_idx;
 
 const idx = ref(0);
 const title = ref('');
@@ -154,18 +158,15 @@ const members = ref([]);
 const server = "http://localhost:8090";
 const meeting_server = server + "/meetings/";
 
-const regex = /[^0-9]/g;
-const url = document.location.pathname;
-let meeting_idx;
-if (url) {
-    meeting_idx = url.replace(regex, "");
-
-}
 
 onBeforeMount(() => {
-    api(meeting_server + meeting_idx, "GET", {})
-        .then((resp) => {
-            console.log(resp)
+    axios.get(meeting_server + meeting_idx, {
+        headers : {
+            'Authorization' : sessionStorage.getItem("token")
+        }
+    })
+        .then((response) => {
+            const resp = response.data;
             idx.value = resp.idx;
             title.value = resp.title;
             content.value = resp.content;
@@ -202,12 +203,15 @@ const deleteMeeting = () => {
 }
 
 const apply = () => {
-    if(window.confirm("이 모임에 신청 요청을 보내겠습니까?")){
-        api(meeting_server + "apply", "POST", {
-            "meeting_idx" : meeting_idx
-        })
+    if (window.confirm("이 모임에 신청 요청을 보내겠습니까?")) {
+        axios.post(meeting_server + "apply/" + meeting_idx, {},{
+            headers: {
+                'Authorization' : sessionStorage.getItem("token")
+            }
+        } )
             .then((resp) => {
-                window.alert(resp.message);
+                console.log(resp.data)
+                window.alert(resp.data.message);
                 document.location.href = "/meeting/" + meeting_idx;
             })
     }
@@ -225,16 +229,54 @@ const acceptApply = (accept, idx, nickname) => {
     }
 }
 
-const declineApply = (idx, nickname) => {
-    if (window.confirm(nickname + "님의 요청을 거절하시겠습니까?")) {
-        api(meeting_server + "apply/" + idx, "DELETE", {})
+// type = 삭제 요청한 사람
+const deleteApply = (type, user_idx, user_nickname) => {
+
+    let url = `${meeting_server}apply/${meeting_idx}`;
+    let alertMessage;
+    
+    if(type == 'writer'){
+        url += `?user_idx=${user_idx}`
+        alertMessage = user_nickname + "님의 요청을 거절하시겠습니까?";
+    }else{
+        alertMessage = "신청을 취소하시겠습니까?"
+    }
+    if (window.confirm(alertMessage)) {
+        axios.delete(url , {
+            headers: {
+                'Authorization' : sessionStorage.getItem("token")
+            }
+        })
             .then((resp) => {
-                window.alert(resp.message);
+                window.alert(resp.data.message);
                 document.location.href = "/meeting/" + meeting_idx;
             })
     }
 }
 
+const scraping = () => {
+    axios.post(`${meeting_server}scrap/${meeting_idx}`, {},{
+        headers : {
+            'Authorization' : sessionStorage.getItem("token")
+        }
+    })
+    .then((resp)=> {
+        window.alert(resp.data.message);
+    })
+
+}
+
+const cancelScrap = () => {
+    axios.delete(`${meeting_server}scrap/${meeting_idx}`, {
+        headers : {
+            'Authorization' : sessionStorage.getItem("token")
+        }
+    })
+    .then((resp)=> {
+        window.alert(resp.data.message);
+    })
+
+}
 </script>
 
 <style scoped>

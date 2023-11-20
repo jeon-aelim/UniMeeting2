@@ -1,12 +1,17 @@
 package com.example.unimeeting.controller;
 
 import com.example.unimeeting.domain.User;
+import com.example.unimeeting.dto.LoginRequestDto;
 import com.example.unimeeting.repository.UserRepository;
+import com.example.unimeeting.service.JwtService;
 import com.example.unimeeting.service.UserDetailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,11 +25,12 @@ import java.util.Optional;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/user")
+@CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*",exposedHeaders = "Authorization", allowCredentials = "true")
 public class UserController {
     private final UserDetailService userDetailService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final UserRepository userRepository;
-
+    private final JwtService jwtService;
     //아이디로 사용자 확인
     @GetMapping("/{user_id}")
     public ResponseEntity<User> getUserById(@PathVariable String user_id) {
@@ -81,8 +87,23 @@ public class UserController {
         return "회원 가입 완료";
     }
     @PostMapping("login")
-    public String login() {
+    public ResponseEntity<String> login(@RequestBody LoginRequestDto request) {
+//        User user = userDetailService.findByUserIdAndPassword(request.getUserId(), request.getPassword())
+//                .orElseThrow(() -> new IllegalArgumentException());
 
-        return "토큰 발행 완료";
+//        int idx = user.getIdx();
+//        String token = jwtService.getToken("idx", idx);
+//        MultiValueMap<String, String> header = new LinkedMultiValueMap<>();
+//        header.add("token", token);
+
+        return new ResponseEntity<>("로그인이 완료되었습니다.", HttpStatus.OK);
+    }
+
+    @GetMapping("logout")
+    public ResponseEntity<String> logout(@RequestHeader(value = "Authorization", required = false) String token){
+        MultiValueMap<String, String> header = new LinkedMultiValueMap<>();
+
+        header.add("Authorization", "delete");
+        return new ResponseEntity<>("로그아웃되었습니다.", header, HttpStatus.OK);
     }
 }

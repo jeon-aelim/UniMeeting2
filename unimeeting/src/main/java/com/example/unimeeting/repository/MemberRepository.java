@@ -16,4 +16,6 @@ public interface MemberRepository extends JpaRepository<Member, Integer> {
 
     public List<Member> findByMeetingIdx(int meeting_idx);
 
+    public Member findByMeetingIdxAndUserIdx(int meeting_idx, int user_idx);
+
 }

@@ -5,5 +5,4 @@
 <script setup>
 import MeetingInput from '@/components/MeetingInput.vue'
 
-
 </script>

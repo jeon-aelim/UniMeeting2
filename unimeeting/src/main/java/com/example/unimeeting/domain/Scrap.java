@@ -1,15 +1,14 @@
 package com.example.unimeeting.domain;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 @Entity
 @Table(name = "scrap")
 @Getter
-@Setter
 @ToString
+@RequiredArgsConstructor
+@NoArgsConstructor
 public class Scrap {
 
     @Id
@@ -17,6 +16,7 @@ public class Scrap {
     private Integer idx;
 
     @ManyToOne
+    @NonNull
     @JoinColumn(name = "user_idx")
     private User user;
 
@@ -24,5 +24,6 @@ public class Scrap {
 //    @JoinColumn(name = "meeting_idx")
 //    private Meeting meeting;
     @Column(name = "meeting_idx")
+    @NonNull
     private Integer meetingIdx;
 }

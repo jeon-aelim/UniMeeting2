@@ -24,4 +24,9 @@ public class UserService {
         return userRepository.findByUserId(user_id)
                 .orElseThrow(() -> new IllegalArgumentException("Unexpected user"));
     }
+
+    public User findByUserIdAndPassword(String user_id, String password){
+        return userRepository.findByUserIdAndPassword(user_id, password)
+                .orElseThrow(() -> new IllegalArgumentException());
+    }
 }

@@ -10,12 +10,12 @@ import lombok.Setter;
 @Getter
 @Setter
 public class AddMemberRequest {
-    private Integer meeting_idx;
+    private Integer meetingIdx;
     private User user;
 
     public Member toEntity(){
         return Member.builder()
-                .meetingIdx(meeting_idx)
+                .meetingIdx(meetingIdx)
                 .user(user)
                 .build();
     }

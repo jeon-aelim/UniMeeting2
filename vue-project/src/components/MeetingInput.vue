@@ -93,9 +93,9 @@
 
 <script setup>
 import {reactive} from 'vue';
-import {api} from '@/public/common'
 import axios from 'axios';
-const addMeeting = reactive({
+
+let addMeeting = reactive({
     category:'',
     title:'',
     location:'',
@@ -104,6 +104,23 @@ const addMeeting = reactive({
     content:''
 });
 const images = reactive([]);
+
+const props = defineProps(['meeting_idx']);
+let meeting_idx = props.meeting_idx;
+if(meeting_idx){
+axios.get("http://localhost:8090/meetings/update/" + meeting_idx)
+.then((resp)=> {
+    const oldMet = resp.data;
+
+    addMeeting.category = oldMet.category;
+    addMeeting.title = oldMet.title;
+    addMeeting.location = oldMet.location;
+    addMeeting.recruits = oldMet.recruits;
+    addMeeting.startDatetime = oldMet.startDatetime.slice(0,10);
+    addMeeting.content = oldMet.content;
+})
+}
+
 
 const submitMeeting = () => {
     let formData = new FormData();
@@ -125,10 +142,12 @@ const submitMeeting = () => {
     console.log(formData)
     axios.post("http://localhost:8090/meetings", formData, {
         headers: {
+            'Authorization' : sessionStorage.getItem("token"),
             'Content-Type': 'multipart/form-data;    boundary=----WebKitFormBoundaryYourBoundary',
         },
     }).then((resp) => {
-        window.alert(resp.message);
+        window.alert(resp.data.message);
+        location.href = "http://localhost:5173/meetings"
     }).catch((e) => console.log(e));
 }
 
