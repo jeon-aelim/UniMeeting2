@@ -5,7 +5,7 @@
 <script setup>
     import { defineProps, watch, computed, reactive  } from 'vue'; 
     import { api, cleardiv } from '@/public/common';
-    import { makeMeetingBlock, makeMyinfoBlock } from '@/public/makeBlock';
+    import { makeMeetingBlock } from '@/public/makeBlock';
 
     const p = defineProps({
         category : String

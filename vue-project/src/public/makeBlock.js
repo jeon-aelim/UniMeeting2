@@ -110,7 +110,7 @@ function makeMeetingBlock(meeting) {
 const makeMyinfoBlock = (userObj)=> {
   let result_div = document.getElementById("info_result");
   // let idx = result_div.getAttribute('data-suser');
-  console.log(userObj)
+
   result_div.innerHTML = `
   <form action='/mypage/user/{userObj.idx}' method='patch' class='form_group'>
   <input type="hidden" name='idx' value=${userObj.idx}>

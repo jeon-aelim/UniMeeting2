@@ -28,7 +28,6 @@ const api = async (url, method, data) => {
 
 const cleardiv = () => {
   let myDiv = document.getElementById("info_result");
-  console.log(myDiv);
   myDiv.innerHTML = "";
 }
 

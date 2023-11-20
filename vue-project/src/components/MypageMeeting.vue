@@ -1,6 +1,7 @@
 <template>
     <div class="contents-right">
         <div id="info_result"></div>
+        <component :is="currentComponent" :userObj="user[0]" v-if="currentComponent"></component>
     </div>
 </template>
 
@@ -9,6 +10,8 @@
     
     import { api, cleardiv } from '@/public/common';
     import { makeMeetingBlock, makeMyinfoBlock, makeWithDraw } from '@/public/makeBlock'
+    import MyInfo from '@/components/MypageMyInfo.vue';
+    import Withdraw from '@/components/MypageWithDraw.vue';
 
     let url = "http://localhost:8090/mypage/meetings";
     let meetings = reactive([]);
@@ -29,12 +32,13 @@
     )
 
     let user = []
-    api("http://localhost:8090/user/minjae", "get", {}).then(data => {console.log(data); user.push(data)})
-    console.log(user)
+    api("http://localhost:8090/user/minjae", "get", {}).then(data => {user.push(data)})
 
+    let currentComponent = null;
     function getMeeting(s, url) {
         url = "http://localhost:8090/mypage/meetings";
         let flag = true
+        currentComponent = null;
         cleardiv()
         switch(s){
             case "attend":
@@ -48,10 +52,10 @@
                 break;
             case "myInfo":
                 flag = false;
-                makeMyinfoBlock(user[0]);
+                currentComponent = MyInfo;
                 break;
             case "withDraw":
-                makeWithDraw(user[0])
+                currentComponent = Withdraw;
                 flag = false;
         }
 
