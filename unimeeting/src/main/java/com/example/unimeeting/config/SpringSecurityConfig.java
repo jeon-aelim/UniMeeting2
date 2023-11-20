@@ -41,7 +41,7 @@ public class SpringSecurityConfig {
         // * : 0개 이상의 문자와 매칭
         // ** : 0개 이상의 디렉토리와 파일 매칭
         // images/**을 요청하면 인증절차 없이 클라이언트에 응답
-        return (web) -> web.ignoring().requestMatchers("/imgaes/**", "/user/login");
+        return (web) -> web.ignoring().requestMatchers("/imgaes/**");
     }
 
     @Bean
@@ -53,8 +53,8 @@ public class SpringSecurityConfig {
                 .and()
                 .formLogin().disable()
                 .httpBasic().disable()
-                .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-                .addFilter(jwtAuthorizationFilter())
+//                .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+//                .addFilter(jwtAuthorizationFilter())
                 .authorizeHttpRequests()
                 .requestMatchers("/user/login","/user/register").permitAll()
 //                .requestMatchers("/**").permitAll()
@@ -62,15 +62,15 @@ public class SpringSecurityConfig {
         return http.build();
     }
 
-    @Bean
-    public JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
-        System.out.println("등록");
-        JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationConfiguration.getAuthenticationManager());
-        return jwtAuthenticationFilter;
-    }
-
-    @Bean
-    public JwtAuthorizationFilter jwtAuthorizationFilter() throws Exception {
-        return new JwtAuthorizationFilter(authenticationConfiguration.getAuthenticationManager(), UserRepository);
-    }
+//    @Bean
+//    public JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
+//        System.out.println("등록");
+//        JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationConfiguration.getAuthenticationManager());
+//        return jwtAuthenticationFilter;
+//    }
+//
+//    @Bean
+//    public JwtAuthorizationFilter jwtAuthorizationFilter() throws Exception {
+//        return new JwtAuthorizationFilter(authenticationConfiguration.getAuthenticationManager(), UserRepository);
+//    }
 }

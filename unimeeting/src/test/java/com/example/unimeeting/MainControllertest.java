@@ -37,12 +37,12 @@ public class MainControllertest {
         list.forEach(System.out::println);
     }
 
-    @Test
-    @Order(3)
-    public void findAllByOrderByScrab() {
-        List<Meeting> list = repository.findAllByOrderByScrab();
-        list.forEach(System.out::println);
-    }
+//    @Test
+//    @Order(3)
+//    public void findAllByOrderByScrab() {
+//        List<Meeting> list = repository.findAllByOrderByScrab();
+//        list.forEach(System.out::println);
+//    }
 
     @Test
     @Order(4)

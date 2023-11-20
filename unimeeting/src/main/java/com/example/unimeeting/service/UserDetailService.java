@@ -35,6 +35,13 @@ public class UserDetailService implements UserDetailsService {
     public Optional<User> findByNickname(String nickname) {
         return repository.findByNickname(nickname);
     }
+    public int register(String userId, String password, String nickname, String email, String category, String phoneNumber){
+        User user = User.createUser(userId,password,passwordEncoder,nickname,email,category,phoneNumber,"USER");
+        repository.save(user);
+        return user.getIdx();
+
+    }
+
     public Optional<User> findByEmail(String email) {
         return repository.findByEmail(email);
     }

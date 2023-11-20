@@ -15,7 +15,7 @@ public class Scrap {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idx;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @NonNull
     @JoinColumn(name = "user_idx")
     private User user;

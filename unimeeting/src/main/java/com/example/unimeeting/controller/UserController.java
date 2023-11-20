@@ -4,12 +4,14 @@ import com.example.unimeeting.domain.User;
 import com.example.unimeeting.dto.LoginRequestDto;
 import com.example.unimeeting.repository.UserRepository;
 import com.example.unimeeting.service.JwtService;
+import com.example.unimeeting.service.JwtServiceImpl;
 import com.example.unimeeting.service.UserDetailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
@@ -30,28 +32,53 @@ public class UserController {
     private final UserDetailService userDetailService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final UserRepository userRepository;
-    private final JwtService jwtService;
+    private final JwtServiceImpl jwtService;
+    private final BCryptPasswordEncoder passwordEncoder;
     //아이디로 사용자 확인
-    @GetMapping("/{user_id}")
-    public ResponseEntity<User> getUserById(@PathVariable String user_id) {
+//    @GetMapping("/user_id/{user_id}")
+//    public ResponseEntity<User> getUserById(@PathVariable String user_id) {
+//        Optional<User> user = userDetailService.findByUserId(user_id);
+//        return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+//    }
+//    @GetMapping("/user_id/{user_id}")
+//    public ResponseEntity<User> getUserById(@PathVariable String user_id) {
+//        Optional<User> user = userDetailService.findByUserId(user_id);
+//        return user.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+//    }
+
+    //아중첵 이게 맞음
+    @GetMapping("/user_id/{user_id}")
+    public ResponseEntity<String> checkUserId(@PathVariable String user_id) {
         Optional<User> user = userDetailService.findByUserId(user_id);
-        return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        return user.map(u -> ResponseEntity.ok("중복된 아이디입니다.")).orElse(ResponseEntity.ok("사용 가능한 아이디입니다."));
     }
+
 
 
     //닉네임으로 사용자 확인
     @GetMapping("/nickname/{nickname}")
-    public ResponseEntity<User> getUserByNickname(@PathVariable String nickname) {
+    public ResponseEntity<String> checkUserNickname(@PathVariable String nickname){
         Optional<User> user = userDetailService.findByNickname(nickname);
-        ResponseEntity<User> responseEntity;
-        return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        return user.map(u -> ResponseEntity.ok("중복된 닉네임입니다.")).orElse(ResponseEntity.ok("사용가능 닉네임입니다."));
     }
+//    @GetMapping("/nickname/{nickname}")
+//    public ResponseEntity<User> getUserByNickname(@PathVariable String nickname) {
+//        Optional<User> user = userDetailService.findByNickname(nickname);
+//        ResponseEntity<User> responseEntity;
+//        return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+//    }
+
     //이메일로 사용자 확인
-    @GetMapping("/email/{email}")
-    public ResponseEntity<User> getUserByEmail(@PathVariable String email) {
+    @GetMapping("email/{email}")
+    public ResponseEntity<String> checkUserEmail(@PathVariable String email){
         Optional<User> user = userDetailService.findByEmail(email);
-        return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        return user.map(u -> ResponseEntity.ok("중복된 이메일입니다.")).orElse(ResponseEntity.ok("사용가능 이메일입니다."));
     }
+//    @GetMapping("/email/{email}")
+//    public ResponseEntity<User> getUserByEmail(@PathVariable String email) {
+//        Optional<User> user = userDetailService.findByEmail(email);
+//        return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+//    }
     //===============로그인=================//
     @PostMapping("/authenticate")
     public ResponseEntity<String> authenticateUser(@RequestParam String user_id, @RequestParam String password) {
@@ -70,31 +97,25 @@ public class UserController {
 
     //===============회원가입=============//
     @PostMapping("/register")
-    public ResponseEntity<String> register(User user) {
+    public ResponseEntity<String> register(@RequestBody User user) {
+        System.out.println(user);
         try {
             userDetailService.register(user.getUserId(), user.getPassword(),user.getNickname(),user.getEmail(), user.getCategory(),user.getPhoneNumber(),user.getRole());
             return ResponseEntity.ok("성공적으로 회원 가입이 진행되었습니다.");
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().body("가입 실패");
         }
-    }
-    @PostMapping("join")
-    public String join(@RequestBody User user) {
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        user.setRole("USER");
-        System.out.println(user.getPassword());
-        userRepository.save(user);
-        return "회원 가입 완료";
     }
     @PostMapping("login")
     public ResponseEntity<String> login(@RequestBody LoginRequestDto request) {
-//        User user = userDetailService.findByUserIdAndPassword(request.getUserId(), request.getPassword())
-//                .orElseThrow(() -> new IllegalArgumentException());
+        System.out.println(passwordEncoder.encode(request.getPassword()));
+        User user = userDetailService.findByUserIdAndPassword(request.getUserId(), passwordEncoder.encode(request.getPassword()))
+                .orElseThrow(() -> new IllegalArgumentException());
 
-//        int idx = user.getIdx();
-//        String token = jwtService.getToken("idx", idx);
-//        MultiValueMap<String, String> header = new LinkedMultiValueMap<>();
-//        header.add("token", token);
+        int idx = user.getIdx();
+        String token = jwtService.getToken("idx", idx);
+        MultiValueMap<String, String> header = new LinkedMultiValueMap<>();
+        header.add("token", token);
 
         return new ResponseEntity<>("로그인이 완료되었습니다.", HttpStatus.OK);
     }

@@ -40,7 +40,7 @@ const request = reactive({
 
 const login = () => {
     axios.post('http://localhost:8090/user/login', request, {
-        headers: { "X-Requested-With": "XMLHttpRequest",
+        headers: { 
     "content-type" : "application/json" }
     })
         .then(response => {

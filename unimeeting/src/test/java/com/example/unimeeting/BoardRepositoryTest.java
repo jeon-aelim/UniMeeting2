@@ -50,7 +50,6 @@ public class BoardRepositoryTest {
                 .title("test999")
                 .type("free")
                 .content("testcontent999999")
-                .createdDatetime(LocalDateTime.now())
                 .build();
 
         //

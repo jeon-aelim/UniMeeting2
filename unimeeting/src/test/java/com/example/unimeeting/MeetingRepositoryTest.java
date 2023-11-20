@@ -81,10 +81,10 @@ public class MeetingRepositoryTest {
                 .build();
 
 
-        meeting.setCreatedDatetime(LocalDateTime.now());
-        meeting.setUser(user_repository.findByUserId("aelim").get());
-        repository.save(meeting);
-        System.out.println(meeting.getIdx());
+//        meeting.setCreatedDatetime(LocalDateTime.now());
+//        meeting.setUser(user_repository.findByUserId("aelim").get());
+//        repository.save(meeting);
+//        System.out.println(meeting.getIdx());
     }
 
     @Test

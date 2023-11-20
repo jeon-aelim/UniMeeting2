@@ -1,16 +1,13 @@
 <template>
-    <h1>자유게시판</h1>
-  <hr>
-  <BoardList></BoardList>
+<UserRegister></UserRegister>
 </template>
-
 <script>
 // @ is an alias to /src
-import BoardList from '@/components/Boardlist.vue'
+import UserRegister from '@/components/UserRegister.vue'
 
 export default {
   components: {
-  BoardList,
+  UserRegister,
   }
 }
 </script>

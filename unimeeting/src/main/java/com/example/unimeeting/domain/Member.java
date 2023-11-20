@@ -15,7 +15,7 @@ public class Member {
 
     private boolean accepted;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_idx")
     private User user;
 

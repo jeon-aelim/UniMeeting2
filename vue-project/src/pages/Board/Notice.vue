@@ -1,8 +1,5 @@
 <template>
     <h1>공지사항</h1>
-  <hr />
-  <Header></Header>
-  <hr />
   <NoticeList></NoticeList>
   <hr />
 </template>

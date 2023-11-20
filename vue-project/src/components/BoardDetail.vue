@@ -1,50 +1,65 @@
 <template>
-    <div class="container mt-5">
-      <h2 class="mt-3">{{ board.title }}</h2>
-      <div id="content_box" class="mt-3">
-        <p class="mt-4"></p>
-        <p id="p_1" class="mt-4"><strong>작성자:</strong> <span>{{ board.writernickname }}</span></p>
-        <p id="p_2" class="mt-4"><strong>작성일:</strong> <span>{{ board.createdDatetime }}</span></p>
-        <p class="mt-4">{{ board.content}}</p>
-      </div>
-  
-      <router-link class="btn btn-danger btn-delete" :to="{ path: `/board/delete/${board.idx}/${board.type}` }">삭제</router-link>
-      <router-link class="btn btn-danger btn-delete" :to="{ path: `/updateWrite.html` }">수정</router-link>
-      <router-link class="btn btn-danger btn-delete" :to="{ path: `/boards/${board.type}` }">목록</router-link>
+  <div class="container mt-5">
+    <h2 class="mt-3">{{ currentBoard.title }}</h2>
+    <div id="content_box" class="mt-3">
+      <p class="mt-4"></p>
+      <p id="p_1" class="mt-4" v-if="currentBoard.user">
+        <strong>작성자:</strong> <span>{{ currentBoard.user.nickname }}</span>
+      </p>
+      <p id="p_2" class="mt-4">
+        <strong>작성일:</strong> <span>{{ currentBoard.createdDatetime }}</span>
+      </p>
+      <p class="mt-4">{{ currentBoard.content }}</p>s
     </div>
-  </template>
-  <script>
-  import { useBoardListStore } from '@/stores/boardliststore.js'; 
-  
-  export default {
-    data() {
-      return {
-        board:{},
-      };
-    },
+
+    <router-link @click="deleteCurrentBoard" class="btn btn-danger btn-delete" :to="{ path: `/boards/type/${currentBoard.type}` }" >삭제</router-link
+    >
+    <router-link class="btn btn-danger btn-delete" :to="{ path: `/updateWrite.html` }" >수정</router-link
+    >
+    <router-link class="btn btn-danger btn-delete" :to="{ path: `/boards/type/${currentBoard.type}` }" >목록</router-link
+    >
+  </div>
+</template>
+<script>//3333
+import { useBoardListStore } from "@/stores/boardliststore.js";
+
+export default {
     computed: {
-    boardIdx() {
-      // 라우터에서 전달된 게시글 idx
-      return this.$route.params.idx;
+    currentBoard() {
+      // Vuex Store에서 현재 게시글의 상세 정보를 가져옵니다.
+      return useBoardListStore().currentBoard;
     },
   },
-    methods: {
-      // 게시판 글 목록을 가져오는 메서드를 호출합니다.
-      async fetchBoardList() {
-        const boardListStore = useBoardListStore();
-        await boardListStore.fetchBoardDetail(this.boardIdx);
-      },
+  methods: {
+    // 컴포넌트가 마운트될 때 Vuex Store에서 특정 게시글의 상세 정보를 가져오는 메서드 호출
+    async fetchBoardDetail() {
+      const boardListStore = useBoardListStore();
+      await boardListStore.fetchBoardDetail(this.$route.params.idx);
     },
-    async mounted() {
-    // 게시글 목록 스토어를 가져옵니다.
-    const boardListStore = useBoardListStore();
+    async deleteCurrentBoard() {
+      const boardListStore = useBoardListStore();
+      const boardIdx = this.$route.params.idx;
 
-    // 선택된 게시글의 상세 정보를 가져옵니다.
-    this.board = await boardListStore.fetchBoardDetail(this.boardIdx);
+      try {
+        // Vuex 스토어를 통해 게시글 삭제
+        await boardListStore.deleteBoard(boardIdx);
+        
+        // 삭제 후 목록 화면으로 이동
+        this.$router.push(`/boards/type/${this.currentBoard.type}`);
+      } catch (error) {
+        console.error('게시글 삭제 동안 오류 발생:', error);
+      }
+    //   window.location.reload();//삭제하고 목록으로 돌아오면서 깜빡거림 시 발 
+    },
+  },
+
+  async mounted() {
+    // 게시글 상세 정보를 가져옵니다.
+    await this.fetchBoardDetail();
   },
 };
-  </script>
-  
-  <style>
-  /* 원하는 스타일링을 추가할 수 있습니다. */
-  </style>
+</script>
+
+<style scoped>
+@import "@/assets/css/boardDetail.css";
+</style>
