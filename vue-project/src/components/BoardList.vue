@@ -43,15 +43,15 @@ export default {
   },
   computed: {
     boards() {
-      // 게시판 목록 스토어를 가져옵니다.
+      // 게시판 목록 스토어
       const boardListStore = useBoardListStore();
 
-      // 현재 선택한 게시판 타입에 해당하는 게시판 글 목록을 반환합니다.
+      // 현재 선택한 게시판 타입에 해당하는 게시판 글 목록을 반환.
       return boardListStore.boards.filter(board => board.type === this.boardType);
     },
   },
   methods: {
-    // 게시판 글 목록을 가져오는 메서드를 호출합니다.
+    // 게시판 글 목록 호출
     async fetchBoardList() {
       const boardListStore = useBoardListStore();
       await boardListStore.fetchBoardListByType(this.boardType);
@@ -65,5 +65,4 @@ export default {
 </script>
 
 <style>
-/* 원하는 스타일링을 추가할 수 있습니다. */
 </style>

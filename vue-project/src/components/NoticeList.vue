@@ -17,7 +17,7 @@
             <tr v-for="board in boards" :key="board.id">
               <td style="text-align: center">{{ board.idx }}</td>
               <td>
-                <router-link :to="{ path: `/board/${board.idx}` }">{{ board.title }}</router-link>
+                <router-link :to="{ path: `/boards/${board.idx}` }">{{ board.title }}</router-link>
               </td>
               <td style="text-align: center">{{ board.user.nickname }}</td>
               <td style="text-align: center">{{ board.createdDatetime }}</td>

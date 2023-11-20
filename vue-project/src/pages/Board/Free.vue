@@ -14,7 +14,6 @@ import BoardList from '@/components/Boardlist.vue'
 export default {
   components: {
   BoardList,
-   
   }
 }
 </script>

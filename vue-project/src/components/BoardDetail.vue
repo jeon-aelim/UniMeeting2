@@ -9,7 +9,7 @@
       <p id="p_2" class="mt-4">
         <strong>작성일:</strong> <span>{{ currentBoard.createdDatetime }}</span>
       </p>
-      <p class="mt-4">{{ currentBoard.content }}</p>
+      <p class="mt-4">{{ currentBoard.content }}</p>s
     </div>
 
     <router-link @click="deleteCurrentBoard" class="btn btn-danger btn-delete" :to="{ path: `/boards/type/${currentBoard.type}` }" >삭제</router-link
@@ -49,6 +49,7 @@ export default {
       } catch (error) {
         console.error('게시글 삭제 동안 오류 발생:', error);
       }
+    //   window.location.reload();//삭제하고 목록으로 돌아오면서 깜빡거림 시 발 
     },
   },
 
