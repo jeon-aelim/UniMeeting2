@@ -96,7 +96,7 @@
 
                             <div class="form-group row">
                                 <div class="col-sm-10">
-                                    <button type="submit" class="btn btn-primary btn-block">회원가입</button>
+                                    <button type="submit" router-link to="/user/login" class="btn btn-primary btn-block">회원가입</button>
                                 </div>
                             </div>
                         </form>
@@ -194,14 +194,15 @@ export default {
                     ...this.formData,
                     category : this.formData.category.toString()
                 }
-                const response = await api('http://localhost:8090/user/register', "POST", obj)
+                const response = await axios.post('http://localhost:8090/user/register', obj);
                 // .then((resp) => {
                 //     console.log(resp)
                 // })
                 console.log('Server Response:', response);
-
-                if (response.status >= 200 && response.status < 300) {
+                console.log(response.data )
+                if (response.data ==="가입 성공ㅋ") {
                     console.log('가입 성공');
+                    location.href = "http://localhost:5173/user/login"
                 } else {
                     console.error('아이디 또는 비밀번호가 잘못 입력되었습니다.', response.data);
                 }

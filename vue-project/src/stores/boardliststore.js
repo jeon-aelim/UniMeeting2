@@ -2,6 +2,7 @@
 import { defineStore } from 'pinia';
 import axios from 'axios';
 
+
 export const useBoardListStore = defineStore('boardList', {
   state: () => ({
     boards: [], // 게시판 정보를 저장할 변수

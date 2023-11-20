@@ -25,8 +25,8 @@
         </tbody>
       </table>
 
-      <div v-if="writehide">
-        <router-link to="/boardWrite.html" class="btn btn-primary">게시글 작성</router-link>
+      <div >
+        <router-link to="/boards/free/write" class="btn btn-primary">게시글 작성</router-link>
       </div>
     </div>
   </div>

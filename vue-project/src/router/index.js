@@ -8,6 +8,7 @@ import meetingView from '@/pages/MeetingView.vue'
 import Free from '@/pages/Board/Free.vue'
 import Notice from '@/pages/Board/Notice.vue'
 import Detail from '@/pages/Board/Detail.vue'
+import Write from '@/pages/Board/Write.vue'
 //User
 import Register from '@/pages/User/Register.vue'
 import Login from '@/pages/User/Login.vue'
@@ -17,15 +18,16 @@ const router = createRouter({
     routes : [
         { path: '/', component: Home },
         { path: '/meetings', component: meeting },
-        { path: '/login', component: Login },
         // { path: '/join', component: join },
         { path: '/mypage', component: mypage},
         { path: '/meeting/:idx', component: meetingView},
-
+        
         { path: '/boards/type/free', component: Free },
         { path: '/boards/type/notice', component: Notice },
         { path: '/boards/:idx', component: Detail },
+        { path: '/boards/:type/write', component: Write},
         { path: '/user/register', component:Register},
+        { path: '/user/login', component: Login },
         // { path: '/boards/type/notice', component: Notice },
         // { path: '/boards/:idx', component:BoardDetail},
     ]

@@ -1,9 +1,7 @@
 <template>
     <h1>자유게시판</h1>
   <hr />
-  <Header></Header>
-  <hr />
-  <BoardList></BoardList>
+<BoardList></BoardList>
   <hr />
 </template>
 
