@@ -1,5 +1,6 @@
 <template>
-    <div class="container mt-5">
+    <body class="bg-light">
+    <div id="register_container" class="container">
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <div class="card">
@@ -8,6 +9,8 @@
                     </div>
                     <div class="card-body">
                         <form @submit.prevent="submitForm" action="http://localhost:8090/user/register" method="post">
+
+
                             <div class="form-group">
                                 <label for="userId">아이디</label>
                                 <div class="input-group">
@@ -17,6 +20,8 @@
                                         <button type="button" class="btn btn-primary" @click="checkUserId">중복확인</button>
                                     </div>
                                 </div>
+
+
                                 <small id="availability-message" class="form-text text-info">{{ availabilityMessage
                                 }}</small>
                             </div>
@@ -88,10 +93,8 @@
                                 </div>
                             </div>
                             <div class="form-group"><label for="phoneNumber">휴대폰 번호</label>
-                                <div class="form-control">
                                     <input v-model="formData.phoneNumber" type="text" class="form-control"
                                         id="phoneNumber" placeholder="휴대폰 번호를 입력해 주세요" required>
-                                </div>
                             </div>
 
                             <div class="form-group row">
@@ -105,6 +108,7 @@
             </div>
         </div>
     </div>
+    </body>
 </template>
 <script>
 import axios from 'axios';
@@ -214,3 +218,6 @@ export default {
     },
 };
 </script>
+<style scoped>
+@import "@/assets/css/userRegister.css";
+</style>

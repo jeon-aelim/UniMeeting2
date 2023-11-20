@@ -60,6 +60,6 @@ export default {
 };
 </script>
 
-<style>
-/* 원하는 스타일링을 추가할 수 있습니다. */
+<style scoped>
+@import "@/assets/css/boardDetail.css";
 </style>

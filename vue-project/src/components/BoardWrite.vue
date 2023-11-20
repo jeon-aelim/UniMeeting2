@@ -1,20 +1,23 @@
 <template>
-    <div>
-      <div class="container mt-5">
-        <form @submit.prevent="writeBoard">
-          <label for="title">제목:</label>
-          <input v-model="title" type="text" class="form-control" required>
-  
-          <label for="content">내용:</label>
-          <textarea v-model="content" class="form-control" rows="5" required></textarea>
-  
-          <button type="submit" class="btn btn-primary">작성완료</button>
-        </form>
-        <div v-if="error" class="alert alert-danger mt-3">
-      {{ error }}
-      </div>
-    </div>
-    </div>
+    <body>
+        
+        <div>
+            <div class="container mt-5">
+                <form @submit.prevent="writeBoard">
+                    <label for="title">제목:</label>
+                    <input v-model="title" type="text" class="form-control" required>
+                    
+                    <label for="content">내용:</label>
+                    <textarea v-model="content" class="form-control" rows="5" required></textarea>
+                    
+                    <button type="submit" class="btn btn-primary">작성완료</button>
+                </form>
+                <div v-if="error" class="alert alert-danger mt-3">
+                    {{ error }}
+                </div>
+            </div>
+        </div>
+    </body>
   </template>
   
   <script>
