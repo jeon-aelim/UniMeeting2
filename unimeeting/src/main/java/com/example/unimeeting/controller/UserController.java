@@ -99,7 +99,7 @@ public class UserController {
         System.out.println(user);
         try {
             userDetailService.register(user.getUserId(), user.getPassword(),user.getNickname(),user.getEmail(),user.getCategory(),user.getPhoneNumber());
-            return ResponseEntity.ok("가입 성공");
+            return ResponseEntity.ok("가입 성공ㅋ");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("가입 실패");
         }

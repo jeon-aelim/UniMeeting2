@@ -1,6 +1,7 @@
 package com.example.unimeeting.controller;
 
 import com.example.unimeeting.domain.Board;
+import com.example.unimeeting.domain.User;
 import com.example.unimeeting.repository.UserRepository;
 import com.example.unimeeting.service.BoardService;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,9 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/boards")
 public class BoardController {
+
+    User user = new User(52, "aelim", "1234", "aa", "devaelim@gmail.com", "코딩", "01092708011", "USER");
+
     private final BoardService boardService;
 
     //=============글 목록 ===========//

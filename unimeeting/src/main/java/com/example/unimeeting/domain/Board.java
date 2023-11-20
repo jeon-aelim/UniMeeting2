@@ -30,11 +30,11 @@ public class Board {
     private User user;
 
     @Builder
-    public Board(String title, String content, String type, LocalDateTime createdDatetime){
+    public Board(String title, String content, String type){
         this.title = title;
         this.content = content;
         this.type = type;
-        this.createdDatetime = createdDatetime;
+        this.createdDatetime = LocalDateTime.now();
     }
     public void update(String title, String content) {
         this.title = title;
@@ -44,6 +44,7 @@ public class Board {
         return Board.builder()
                 .title(title)
                 .content(content)
+                .type(type)
                 .build();
     }
 
