@@ -44,11 +44,11 @@
                     <!--                and v-if=${apply} -> 해당 소모임에 참가 신청을 하지 않은 경우, 신청 버튼 보이기 -->
                     <!--                and v-if=${apply} -> 해당 소모임에 참가 신청을 한 경우, 신청 취소 버튼 보이기 -->
                     <div class="col-auto offset-md-4" v-if="!applicant">
-                        <a class="btn btn-primary btn-lg px-4 btn-color"
-                            @click="apply">신청</a>
+                        <a class="btn btn-primary btn-lg px-4 btn-color" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+                            @click="setAlertMessage('apply')">신청</a>
                     </div>
                     <div class="col-auto offset-md-4" v-else>
-                        <a class="btn btn-primary btn-lg px-4 btn-color"
+                        <a class="btn btn-primary btn-lg px-4 btn-color" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
                         @click="deleteApply('applicant')">신청 취소</a>
                     </div>
 
@@ -132,6 +132,23 @@
             </div>
 
     </div>
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">{{title}}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        {{ alertMessage }}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" @click="clickOK(alertMessage)">Yes</button>
+      </div>
+    </div>
+  </div>
+</div>  
 </template>
 <script setup>
 import { ref, onBeforeMount, defineProps } from 'vue';
@@ -155,9 +172,19 @@ const writer = ref(false);
 const scrap = ref(false);
 const members = ref([]);
 
+let alertMessage = ref('');
+
 const server = "http://localhost:8090";
 const meeting_server = server + "/meetings/";
 
+const setAlertMessage = (type) => {
+    switch (type) {
+        case "apply":
+            alertMessage.value = "이 모임에 신청 요청을 보내겠습니까?";
+            apply();
+
+    }
+}
 
 onBeforeMount(() => {
     axios.get(meeting_server + meeting_idx, {
@@ -202,18 +229,17 @@ const deleteMeeting = () => {
 }
 
 const apply = () => {
-    if (window.confirm("이 모임에 신청 요청을 보내겠습니까?")) {
-        axios.post(meeting_server + "apply/" + meeting_idx, {},{
-            headers: {
-                'Authorization' : sessionStorage.getItem("token")
-            }
-        } )
-            .then((resp) => {
-                console.log(resp.data)
-                window.alert(resp.data.message);
-                document.location.href = "/meeting/" + meeting_idx;
-            })
-    }
+    axios.post(meeting_server + "apply/" + meeting_idx, {}, {
+        headers: {
+            'Authorization': sessionStorage.getItem("token")
+        }
+    })
+        .then((resp) => {
+            console.log(resp.data)
+            window.alert(resp.data.message);
+            document.location.href = "/meeting/" + meeting_idx;
+        })
+
 }
 
 const acceptApply = (accept, idx, nickname) => {
@@ -232,11 +258,10 @@ const acceptApply = (accept, idx, nickname) => {
 const deleteApply = (type, user_idx, user_nickname) => {
 
     let url = `${meeting_server}apply/${meeting_idx}`;
-    let alertMessage;
     
     if(type == 'writer'){
         url += `?user_idx=${user_idx}`
-        alertMessage = user_nickname + "님의 요청을 거절하시겠습니까?";
+        alertMessage.value = user_nickname + "님의 요청을 거절하시겠습니까?";
     }else{
         alertMessage = "신청을 취소하시겠습니까?"
     }
