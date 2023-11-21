@@ -14,7 +14,6 @@ button#register_button {
     border-color: #5302FE;
     background-color: white;
 }
-
 #register_text {
     color: #5302FE;
 }
@@ -56,4 +55,13 @@ body {
     align-items: center;
     justify-content: center;
     height: 100vh;
+}
+button#register_button {
+    width: 436px;
+}
+.form-group {
+    text-align: start;
+}
+.card-body {
+    text-align: -webkit-center;
 }
