@@ -1,4 +1,5 @@
 <template>
+    {{ url1 }}
     <h1 style="font-size:40px">UniMeeting 커뮤니티에서 자유롭게 이야기 나눠보세요!</h1>
     <div class="inner">
         <form id="search" @submit.prevent="meetingForm" class="search">
@@ -37,20 +38,29 @@
 
 </template>
 
-<script >
-    import  { ref } from 'vue';
-    // import { api, cleardiv } from '@/public/common';
+<script setup>
+    // import  { ref } from 'vue';
+    import { api, cleardiv } from '@/public/common';
+    import { reactive } from 'vue';
+    // import  from "http://localhost:8090/meetings";
     // import { useBoardListStore } from '@/stores/boardliststore.js'
     // import NoticeList from '@/components/NoticeList.vue';
-    export default {
-        setup(){
-            const myFile = ref('./images/search_icon.png') 
+    // let url = ref("http://localhost:8090/meetings");
+
     
-            return {
-                myFile,
-            }
-        }    
-}
+    const url1 = () => {
+        api("http://localhost:8090/meetings", "get", {})
+            .then(meetings => {
+                console.log(meetings.title)
+                cleardiv()
+        // for(let o of meetings){
+        //     makeMeetingBlock(o);
+        // }
+            })
+    }
+    
+    const temp = reactive("meeting.title");
+
 
     // let url = ref("http://localhost:8090/meetings")
 
