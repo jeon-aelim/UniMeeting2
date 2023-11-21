@@ -30,7 +30,7 @@
                         <button type="button" class="btn btn-danger" @click="deleteMeeting">삭제
                         </button>
                         <button type="button" class="btn btn-success"
-                            @click="$router.push('/meeting/goUpdateMet/' +idx)">수정
+                            @click="$router.push('/meeting/goUpdateMet/' +meeting_idx)">수정
                         </button>
                     </div>
                     <!--                신청 현황 offcanvas 열기 버튼-->
@@ -141,7 +141,6 @@ import axios from 'axios';
 const props = defineProps(['meeting_idx']);
 let meeting_idx = props.meeting_idx;
 
-const idx = ref(0);
 const title = ref('');
 const content = ref('');
 const category = ref('');
@@ -155,6 +154,7 @@ const applicant = ref(false);
 const writer = ref(false);
 const scrap = ref(false);
 const members = ref([]);
+
 const server = "http://localhost:8090";
 const meeting_server = server + "/meetings/";
 
@@ -167,7 +167,6 @@ onBeforeMount(() => {
     })
         .then((response) => {
             const resp = response.data;
-            idx.value = resp.idx;
             title.value = resp.title;
             content.value = resp.content;
             category.value = resp.category;
