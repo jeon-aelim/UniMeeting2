@@ -9,7 +9,7 @@
       <p id="p_2" class="mt-4">
         <strong>작성일:</strong> <span>{{ currentBoard.createdDatetime }}</span>
       </p>
-      <p class="mt-4">{{ currentBoard.content }}</p>s
+      <p class="mt-4">{{ currentBoard.content }}</p>
     </div>
 
     <router-link @click="deleteCurrentBoard" class="btn btn-danger btn-delete" :to="{ path: `/boards/type/${currentBoard.type}` }" >삭제</router-link
