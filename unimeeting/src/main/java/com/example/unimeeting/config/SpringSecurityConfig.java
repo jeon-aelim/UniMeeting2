@@ -53,8 +53,8 @@ public class SpringSecurityConfig {
                 .and()
                 .formLogin().disable()
                 .httpBasic().disable()
-//                .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-//                .addFilter(jwtAuthorizationFilter())
+                .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilter(jwtAuthorizationFilter())
                 .authorizeHttpRequests()
                 .requestMatchers("/user/login","/user/register").permitAll()
 //                .requestMatchers("/**").permitAll()
@@ -62,15 +62,15 @@ public class SpringSecurityConfig {
         return http.build();
     }
 
-//    @Bean
-//    public JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
-//        System.out.println("등록");
-//        JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationConfiguration.getAuthenticationManager());
-//        return jwtAuthenticationFilter;
-//    }
-//
-//    @Bean
-//    public JwtAuthorizationFilter jwtAuthorizationFilter() throws Exception {
-//        return new JwtAuthorizationFilter(authenticationConfiguration.getAuthenticationManager(), UserRepository);
-//    }
+    @Bean
+    public JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
+        System.out.println("등록");
+        JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationConfiguration.getAuthenticationManager());
+        return jwtAuthenticationFilter;
+    }
+
+    @Bean
+    public JwtAuthorizationFilter jwtAuthorizationFilter() throws Exception {
+        return new JwtAuthorizationFilter(authenticationConfiguration.getAuthenticationManager(), UserRepository);
+    }
 }

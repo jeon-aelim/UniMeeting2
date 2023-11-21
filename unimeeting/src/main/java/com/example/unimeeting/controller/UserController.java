@@ -108,14 +108,14 @@ public class UserController {
     }
     @PostMapping("login")
     public ResponseEntity<String> login(@RequestBody LoginRequestDto request) {
-        System.out.println(passwordEncoder.encode(request.getPassword()));
-        User user = userDetailService.findByUserIdAndPassword(request.getUserId(), passwordEncoder.encode(request.getPassword()))
-                .orElseThrow(() -> new IllegalArgumentException());
-
-        int idx = user.getIdx();
-        String token = jwtService.getToken("idx", idx);
-        MultiValueMap<String, String> header = new LinkedMultiValueMap<>();
-        header.add("token", token);
+//        System.out.println(request.getPassword());
+//        User user = userDetailService.findByUserIdAndPassword(request.getUserId(), passwordEncoder.encode(request.getPassword()))
+//                .orElseThrow(() -> new IllegalArgumentException());
+//
+//        int idx = user.getIdx();
+//        String token = jwtService.getToken("idx", idx);
+//        MultiValueMap<String, String> header = new LinkedMultiValueMap<>();
+//        header.add("token", token);
 
         return new ResponseEntity<>("로그인이 완료되었습니다.", HttpStatus.OK);
     }
