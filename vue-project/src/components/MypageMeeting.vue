@@ -10,16 +10,26 @@
     
     import { api, cleardiv } from '@/public/common';
     import { makeMeetingBlock, makeMyinfoBlock, makeWithDraw } from '@/public/makeBlock'
+    import axios from 'axios';
     import MyInfo from '@/components/MypageMyInfo.vue';
     import Withdraw from '@/components/MypageWithDraw.vue';
 
     let url = "http://localhost:8090/mypage/meetings";
     let meetings = reactive([]);
-    api(url + "/participated", "get").then(data => {
-        for(let o of data){
+    // api(url + "/participated", "get").then(data => {
+    //     for(let o of data){
+    //         makeMeetingBlock(o);
+    //     }
+    // });
+    axios.get(url + '/participated', {
+        headers:{'Authorization':sessionStorage.getItem("token")}
+    }).then(response => {
+        for(let o of response.data){
             makeMeetingBlock(o);
         }
-    });   
+        // console.log(response.data)
+    })
+
     const p = defineProps({
         state : String
     });
@@ -31,8 +41,14 @@
       }
     )
 
-    let user = []
-    api("http://localhost:8090/user/minjae", "get", {}).then(data => {user.push(data)})
+    let user = [];
+    // api("http://localhost:8090/user", "get", { 
+    //     headers:{'Authorization':sessionStorage.getItem("token")}}
+    //     )
+    axios.get('http://localhost:8090/user', {
+        headers:{'Authorization':sessionStorage.getItem("token")}
+    }).then(data => {user.push(data)})
+    console.log(user);
 
     let currentComponent = null;
     function getMeeting(s, url) {
@@ -60,10 +76,18 @@
         }
 
         if(flag) {
-            api(url, "get").then(meetings => {
-                for(let o of meetings){
+            // api(url, "get").then(meetings => {
+            //     for(let o of meetings){
+            //         makeMeetingBlock(o);
+            //     }
+            // })
+            axios.get(url, {
+                headers:{'Authorization':sessionStorage.getItem("token")}
+            }).then(response => {
+                for(let o of response.data){
                     makeMeetingBlock(o);
                 }
+                // console.log(response.data)
             })
         } else {
 

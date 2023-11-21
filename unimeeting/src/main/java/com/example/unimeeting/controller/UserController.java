@@ -1,6 +1,7 @@
 package com.example.unimeeting.controller;
 
 import com.example.unimeeting.domain.User;
+import com.example.unimeeting.dto.CudResponse;
 import com.example.unimeeting.dto.LoginRequestDto;
 import com.example.unimeeting.repository.UserRepository;
 import com.example.unimeeting.service.JwtService;
@@ -120,11 +121,20 @@ public class UserController {
         return new ResponseEntity<>("로그인이 완료되었습니다.", HttpStatus.OK);
     }
 
-    @GetMapping("logout")
+    @GetMapping("/logout")
     public ResponseEntity<String> logout(@RequestHeader(value = "Authorization", required = false) String token){
         MultiValueMap<String, String> header = new LinkedMultiValueMap<>();
-
+        System.out.println(token);
         header.add("Authorization", "delete");
         return new ResponseEntity<>("로그아웃되었습니다.", header, HttpStatus.OK);
+    }
+
+    @GetMapping("")
+    public ResponseEntity<Optional<User>> findUser(@RequestHeader (value = "Authorization", required = false) String token){
+        int user_idx = jwtService.getId(token);
+        System.out.println(user_idx+"=".repeat(80) + userRepository.findById(user_idx));
+        return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(userRepository.findById(user_idx));
     }
 }

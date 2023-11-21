@@ -29,4 +29,5 @@ public class UserService {
         return userRepository.findByUserIdAndPassword(user_id, password)
                 .orElseThrow(() -> new IllegalArgumentException());
     }
+    
 }

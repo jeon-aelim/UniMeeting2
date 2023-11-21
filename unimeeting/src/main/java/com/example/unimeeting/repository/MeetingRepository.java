@@ -28,7 +28,7 @@ public interface MeetingRepository extends JpaRepository<Meeting, Integer> {
     public List<Meeting> searchMeetingInMemberIDX(@Param("idx") int idx);
 
     // 생성한 소모임 리스트
-    public List<Meeting> findByUserNickname(String nickname);
+    public List<Meeting> findByUserIdx(int idx);
 
     // 스크랩한 소모임 리스트
     @Query("select m from Meeting m where m.idx in (select s.meetingIdx from Scrap s where s.user.idx = :idx)")

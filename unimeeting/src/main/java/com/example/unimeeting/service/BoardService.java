@@ -2,18 +2,24 @@ package com.example.unimeeting.service;
 
 import com.example.unimeeting.domain.Board;
 import com.example.unimeeting.repository.BoardRepository;
+import com.example.unimeeting.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RequiredArgsConstructor
 @Service
 public class BoardService {
     private final BoardRepository boardRepository;
-    public Board save(Board board){
-        return boardRepository.save(board.toEntity());
+    private final UserRepository userRepository;
+    public Board save(Board board, Integer user_idx){
+        board.setUser(userRepository.findById(user_idx).get());
+        board.setCreatedDatetime(LocalDateTime.now());
+        System.out.println(board);
+        return boardRepository.save(board);
     }
 
     public List<Board> findByType(String type, String search) {

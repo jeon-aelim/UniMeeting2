@@ -4,8 +4,11 @@ import com.example.unimeeting.domain.Board;
 import com.example.unimeeting.domain.User;
 import com.example.unimeeting.repository.UserRepository;
 import com.example.unimeeting.service.BoardService;
+import com.example.unimeeting.service.JwtService;
+import com.example.unimeeting.service.JwtServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.util.http.parser.Authorization;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -22,7 +25,7 @@ public class BoardController {
     User user = new User(52, "aelim", "1234", "aa", "devaelim@gmail.com", "코딩", "01092708011", "USER");
 
     private final BoardService boardService;
-
+    private final JwtServiceImpl jwtService;
     //=============글 목록 ===========//
     @GetMapping("/type/{type}")
     public ResponseEntity<List<Board>> getAllBoards(@PathVariable String type, @RequestParam(required = false) String search) {
@@ -39,8 +42,10 @@ public class BoardController {
     }
     //=============글 쓰기 ===========//
     @PostMapping("/write")
-    public ResponseEntity<String> createBoard(@RequestBody Board board) {
-        boardService.save(board);
+    public ResponseEntity<String> createBoard(@RequestBody Board board,@RequestHeader(required = false, value = "Authorization") String token) {
+
+        boardService.save(board, jwtService.getId(token));
+
         return ResponseEntity.status(HttpStatus.CREATED).body("Board created successfully");
     }
 
