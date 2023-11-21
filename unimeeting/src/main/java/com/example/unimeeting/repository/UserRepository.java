@@ -23,6 +23,8 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     // 사용자 아이디 또는 닉네임이 전달된 아규먼트 값으로 시작하는 사용자 리스트를 리턴하는 메서드
     List<User> findByUserIdStartingWithOrNicknameStartingWith(String user_id, String nickname);
 
+    User findByIdx(int idx);
+
     //
 
 
