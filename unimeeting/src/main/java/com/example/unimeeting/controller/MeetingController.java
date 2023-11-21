@@ -8,6 +8,7 @@ import com.example.unimeeting.service.JwtService;
 import com.example.unimeeting.service.JwtServiceImpl;
 import com.example.unimeeting.service.MeetingService;
 import io.jsonwebtoken.Claims;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import jakarta.validation.Valid;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -101,8 +102,10 @@ public class MeetingController {
 
     // 수정할 글 불러오기
     @GetMapping("/update/{idx}")
-    public ResponseEntity<Meeting> getMeetingForUpdate(@PathVariable int idx){
-        Meeting response = meetingService.findById(idx);
+    public ResponseEntity<UpdateMeetingResponse> getMeetingForUpdate(@PathVariable int idx){
+        UpdateMeetingResponse response = new UpdateMeetingResponse();
+        response.setMeeting(meetingService.findById(idx));
+        response.setImgUrl(meetingService.getMeetingImages(idx));
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(response);
@@ -146,7 +149,6 @@ public class MeetingController {
                 .status(status)
                 .body(response);
     }
-
     @PostMapping("/apply/{meeting_idx}")
     public ResponseEntity<CudResponse> addMember(@RequestHeader (value = "Authorization", required = false) String token, @PathVariable int meeting_idx){
 

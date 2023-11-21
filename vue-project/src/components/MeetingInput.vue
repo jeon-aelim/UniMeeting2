@@ -82,6 +82,20 @@
             <label for="images" class="form-label">사진</label>
             <input class="form-control" type="file" id="images" @change="handleFileChange" multiple>
         </div>
+        <div v-if="meeting_idx">
+    <template v-for="url in oldImages">
+        <div class="position-relative" style="display: inline-block; margin: 5px;">
+            <!-- 이미지 -->
+            <img :src="'http://localhost:8090' + url" class="rounded m-2" style="width: 200px">
+
+            <!-- 삭제 버튼 -->
+            <!-- <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0"
+                    @click="">
+                <i class="bi bi-trash"></i>
+            </button> -->
+        </div>
+    </template>
+</div>
 
         <button id="submit" type="submit" class="btn btn-primary"
             @click="was_validated()">등록</button><!--    제목: <label><input id="title" name="title" /><br></label>-->
@@ -105,6 +119,7 @@ let addMeeting = reactive({
     content: ''
 });
 const images = reactive([]);
+let oldImaegs = reactive([]);
 
 const props = defineProps(['meeting_idx']);
 let meeting_idx = props.meeting_idx;
@@ -112,13 +127,16 @@ if (meeting_idx) {
     axios.get("http://localhost:8090/meetings/update/" + meeting_idx)
         .then((resp) => {
             const oldMet = resp.data;
+            console.log(oldMet)
 
-            addMeeting.category = oldMet.category;
-            addMeeting.title = oldMet.title;
-            addMeeting.location = oldMet.location;
-            addMeeting.recruits = oldMet.recruits;
-            addMeeting.startDatetime = oldMet.startDatetime.slice(0, 10);
-            addMeeting.content = oldMet.content;
+            addMeeting.category = oldMet.meeting.category;
+            addMeeting.title = oldMet.meeting.title;
+            addMeeting.location = oldMet.meeting.location;
+            addMeeting.recruits = oldMet.meeting.recruits;
+            addMeeting.startDatetime = oldMet.meeting.startDatetime.slice(0, 10);
+            addMeeting.content = oldMet.meeting.content;
+            oldImaegs = oldMet.imgUrl;
+
         })
 }
 

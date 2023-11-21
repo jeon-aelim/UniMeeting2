@@ -45,7 +45,7 @@ public class MeetingService {
         MeetingResponse ms = new MeetingResponse(meetingRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("not found : " + id)),
                 memberRepository.countByMeetingIdx(id),
-                meetingImageRepository.findImageUrlByMeetingIdx(id),
+                getMeetingImages(id),
                 meetingRepository.existsByIdxAndUserNickname(id, user.getNickname()),
                 memberRepository.existsByMeetingIdxAndUserIdx(id, user.getIdx()),
                 scrapRepository.existsByMeetingIdxAndUserIdx(id, user.getIdx()));
@@ -57,8 +57,8 @@ public class MeetingService {
         meetingRepository.findAllByTitleContainingOrContentContaining(search,search)
                 .forEach(element -> list.add(new MeetingWithDetailsDTO(element,
                         memberRepository.countByMeetingIdx(element.getIdx()),
-                        meetingImageRepository.findImageUrlByMeetingIdx(element.getIdx()).isEmpty() ?
-                                "" :meetingImageRepository.findImageUrlByMeetingIdx(element.getIdx()).get(0))
+                        getMeetingImages(element.getIdx()).isEmpty() ?
+                                "" :getMeetingImages(element.getIdx()).get(0))
                 ));
 
 //        List<MeetingWithDetailsDTO> list = (List<MeetingWithDetailsDTO>) meetingrepository.findAllByTitleContainingOrContentContaining(search,search)
@@ -75,8 +75,8 @@ public class MeetingService {
         meetingRepository.searchMeetingInCategory(category, search,search)
                 .forEach(element -> list.add(new MeetingWithDetailsDTO(element,
                         memberRepository.countByMeetingIdx(element.getIdx()),
-                        meetingImageRepository.findImageUrlByMeetingIdx(element.getIdx()).isEmpty() ?
-                                "" :meetingImageRepository.findImageUrlByMeetingIdx(element.getIdx()).get(0))
+                        getMeetingImages(element.getIdx()).isEmpty() ?
+                                "" :getMeetingImages(element.getIdx()).get(0))
                 ));
         return list;
     }
@@ -261,6 +261,11 @@ public class MeetingService {
         }
 
         return  success;
+    }
+
+    public List<String> getMeetingImages(int meeting_idx){
+        List<String> list = meetingImageRepository.findImageUrlByMeetingIdx(meeting_idx);
+        return list;
     }
 
 }
