@@ -29,23 +29,8 @@ public class Board {
     @JoinColumn(name = "writer_nickname", referencedColumnName = "nickname")
     private User user;
 
-    @Builder
-    public Board(String title, String content, String type){
-        this.title = title;
-        this.content = content;
-        this.type = type;
-        this.createdDatetime = LocalDateTime.now();
-    }
     public void update(String title, String content) {
         this.title = title;
         this.content = content;
     }
-    public Board toEntity() {
-        return Board.builder()
-                .title(title)
-                .content(content)
-                .type(type)
-                .build();
-    }
-
 }

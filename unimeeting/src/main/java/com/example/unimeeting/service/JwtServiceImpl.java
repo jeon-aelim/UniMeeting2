@@ -77,4 +77,11 @@ public class JwtServiceImpl implements JwtService {
         }
         return 0;
     }
+    public String getNickname(String token){
+        Claims claims = this.getClaims(token);
+        if(claims !=null){
+            return claims.get("nickname").toString();
+        }
+        return "";
+    }
 }
