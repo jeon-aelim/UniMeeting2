@@ -63,7 +63,6 @@ public class SpringSecurityConfig {
                 .addFilter(jwtAuthorizationFilter())
                 .authorizeHttpRequests()
                 .requestMatchers("/**").permitAll()
-//                .requestMatchers("/**").permitAll()
                 .anyRequest().authenticated();
         return http.build();
     }

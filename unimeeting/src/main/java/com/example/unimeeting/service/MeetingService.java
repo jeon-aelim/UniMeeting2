@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -80,8 +81,9 @@ public class MeetingService {
         return list;
     }
 
-    public Boolean addMeeting(AddMeetingRequest request, User user, MultipartFile[] mreq){
+    public Boolean addMeeting(AddMeetingRequest request, int user_idx, MultipartFile[] mreq){
         try{
+            User user = userRepository.findById(user_idx).get();
             Meeting meeting = meetingRepository.save(request.toEntity(user));
             int meeting_idx = meeting.getIdx();
 
@@ -130,15 +132,57 @@ public class MeetingService {
         }
     }
 
-    public Meeting updateMeeting(Integer id, UpdateMeetingRequest update){
-        Meeting meeting = meetingRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("not found : " + id));
+    public boolean updateMeeting(Integer id, UpdateMeetingRequest update,MultipartFile[] mreq){
+        boolean isSuccess = false;
+        Optional<Meeting> meeting =meetingRepository.findById(id);
+        Meeting oldMeeting;
+        if(meeting.isPresent()){
+            oldMeeting = meeting.get();
+            oldMeeting.update(update.getTitle(),
+                    update.getContent(), update.getCategory(),
+                    update.getRecruits(), update.getLocation(), update.getStartDatetime());
+            int meeting_idx = oldMeeting.getIdx();
 
-        meeting.update(update.getTitle(),
-                       update.getContent(), update.getCategory(),
-                       update.getRecruits(), update.getLocation(), update.getStartDatetime());
+            if(mreq != null){
+                List<MultipartFile> list = Arrays.stream(mreq).toList();
 
-        return meeting;
+                String path = "/images/" + meeting_idx;
+                // 상대 경로를 찾는 함수인 getRealPath()는 프로젝트 폴더 구조에서 resources가 아닌 webapp 폴더를 우선으로 찾고
+                //  해당 폴더가 존재하지 않으면 위와 같이 임시 폴더를 찾아간다.
+                // webapp 폴더를 만드는 방법도 있으나, Spring Boot는 jar로 배포되기 때문에 webapp 폴더를 만든다면 정상 배포 되지 않는다.
+                String realPath = "C:/kosastudy/unimeeting/unimeeting/src/main/resources/static" + path;
+                File isDir = new File(realPath);
+                if (!isDir.isDirectory()) {
+                    isDir.mkdirs();
+                }
+
+                for (MultipartFile mfile : list) {
+                    // replace -> 파일 이름의 공백을 언더바로 변경
+                    String fileName = mfile.getOriginalFilename().replace(" ", "_");
+                    System.out.println(fileName);
+
+                    try {
+                        File f = new File(realPath + "/"+ fileName);
+                        if (f.exists()) {
+                            System.out.println("already exist");
+                        } else {
+                            mfile.transferTo(f);
+                            MeetingImage meetingImage = MeetingImage.builder()
+                                    .meetingIdx(meeting_idx)
+                                    .imageUrl(path+"/"+fileName)
+                                    .build();
+                            meetingImageRepository.save(meetingImage);
+                            System.out.println("upload images success");
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        System.out.println("upload images error");
+                    }
+                }
+            }
+            isSuccess = true;
+        }
+        return isSuccess;
     }
 
     public boolean deleteMeeting(Integer id){

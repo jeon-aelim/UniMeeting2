@@ -38,44 +38,30 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
 			throws AuthenticationException, IOException {
-
 		System.out.println("JwtAuthenticationFilter : 진입");
 
-		// request에 있는 username과 password를 파싱해서 자바 Object로 받기
-		ObjectMapper om = new ObjectMapper();
-		LoginRequestDto loginRequestDto = null;
-		System.out.println(request.getAttribute("userId"));
-			System.out.println("--------------------------------------");
 		try {
-			loginRequestDto = om.readValue(request.getInputStream(), LoginRequestDto.class);
-		} catch (Exception e) {
+			ObjectMapper om = new ObjectMapper();
+			LoginRequestDto loginRequestDto = om.readValue(request.getInputStream(), LoginRequestDto.class);
+
+			System.out.println("JwtAuthenticationFilter : " + loginRequestDto);
+
+			// 유저네임패스워드 토큰 생성
+			UsernamePasswordAuthenticationToken authenticationToken =
+					new UsernamePasswordAuthenticationToken(loginRequestDto.getUserId(), loginRequestDto.getPassword());
+
+			System.out.println("JwtAuthenticationFilter : 토큰 생성 완료");
+
+			// 문제가 발생하는 부분 주변에 로그를 추가하여 어느 부분에서 문제가 발생하는지 확인하세요.
+			Authentication authentication = authenticationManager.authenticate(authenticationToken);
+
+			MyUserDetails principalDetails = (MyUserDetails) authentication.getPrincipal();
+			System.out.println("Authentication : " + principalDetails.getUser().getUserId());
+			return authentication;
+		} catch (IOException e) {
 			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
-
-		System.out.println("JwtAuthenticationFilter : "+loginRequestDto);
-
-		// 유저네임패스워드 토큰 생성
-		UsernamePasswordAuthenticationToken authenticationToken =
-				new UsernamePasswordAuthenticationToken(
-						loginRequestDto.getUserId(),
-						loginRequestDto.getPassword());
-
-		System.out.println("JwtAuthenticationFilter : 토큰생성완료");
-		System.out.println(authenticationToken);
-		// authenticate() 함수가 호출 되면 AuthenticationProvider가 UserDetailsService 객체의
-		// loadUserByUsername(토큰의 첫 번째 파라미터 값) 를 호출하고
-		// UserDetails를 리턴받아서 토큰의 두 번째 파라미터(credential)값과
-		// UserDetails(DB값)의 getPassword()함수로 비교해서 동일하면
-		// Authentication 객체를 만들어서 필터체인으로 리턴해준다.
-
-		// Tip: AuthenticationProvider의 디폴트 서비스는 UserDetailsService 타입
-		// Tip: AuthenticationProvider의 디폴트 암호화 방식은 BCryptPasswordEncoder 타입
-		Authentication authentication =
-				authenticationManager.authenticate(authenticationToken);
-
-		MyUserDetails principalDetailis = (MyUserDetails) authentication.getPrincipal();
-		System.out.println("Authentication : "+principalDetailis.getUser().getUserId());
-		return authentication;
 	}
 
 	// JWT Token 생성해서 response에 담아주기

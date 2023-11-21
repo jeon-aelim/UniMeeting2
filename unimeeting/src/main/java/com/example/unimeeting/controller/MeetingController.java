@@ -43,7 +43,7 @@ import java.util.Map;
 public class MeetingController {
 
     private final MeetingService meetingService;
-    private final JwtService jwtService;
+    private final JwtServiceImpl jwtService;
 
     // Security 구현 전 테스트용 user 객체
     User user = new User(54, "dohoi", "1234", "도히", "dohoi@gmail.com", "코딩,요리,게임", "01022222222", "USER");
@@ -85,10 +85,11 @@ public class MeetingController {
     // JsonFormat, String 타입으로 전달되는 createdDateTime 을  LocalDateTime 타입으로 인식하기 위해 설정
     @PostMapping(consumes = "multipart/form-data")
 //    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm")
-    public ResponseEntity<CudResponse> uploadMeeting(@RequestPart(value = "meetingData") @Valid AddMeetingRequest request, @RequestPart(value = "file", required = false) MultipartFile[] mreq) {
+    public ResponseEntity<CudResponse> uploadMeeting(@RequestHeader(value = "Authorization", required = false) String token, @RequestPart(value = "meetingData") @Valid AddMeetingRequest request, @RequestPart(value = "file", required = false) MultipartFile[] mreq) {
 
         CudResponse cudResponse = new CudResponse();
-        boolean isSuc = meetingService.addMeeting(request, user, mreq);
+        int user_idx = jwtService.getId(token);
+        boolean isSuc = meetingService.addMeeting(request, user_idx, mreq);
         ResponseEntity<CudResponse> response;
         cudResponse.setSuccess(isSuc);
         cudResponse.setMessage(isSuc ? "글이 작성되었습니다.": "작성 도중 오류가 발생했습니다.");
@@ -108,14 +109,23 @@ public class MeetingController {
     }
 
     // 미팅 글 수정
-    @PutMapping("/{idx}")
+    @PutMapping(value = "/{idx}",consumes = "multipart/form-data")
     @Transactional
-    public ResponseEntity<Meeting> updateMeeting( @PathVariable int idx, @RequestBody UpdateMeetingRequest update){
-        System.out.println(update);
-        Meeting meeting = meetingService.updateMeeting(idx, update);
+    public ResponseEntity<CudResponse> updateMeeting( @PathVariable int idx, @RequestParam(value = "meetingData") @Valid  UpdateMeetingRequest update,@RequestPart(value = "file", required = false) MultipartFile[] mreq){
+        HttpStatus status;
+        CudResponse response = new CudResponse();
+        if (meetingService.updateMeeting(idx, update, mreq)){
+            status = HttpStatus.OK;
+            response.setSuccess(true);
+            response.setMessage("수정이 완료되었습니다.");
+        }else{
+            status = HttpStatus.BAD_REQUEST;
+            response.setSuccess(false);
+            response.setMessage("처리 도중 오류가 발생했습니다. \n다시 시도해 주세요.");
+        }
         return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(meeting);
+                .status(status)
+                .body(response);
     }
 
     // 미팅 글 삭제
