@@ -11,10 +11,11 @@ public class CorsConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.addAllowedOrigin("http://localhost:5173");
-//        config.addAllowedOrigin("*"); // e.g. http://domain1.com
+        config.addAllowedOrigin("http://localhost:5173"); // e.g. http://domain1.com
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
+        config.addExposedHeader("Authorization");
+        config.setAllowCredentials(true);
         source.registerCorsConfiguration("/**", config);// /api/** 패턴의 엔드포인트에 대한 CORS패턴 등록 수정해야함
         return new CorsFilter(source);
     }

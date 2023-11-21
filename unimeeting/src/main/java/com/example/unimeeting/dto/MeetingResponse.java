@@ -26,8 +26,9 @@ public class MeetingResponse {
     private List<String> images;
     private boolean isWriter;
     private boolean isApplicant;
+    private boolean isScrap;
 
-    public MeetingResponse(Meeting meeting, Integer currentRecruits, List<String> images, Boolean isWriter, Boolean isApplicant){
+    public MeetingResponse(Meeting meeting, Integer currentRecruits, List<String> images, Boolean isWriter, Boolean isApplicant, Boolean isScrap){
         this.idx = meeting.getIdx();
         this.title = meeting.getTitle();
         this.content = meeting.getContent();
@@ -42,6 +43,6 @@ public class MeetingResponse {
         this.images = images;
         this.isWriter = isWriter;
         this.isApplicant = isApplicant;
-
+        this.isScrap = isScrap;
     }
 }

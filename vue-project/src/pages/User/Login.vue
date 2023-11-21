@@ -1,18 +1,10 @@
 <template>
     <UserLogin></UserLogin>
+
 </template>
-
-<script>
-import UserLogin from '@/components/UserLogin.vue';
-
-
-export default {
-  components: {
-  UserLogin,
-  }
-}
+<script setup>
+import UserLogin from "@/components/UserLogin.vue"
 </script>
-
 <style>
 .study {
   color: blue;

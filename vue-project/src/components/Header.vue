@@ -20,14 +20,14 @@
 
             <div v-if="user">
                 <div class="nav-button">
-                    <button class="base-button side-button" onclick="location.href='/userRegister.html'">회원가입</button>
-                    <button class="base-button" onclick="location.href='/userLogin.html'">로그인</button>
+                    <button class="base-button side-button" onclick="location.href='/user/register'">회원가입</button>
+                    <button class="base-button" onclick="location.href='/user/login'">로그인</button>
                 </div>
             </div>
             <div v-else="user">
                 <div class="nav-button">
                     <button class="base-button  side-button" onclick="location.href='/mypage'">마이페이지</button>
-                    <button class="base-button" onclick="location.href='/logout'">로그아웃</button>
+                    <button class="base-button" onclick="location.href=logout">로그아웃</button>
                 </div>
             </div>
         </div>
@@ -36,8 +36,11 @@
 
 <script setup>
     let user = false;
+    const logout = () => {
+        // get, localhost:8090/user/logout -> token
+    }
 </script>
 
-<style>
+<style scoped>
 @import '@/assets/css/nav.css';
 </style>

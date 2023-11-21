@@ -9,6 +9,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import com.example.unimeeting.repository.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -35,12 +36,16 @@ public class SpringSecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
+    public WebSecurityCustomizer configure() throws Exception {
+        // ? : 1개의 문자와 매칭
+        // * : 0개 이상의 문자와 매칭
+        // ** : 0개 이상의 디렉토리와 파일 매칭
+        // images/**을 요청하면 인증절차 없이 클라이언트에 응답
+        return (web) -> web.ignoring().requestMatchers("/imgaes/**");
     }
 
     @Bean
-    protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    protected SecurityFilterChain customSecurityFilterChain(HttpSecurity http) throws Exception {
         http
                 .addFilter(corsConfig.corsFilter())
                 .csrf().disable()
@@ -48,11 +53,11 @@ public class SpringSecurityConfig {
                 .and()
                 .formLogin().disable()
                 .httpBasic().disable()
-                .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-                .addFilter(jwtAuthorizationFilter())
+//                .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+//                .addFilter(jwtAuthorizationFilter())
                 .authorizeHttpRequests()
-//                .requestMatchers("/boards/**","/user/login","/user/join").permitAll()
-                .requestMatchers("/**").permitAll()
+                .requestMatchers("/user/login","/user/register").permitAll()
+//                .requestMatchers("/**").permitAll()
                 .anyRequest().authenticated();
         return http.build();
     }
@@ -60,18 +65,12 @@ public class SpringSecurityConfig {
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
         System.out.println("등록");
-        JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManagerBean());
+        JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationConfiguration.getAuthenticationManager());
         return jwtAuthenticationFilter;
     }
 
     @Bean
     public JwtAuthorizationFilter jwtAuthorizationFilter() throws Exception {
-        return new JwtAuthorizationFilter(authenticationManagerBean(), UserRepository);
+        return new JwtAuthorizationFilter(authenticationConfiguration.getAuthenticationManager(), UserRepository);
     }
 }
-
-
-
-
-
-

@@ -1,5 +1,6 @@
 package com.example.unimeeting.config.auth;
 
+import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+@ToString
 public class MyUserDetails implements UserDetails {
     private User user;
 
@@ -18,15 +20,6 @@ public class MyUserDetails implements UserDetails {
     public User getUser(){
         return user;
     }
-
-
-
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("user"));
-    }
-
     @Override
     public String getUsername() {
         return user.getUserId();
@@ -57,4 +50,8 @@ public class MyUserDetails implements UserDetails {
         return true;
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority("user"));
+    }
 }

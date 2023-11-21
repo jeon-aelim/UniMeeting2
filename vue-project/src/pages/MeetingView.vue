@@ -1,8 +1,7 @@
 <template>
-    모임 상세 페이지
-    {{ $route.params }}
+    <MeetingDetail :meeting_idx="$route.params.idx"></MeetingDetail>
 </template>
 
 <script setup>
-    // console.log(window.location.href)
+import MeetingDetail from '@/components/MeetingDetail.vue';
 </script>

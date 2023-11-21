@@ -1,8 +1,15 @@
 package com.example.unimeeting.controller;
 
+import com.auth0.jwt.interfaces.Claim;
 import com.example.unimeeting.domain.Meeting;
+import com.example.unimeeting.domain.Scrap;
 import com.example.unimeeting.dto.MeetingResponse;
+import com.example.unimeeting.service.JwtService;
+import com.example.unimeeting.service.JwtServiceImpl;
 import com.example.unimeeting.service.MeetingService;
+import io.jsonwebtoken.Claims;
+import jakarta.validation.Valid;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,7 +26,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartRequest;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -27,17 +38,26 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/meetings")
+@CrossOrigin(origins = "*")
 @RequiredArgsConstructor
 public class MeetingController {
 
     private final MeetingService meetingService;
+    private final JwtService jwtService;
 
     // Security 구현 전 테스트용 user 객체
-    User user = new User(52, "aelim", "1234", "aa", "devaelim@gmail.com", "코딩", "01092708011", "USER");
+    User user = new User(54, "dohoi", "1234", "도히", "dohoi@gmail.com", "코딩,요리,게임", "01022222222", "USER");
+
+    @GetMapping("/category")
+    public ResponseEntity<List<String>> getCategory(){
+        return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(meetingService.findCatogory());
+    }
 
     // 미팅 글 리스트 조회
     @GetMapping
-    public ResponseEntity<List<MeetingWithDetailsDTO>> getMeetings(@RequestParam(required = false) String category,
+    public ResponseEntity<List<MeetingWithDetailsDTO>> getMeetings(@RequestParam(value ="ctgr", required = false) String category,
                                                                    @RequestParam(defaultValue = "") String search){
         List<MeetingWithDetailsDTO> response;
 
@@ -52,8 +72,9 @@ public class MeetingController {
 
     // 미팅 글 하나 조회
     @GetMapping("/{idx}")
-    public ResponseEntity<MeetingResponse> getOneMeeting(@PathVariable int idx){
-        MeetingResponse response = meetingService.getMeetingOne(idx,user);
+    public ResponseEntity<MeetingResponse> getOneMeeting(@RequestHeader (value = "Authorization", required = false) String token, @PathVariable int idx){
+        int user_idx = jwtService.getId(token);
+        MeetingResponse response = meetingService.getMeetingOne(idx,user_idx);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(response);
@@ -62,14 +83,19 @@ public class MeetingController {
 
     // 미팅 글 생성
     // JsonFormat, String 타입으로 전달되는 createdDateTime 을  LocalDateTime 타입으로 인식하기 위해 설정
-    @PostMapping
-    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm")
-    public ResponseEntity<Meeting> uploadMeeting(@RequestBody AddMeetingRequest request){
-        Meeting meeting = meetingService.addMeeting(request, user);
+    @PostMapping(consumes = "multipart/form-data")
+//    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm")
+    public ResponseEntity<CudResponse> uploadMeeting(@RequestPart(value = "meetingData") @Valid AddMeetingRequest request, @RequestPart(value = "file", required = false) MultipartFile[] mreq) {
+
+        CudResponse cudResponse = new CudResponse();
+        boolean isSuc = meetingService.addMeeting(request, user, mreq);
+        ResponseEntity<CudResponse> response;
+        cudResponse.setSuccess(isSuc);
+        cudResponse.setMessage(isSuc ? "글이 작성되었습니다.": "작성 도중 오류가 발생했습니다.");
 
         return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(meeting);
+                .status(isSuc? HttpStatus.CREATED : HttpStatus.BAD_REQUEST)
+                .body(cudResponse);
     }
 
     // 수정할 글 불러오기
@@ -84,7 +110,7 @@ public class MeetingController {
     // 미팅 글 수정
     @PutMapping("/{idx}")
     @Transactional
-    public ResponseEntity<Meeting> updateMeeting(@PathVariable int idx, @RequestBody UpdateMeetingRequest update){
+    public ResponseEntity<Meeting> updateMeeting( @PathVariable int idx, @RequestBody UpdateMeetingRequest update){
         System.out.println(update);
         Meeting meeting = meetingService.updateMeeting(idx, update);
         return ResponseEntity
@@ -104,16 +130,35 @@ public class MeetingController {
         }else{
             status = HttpStatus.BAD_REQUEST;
             response.setSuccess(false);
-            response.setMessage("처리 도중 오류 발생");
+            response.setMessage("처리 도중 오류가 발생했습니다. \n다시 시도해 주세요.");
         }
         return ResponseEntity
                 .status(status)
                 .body(response);
     }
 
-    @PostMapping("/apply")
-    public ResponseEntity<Member> addMember(@RequestBody AddMemberRequest request){
-        Member response = meetingService.addMember(request);
+    @PostMapping("/apply/{meeting_idx}")
+    public ResponseEntity<CudResponse> addMember(@RequestHeader (value = "Authorization", required = false) String token, @PathVariable int meeting_idx){
+
+        CudResponse response = new CudResponse();
+        if(token == null ){
+            response.setSuccess(false);
+            response.setMessage("로그인 후 이용 가능한 서비스입니다.");
+        }else{
+            System.out.println("참가신청 토큰");
+            int user_idx = jwtService.getId(token);
+
+            try{
+                Member member = meetingService.addMember(meeting_idx, user_idx);
+                response.setSuccess(true);
+                response.setMessage("신청이 완료되었습니다!");
+            }catch (Exception e){
+                response.setSuccess(false);
+                response.setMessage("처리 도중 오류가 발생했습니다. \n다시 시도해 주세요.");
+                e.printStackTrace();
+            }
+
+        }
 
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -122,23 +167,13 @@ public class MeetingController {
 
     @PutMapping("/apply/{idx}")
     @Transactional
-    public ResponseEntity<Member> acceptAcceptApply(@PathVariable int idx){
-        Member response = meetingService.updateMember(idx);
-
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(response);
-    }
-
-    // User = 신청자 or 글 작성자
-    @DeleteMapping("apply/{idx}")
-    public ResponseEntity<CudResponse> deleteMember(@PathVariable int idx){
+    public ResponseEntity<CudResponse> acceptAcceptApply(@PathVariable int idx){
         HttpStatus status;
         CudResponse response = new CudResponse();
-        if (meetingService.deleteMember(idx)){
+        if (meetingService.updateMember(idx)){
             status = HttpStatus.OK;
             response.setSuccess(true);
-            response.setMessage("삭제되었습니다.");
+            response.setMessage("완료되었습니다.");
         }else{
             status = HttpStatus.BAD_REQUEST;
             response.setSuccess(false);
@@ -148,6 +183,89 @@ public class MeetingController {
                 .status(status)
                 .body(response);
     }
+
+    // User = 신청자 or 글 작성자
+    @DeleteMapping("/apply/{meeting_idx}")
+        public ResponseEntity<CudResponse> deleteMember(@RequestHeader(value = "Authorization", required = false) String token, @PathVariable int meeting_idx, @RequestParam(required = false) Integer user_idx){
+        HttpStatus status;
+        CudResponse response = new CudResponse();
+
+        // 사용자가 신청을 취소한 경우, user_idx를 token에서 가져옴
+        // 글 작성자가 신청을 거절한 경우, parameter로 오는 user_idx를 이용해 삭제
+        if( user_idx == null ){
+            user_idx = jwtService.getId(token);
+        }
+
+        if (meetingService.deleteMember(meeting_idx, user_idx)){
+            status = HttpStatus.OK;
+            response.setSuccess(true);
+            response.setMessage("신청이 취소되었습니다.");
+        }else{
+            status = HttpStatus.BAD_REQUEST;
+            response.setSuccess(false);
+            response.setMessage("처리 도중 오류 발생");
+        }
+        return ResponseEntity
+                .status(status)
+                .body(response);
+    }
+
+    @GetMapping("/applicants/{idx}")
+    public  ResponseEntity<List<MemberResponse>> getMember(@PathVariable int idx){
+        List<MemberResponse> list = meetingService.getMember(idx);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(list);
+    }
+
+    @PostMapping("/scrap/{meeting_idx}")
+    public ResponseEntity<CudResponse> addScrap(@RequestHeader (value = "Authorization", required = false) String token, @PathVariable Integer meeting_idx){
+
+        CudResponse response = new CudResponse();
+        if(token == null ){
+            response.setSuccess(false);
+            response.setMessage("로그인 후 이용 가능한 서비스입니다.");
+        }else {
+            int user_idx = jwtService.getId(token);
+            if (meetingService.addScrap(meeting_idx, user_idx)) {
+                response.setSuccess(true);
+                response.setMessage("스크랩이 완료되었습니다!");
+            } else {
+                response.setSuccess(false);
+                response.setMessage("처리 도중 오류가 발생했습니다. \n다시 시도해 주세요.");
+            }
+        }
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(response);
+    }
+
+    @DeleteMapping("/scrap/{meeting_idx}")
+    public ResponseEntity<CudResponse> deleteScrap(@RequestHeader (value = "Authorization", required = false) String token, @PathVariable Integer meeting_idx){
+        CudResponse response = new CudResponse();
+        if(token == null ){
+            response.setSuccess(false);
+            response.setMessage("로그인 후 이용 가능한 서비스입니다.");
+        }else {
+            int user_idx = jwtService.getId(token);
+            if (meetingService.deleteScrap(meeting_idx, user_idx)) {
+                response.setSuccess(true);
+                response.setMessage("스크랩이 취소되었습니다.");
+            } else {
+                response.setSuccess(false);
+                response.setMessage("처리 도중 오류가 발생했습니다. \n다시 시도해 주세요.");
+            }
+        }
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(response);
+    }
+
+
+
 
 }
 

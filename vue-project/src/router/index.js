@@ -12,6 +12,8 @@ import Write from '@/pages/Board/Write.vue'
 //User
 import Register from '@/pages/User/Register.vue'
 import Login from '@/pages/User/Login.vue'
+import createMeeting from '@/pages/CreateMeeting.vue'
+import updateMeeting from '@/pages/UpdateMeeting.vue'
 
 const router = createRouter({
     history: createWebHistory(),
@@ -28,6 +30,8 @@ const router = createRouter({
         { path: '/boards/:type/write', component: Write},
         { path: '/user/register', component:Register},
         { path: '/user/login', component: Login },
+        { path: '/meeting/goInsertMet', component: createMeeting },
+        { path: '/meeting/goUpdateMet/:meeting_idx', component: updateMeeting },
         // { path: '/boards/type/notice', component: Notice },
         // { path: '/boards/:idx', component:BoardDetail},
     ]

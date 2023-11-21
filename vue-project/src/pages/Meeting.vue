@@ -1,12 +1,69 @@
 <template>
     모임 페이지
-    <div>
-        <!-- 모임 상세페이지 이동 router -->
-        <router-link :to="`meeting/${idx}`">{{ idx }}</router-link>
-        <div class="모임 칸" v-for="(key, index) in 5"> <router-link :to="`meeting/${key+60}`">{{ key+60 }}</router-link> </div>
+    <div class="page-container">
+        <Side @chage-category="chageCategory"></Side>
+
+        <div class="contents-right">
+            <div class="meeting-search">
+                <form id="search" @submit.prevent="meetingForm"> <!--url 동적 변경-->
+                    <div class="search-label">
+                        <label><input id="search-submit" type="image" src="src/assets/images/icon-search.png" alt="검색"></label>
+                        <label><input id="search-text" v-model="search" required /><br></label>
+                    </div>
+                </form>
+                <button class="make-meeting-button" onclick="location.href = '/meeting/goInsertMet'" >모임 만들기</button>
+            </div>
+
+            <Contain :category="getCategory"></Contain>
+        </div>
     </div>
 </template>
 
 <script setup>
-    let idx = 55
+    import Side from '@/components/MeetingSide.vue';
+    import Contain from '@/components/MeetingContain.vue';
+    import { ref, computed } from 'vue';
+    import { api, cleardiv } from '@/public/common';
+    import { makeMeetingBlock } from '@/public/makeBlock';
+    let category = ref("");
+    let url = ref("http://localhost:8090/meetings");
+
+    let search = "";
+
+    api(url.value, "get").then(meetings => {
+        cleardiv()
+        for(let o of meetings){
+            makeMeetingBlock(o);
+        }
+    })
+
+    function chageCategory(data){
+        category.value = data;
+        url.value = `http://localhost:8090/meetings?ctgr=${category.value}`;
+    }
+
+    const meetingForm = () => {
+        cleardiv()
+        api(url.value + `&search=${search}`, "get").then(meetings => {
+            for(let o of meetings){
+                makeMeetingBlock(o);
+            }
+        })
+    }
+
+    const getCategory = computed(() => category.value);
 </script>
+
+<style >
+    @import '@/assets/css/meeting.css';
+    @import '@/assets/css/meetingBox.css';
+    .page-container {
+        display: flex !important;
+        flex-direction: row !important;
+        justify-content: center !important;
+        /* background-color: aquamarine; */
+        /* position: relative; */
+        /* width: 1440px;
+        height: 880px; */
+    }
+</style>

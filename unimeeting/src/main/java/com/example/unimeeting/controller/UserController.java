@@ -1,17 +1,19 @@
 package com.example.unimeeting.controller;
 
 import com.example.unimeeting.domain.User;
+import com.example.unimeeting.dto.LoginRequestDto;
 import com.example.unimeeting.repository.UserRepository;
+import com.example.unimeeting.service.JwtService;
+import com.example.unimeeting.service.JwtServiceImpl;
 import com.example.unimeeting.service.UserDetailService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,13 +27,13 @@ import java.util.Optional;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/user")
+@CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*",exposedHeaders = "Authorization", allowCredentials = "true")
 public class UserController {
     private final UserDetailService userDetailService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final UserRepository userRepository;
-
-
-
+    private final JwtServiceImpl jwtService;
+    private final BCryptPasswordEncoder passwordEncoder;
     //아이디로 사용자 확인
 //    @GetMapping("/user_id/{user_id}")
 //    public ResponseEntity<User> getUserById(@PathVariable String user_id) {
@@ -98,14 +100,31 @@ public class UserController {
     public ResponseEntity<String> register(@RequestBody User user) {
         System.out.println(user);
         try {
-            userDetailService.register(user.getUserId(), user.getPassword(),user.getNickname(),user.getEmail(),user.getCategory(),user.getPhoneNumber());
-            return ResponseEntity.ok("가입 성공ㅋ");
+            userDetailService.register(user.getUserId(), user.getPassword(),user.getNickname(),user.getEmail(), user.getCategory(),user.getPhoneNumber(),user.getRole());
+            return ResponseEntity.ok("성공적으로 회원 가입이 진행되었습니다.");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("가입 실패");
         }
     }
-    @PostMapping("/login")
-    public String login() {
-        return "토큰 발행 완료";
+    @PostMapping("login")
+    public ResponseEntity<String> login(@RequestBody LoginRequestDto request) {
+//        System.out.println(request.getPassword());
+//        User user = userDetailService.findByUserIdAndPassword(request.getUserId(), passwordEncoder.encode(request.getPassword()))
+//                .orElseThrow(() -> new IllegalArgumentException());
+//
+//        int idx = user.getIdx();
+//        String token = jwtService.getToken("idx", idx);
+//        MultiValueMap<String, String> header = new LinkedMultiValueMap<>();
+//        header.add("token", token);
+
+        return new ResponseEntity<>("로그인이 완료되었습니다.", HttpStatus.OK);
+    }
+
+    @GetMapping("logout")
+    public ResponseEntity<String> logout(@RequestHeader(value = "Authorization", required = false) String token){
+        MultiValueMap<String, String> header = new LinkedMultiValueMap<>();
+
+        header.add("Authorization", "delete");
+        return new ResponseEntity<>("로그아웃되었습니다.", header, HttpStatus.OK);
     }
 }

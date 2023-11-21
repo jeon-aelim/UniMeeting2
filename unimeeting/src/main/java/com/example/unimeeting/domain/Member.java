@@ -1,15 +1,13 @@
 package com.example.unimeeting.domain;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 @Entity
 @Table(name = "member")
 @Getter
 @ToString
+@NoArgsConstructor
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,7 +15,7 @@ public class Member {
 
     private boolean accepted;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_idx")
     private User user;
 
