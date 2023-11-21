@@ -27,8 +27,8 @@ public class SpringSecurityConfig {
     @Autowired
     private CorsConfig corsConfig;
 
-//    @Autowired
-//    private AuthenticationConfiguration authenticationConfiguration;
+    @Autowired
+    private AuthenticationConfiguration authenticationConfiguration;
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -62,7 +62,6 @@ public class SpringSecurityConfig {
         return http.build();
     }
 
-<<<<<<< HEAD
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
         System.out.println("등록");
@@ -75,23 +74,3 @@ public class SpringSecurityConfig {
         return new JwtAuthorizationFilter(authenticationConfiguration.getAuthenticationManager(), UserRepository);
     }
 }
-=======
-//    @Bean
-//    public JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
-//        System.out.println("등록");
-//        JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationConfiguration.getAuthenticationManager());
-//        return jwtAuthenticationFilter;
-//    }
-//
-//    @Bean
-//    public JwtAuthorizationFilter jwtAuthorizationFilter() throws Exception {
-//        return new JwtAuthorizationFilter(authenticationConfiguration.getAuthenticationManager(), UserRepository);
-//    }
-}
-
-
-
-
-
-
->>>>>>> DH

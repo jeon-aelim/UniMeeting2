@@ -1,18 +1,21 @@
 <template>
     <div class="contents-right">
         <div id="info_result"></div>
+        <component :is="currentComponent" :userObj="user[0]" v-if="currentComponent"></component>
     </div>
 </template>
 
 <script setup>
     import { defineProps, watch, computed, reactive  } from 'vue'; 
     
-    import { api } from '@/public/common';
-    import { makeMeetingBlock } from '@/public/meetingBlock'
+    import { api, cleardiv } from '@/public/common';
+    import { makeMeetingBlock, makeMyinfoBlock, makeWithDraw } from '@/public/makeBlock'
+    import MyInfo from '@/components/MypageMyInfo.vue';
+    import Withdraw from '@/components/MypageWithDraw.vue';
 
-    let url = "http://localhost:8090/mypage/meetings/";
+    let url = "http://localhost:8090/mypage/meetings";
     let meetings = reactive([]);
-    api(url + "participated", "get").then(data => {
+    api(url + "/participated", "get").then(data => {
         for(let o of data){
             makeMeetingBlock(o);
         }
@@ -27,33 +30,45 @@
         getMeeting(cur, url)
       }
     )
+
+    let user = []
+    api("http://localhost:8090/user/minjae", "get", {}).then(data => {user.push(data)})
+
+    let currentComponent = null;
     function getMeeting(s, url) {
-        url = "http://localhost:8090/mypage/meetings/";
+        url = "http://localhost:8090/mypage/meetings";
+        let flag = true
+        currentComponent = null;
         cleardiv()
         switch(s){
             case "attend":
-                url += "participated";
-                break
+                url += "/participated";
+                break;
             case "create":
-                url += "created";
-                break
+                url += "/created";
+                break;
             case "scrap":
-                url += "scraped"
-                break
+                url += "/scraped"
+                break;
+            case "myInfo":
+                flag = false;
+                currentComponent = MyInfo;
+                break;
+            case "withDraw":
+                currentComponent = Withdraw;
+                flag = false;
         }
-        api(url, "get").then(meetings => {
-            for(let o of meetings){
-                makeMeetingBlock(o);
-            }
-        })
-        // console.log(url);
-    }
 
-    function cleardiv() {
-        let myDiv = document.getElementById("info_result");
-        // console.log(myDiv);
-        myDiv.innerHTML = "";
-    }
+        if(flag) {
+            api(url, "get").then(meetings => {
+                for(let o of meetings){
+                    makeMeetingBlock(o);
+                }
+            })
+        } else {
+
+        }
+    } 
 </script>
 
 <style scoped>

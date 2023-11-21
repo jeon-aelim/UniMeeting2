@@ -1,9 +1,3 @@
-<style scoped>
-@import '@/assets/css/mypage.css';
-* {
-    margin: 5px;
-}
-</style>
 <template>
     <Side @chage-state="chageState"></Side>
     <Contain :state="getState"></Contain>
@@ -23,4 +17,11 @@
     const getState = computed(() => state.value);
 
 </script>
+<style scoped>
+@import '@/assets/css/mypage.css';
+@import '@/assets/css/mypage_user_edit.css';
 
+* {
+    margin: 5px;
+}
+</style>

@@ -25,6 +25,7 @@
 
 <style scoped>
 @import '@/assets/css/mypage.css';
+@import '@/assets/css/mypage_user_edit.css';
 * {
     margin: 5px;
 }

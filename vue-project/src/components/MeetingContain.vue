@@ -4,8 +4,8 @@
 
 <script setup>
     import { defineProps, watch, computed, reactive  } from 'vue'; 
-    import { api } from '@/public/common';
-    import { makeMeetingBlock } from '@/public/meetingBlock';
+    import { api, cleardiv } from '@/public/common';
+    import { makeMeetingBlock } from '@/public/makeBlock';
 
     const p = defineProps({
         category : String
@@ -34,11 +34,7 @@
         // console.log(url);
     }
 
-    function cleardiv() {
-        let myDiv = document.getElementById("info_result");
-        console.log(myDiv);
-        myDiv.innerHTML = "";
-    }
+    
 </script>
 
 <style scoped>
