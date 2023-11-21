@@ -42,8 +42,8 @@ public class MypageService {
   }
 
 //  생성한 소모임 리스트
-    public List<MeetingWithDetailsDTO> createMeeting(String nickname) {
-        List<Meeting> list = meetingR.findByUserNickname(nickname);
+    public List<MeetingWithDetailsDTO> createMeeting(int idx) {
+        List<Meeting> list = meetingR.findByUserIdx(idx);
         List<MeetingWithDetailsDTO> listDTO = new ArrayList<>();
         MeetingWithDetailsDTO dto;
 

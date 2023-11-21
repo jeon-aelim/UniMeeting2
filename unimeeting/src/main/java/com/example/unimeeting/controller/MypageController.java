@@ -2,6 +2,8 @@ package com.example.unimeeting.controller;
 
 import com.example.unimeeting.domain.User;
 import com.example.unimeeting.dto.MeetingWithDetailsDTO;
+import com.example.unimeeting.service.JwtService;
+import com.example.unimeeting.service.JwtServiceImpl;
 import com.example.unimeeting.service.MypageService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -19,17 +21,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor()
 @RequestMapping("/mypage")
-@CrossOrigin(origins="*")
+@CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*",exposedHeaders = "Authorization", allowCredentials = "true")
 public class MypageController {
 
     private final MypageService service;
-
+    private final JwtServiceImpl jwtService;
     @Operation(summary = "모임 리스트를 출력")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "참여 모임 리스트",
@@ -37,8 +40,10 @@ public class MypageController {
                 schema = @Schema(implementation = MeetingWithDetailsDTO.class)) })
     })
     @GetMapping("/meetings/participated")
-    public ResponseEntity<List<MeetingWithDetailsDTO>> attendList() {
-        ResponseEntity<List<MeetingWithDetailsDTO>> entity = new ResponseEntity<>(service.joinMeeting(52), HttpStatus.OK);
+    public ResponseEntity<List<MeetingWithDetailsDTO>> attendList(@RequestHeader(value = "Authorization", required = false) String token) {
+        System.out.println("=".repeat(50)+jwtService.getId(token));
+        ResponseEntity<List<MeetingWithDetailsDTO>> entity = new ResponseEntity<>(service.joinMeeting(
+            jwtService.getId(token)), HttpStatus.OK);
 
         return entity;
     }
@@ -50,8 +55,9 @@ public class MypageController {
                 schema = @Schema(implementation = MeetingWithDetailsDTO.class)) })
     })
     @GetMapping("/meetings/created")
-    public ResponseEntity<List<MeetingWithDetailsDTO>> createList() {
-        ResponseEntity<List<MeetingWithDetailsDTO>> entity = new ResponseEntity<>(service.createMeeting("aa"), HttpStatus.OK);
+    public ResponseEntity<List<MeetingWithDetailsDTO>> createList(@RequestHeader(value = "Authorization", required = false) String token) {
+        System.out.println("=".repeat(50)+jwtService.getId(token));
+        ResponseEntity<List<MeetingWithDetailsDTO>> entity = new ResponseEntity<>(service.createMeeting(jwtService.getId(token)), HttpStatus.OK);
         return entity;
     }
 
@@ -62,8 +68,9 @@ public class MypageController {
                 schema = @Schema(implementation = MeetingWithDetailsDTO.class)) })
     })
     @GetMapping("/meetings/scraped")
-    public ResponseEntity<List<MeetingWithDetailsDTO>> scrapList() {
-        ResponseEntity<List<MeetingWithDetailsDTO>> entity = new ResponseEntity<>(service.scrapMeeting(52), HttpStatus.OK);
+    public ResponseEntity<List<MeetingWithDetailsDTO>> scrapList(@RequestHeader(value = "Authorization", required = false) String token) {
+        System.out.println("=".repeat(50)+jwtService.getId(token));
+        ResponseEntity<List<MeetingWithDetailsDTO>> entity = new ResponseEntity<>(service.scrapMeeting(jwtService.getId(token)), HttpStatus.OK);
         return entity;
     }
 

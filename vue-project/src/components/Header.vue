@@ -18,16 +18,16 @@
                 <router-link class="nav_text" to="/boards/type/notice" >공지사항</router-link>
             </div>
 
-            <div v-if="user">
+            <div v-if="session.lgin">
                 <div class="nav-button">
                     <button class="base-button side-button" onclick="location.href='/user/register'">회원가입</button>
                     <button class="base-button" onclick="location.href='/user/login'">로그인</button>
                 </div>
             </div>
-            <div v-else="user">
+            <div v-else="session.lgin">
                 <div class="nav-button">
                     <button class="base-button  side-button" onclick="location.href='/mypage'">마이페이지</button>
-                    <button class="base-button" onclick="location.href=logout">로그아웃</button>
+                    <button class="base-button" @click="logout">로그아웃</button>
                 </div>
             </div>
         </div>
@@ -35,10 +35,23 @@
 </template>
 
 <script setup>
-    let user = false;
-    const logout = () => {
-        // get, localhost:8090/user/logout -> token
+    import axios from 'axios';
+    import {usesessionStore} from '@/stores/sessionloginstore'
+    
+    let session = usesessionStore()
+
+    const logout = () => {      
+      axios.get("http://localhost:8090/user/logout").then((res) => {
+        if (res.headers['authorization'] == 'delete') {
+          sessionStorage.removeItem("token");
+          session.chageSession();
+        }
+        window.alert(res.data);
+      }).catch(() => {
+        window.alert("로그아웃을 수행하는 동안 오류가 발생하였습니다..");
+      });
     }
+    
 </script>
 
 <style scoped>
