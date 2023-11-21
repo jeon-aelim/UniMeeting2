@@ -1,9 +1,9 @@
 <template>
     <h1 style="font-size:40px">UniMeeting 커뮤니티에서 자유롭게 이야기 나눠보세요!</h1>
     <div class="inner">
-        <form method = "get" action ="/search" class="search">
-            <input type = "search" name = "keyword" class="search-bar" placeholder="검색어를 입력해 주세요">
-            <input type = "image" v-bind:src="myFile" value = "검색" class="searching">
+        <form id="search" @submit.prevent="meetingForm" class="search">
+            <input type = "search" v-model = "keyword" class="search-bar" placeholder="검색어를 입력해 주세요">
+            <input type = "image" :src="myFile" value = "검색" class="searching">
         </form>
     </div>
     <div class="list_container">
@@ -16,11 +16,11 @@
             <option value="start">최신순</option>
         </select>
         </div>
-            <div class="row row-cols-3 row-cols-md-3 g-4" th:if="${ list }" th:each="st : ${list}">
+            <div class="row row-cols-3 row-cols-md-3 g-4" v-if="list && list.length > 0">
                 <div class="col">
                     <div class="card">
                         <a th:href="@{/meeting/post(meeting_idx=${st.idx})}">
-                            <img th:src="${st.image_url}" onerror="this.src='/images/book.png';" class="card-img-top">
+                            <img th:src="${st.image_url}" @error="this.src='/images/book.png';" class="card-img-top">
                             <div class="card-body">
                                 <h4 class="card-title" style="font-weight: bold">[[${st.title}]]</h4>
                                 <p class="card-text">[[${st.content_text}]]</p>
@@ -37,18 +37,40 @@
 
 </template>
 
-<script>
-// import EduComp1 from '@/components/EduComp1.vue'
-// import  { ref } from Vue;
-// export default {
-//     setup(){
-//         const myFile = ref('/images/search_icon.png') 
+<script >
+    import  { ref } from 'vue';
+    // import { api, cleardiv } from '@/public/common';
+    // import { useBoardListStore } from '@/stores/boardliststore.js'
+    // import NoticeList from '@/components/NoticeList.vue';
+    export default {
+        setup(){
+            const myFile = ref('./images/search_icon.png') 
     
-//         return {
-//             myFile,
-//         }
-//     }    
-// }
+            return {
+                myFile,
+            }
+        }    
+}
+
+    // let url = ref("http://localhost:8090/meetings")
+
+    // let search = "";
+
+    // api(url.value, "get").then(meetings => {
+    //     cleardiv()
+    //     for(let o of meetings){
+    //         makeMeetingBlock(o);
+    //     }
+    // })
+
+    // const meetingForm = () => {
+    //     cleardiv()
+    //     api(url.value + `?search=${search}`, "get").then(meetings => {
+    //         for(let o of meetings){
+    //             makeMeetingBlock(o);
+    //         }
+    //     })
+    // }
 </script>
 
 <style scoped>
