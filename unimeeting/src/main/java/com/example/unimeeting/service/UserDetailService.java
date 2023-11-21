@@ -1,6 +1,7 @@
 package com.example.unimeeting.service;
 
 import com.example.unimeeting.config.auth.MyUserDetails;
+import com.example.unimeeting.config.auth.MyUserDetailsService;
 import com.example.unimeeting.domain.User;
 import com.example.unimeeting.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +16,7 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
-public class UserDetailService implements UserDetailsService {
+public class UserDetailService implements MyUserDetailsService {
 
     private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
