@@ -1,5 +1,24 @@
 <template>
     <body class="bg-light">
+        
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p v-if="registrationResult === 'success'">회원 가입이 성공적으로 완료되었습니다.</p>
+        <p v-if="registrationResult === 'failure'">회원 가입에 실패했습니다. 다시 시도해주세요.</p>ㄴ
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" @click="redirectToLogin">확인</button>
+      </div>
+    </div>
+  </div>
+</div>
+
     <div id="register_container" class="container">
         <div class="row justify-content-center">
             <div class="col-md-6">
@@ -117,6 +136,7 @@ import {api} from '@/common'
 export default {
     data() {
         return {
+            showModal:false,
             formData: {
                 userId: '',
                 password: '',
@@ -199,22 +219,24 @@ export default {
                     category : this.formData.category.toString()
                 }
                 const response = await axios.post('http://localhost:8090/user/register', obj);
-                // .then((resp) => {
-                //     console.log(resp)
-                // })
                 console.log('Server Response:', response);
-                console.log(response.data )
-                if (response.data ==="가입 성공ㅋ") {
+                console.log(response.status==200 )
+                if (response.data ==="성공적으로 회원 가입이 진행되었습니다.") {
                     console.log('가입 성공');
+                    this.registrationResult = 'success';
                     location.href = "http://localhost:5173/user/login"
                 } else {
                     console.error('아이디 또는 비밀번호가 잘못 입력되었습니다.', response.data);
+                    this.registrationResult = 'failure';
                 }
             } catch (error) {
                 console.error('서버와의 통신 중 오류가 발생했습니다.', error);
             }
         },
-
+        redirectToLogin() {
+        this.showModal = false; // Close the modal if needed
+        location.href = "http://localhost:5173/user/login";
+    },
     },
 };
 </script>

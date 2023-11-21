@@ -44,8 +44,11 @@
         };
   
         try {
-          await axios.post('http://localhost:8090/boards/write', postData);
-  
+          await axios.post('http://localhost:8090/boards/write', postData,{headers:{
+            'Authorization' : sessionStorage.getItem("token")
+          }});
+            console.log(postData)
+            
           this.$router.go(-1); // 이전 페이지로 이동
         } catch (error) {
           console.error('게시글 작성 오류:', error);
