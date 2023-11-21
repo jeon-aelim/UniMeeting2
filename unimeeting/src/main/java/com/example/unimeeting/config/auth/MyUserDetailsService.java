@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 @Service
 public interface MyUserDetailsService extends UserDetailsService{
 
-
     @Override
     public UserDetails loadUserByUsername(String user_id) throws UsernameNotFoundException;
 }
