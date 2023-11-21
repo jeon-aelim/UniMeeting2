@@ -9,16 +9,7 @@ import com.example.unimeeting.domain.User;
 import lombok.RequiredArgsConstructor;
 
 @Service
-@RequiredArgsConstructor
-public class MyUserDetailsService implements UserDetailsService{
-
-    private final UserRepository userRepository;
-
+public interface MyUserDetailsService extends UserDetailsService{
     @Override
-    public UserDetails loadUserByUsername(String user_id) throws UsernameNotFoundException {
-        System.out.println("PrincipalDetailsService : in UserDetailsService");
-        UserDetails user = new MyUserDetails(userRepository.findByUserId(user_id).get());
-
-        return user;
-    }
+    public UserDetails loadUserByUsername(String user_id) throws UsernameNotFoundException;
 }
