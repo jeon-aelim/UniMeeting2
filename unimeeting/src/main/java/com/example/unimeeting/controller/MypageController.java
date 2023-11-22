@@ -95,12 +95,11 @@ public class MypageController {
             response.setSuccess(true);
             response.setMessage("정보 변경이 완료되었습니다!");
         }
-
         else{
             response.setSuccess(false);
             response.setMessage("처리 도중 오류가 발생했습니다. \n다시 시도해 주세요.");
         }
-        return new ResponseEntity<>(response, HttpStatus.RESET_CONTENT);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @Operation(summary = "유저 Delete")
@@ -110,27 +109,26 @@ public class MypageController {
                 schema = @Schema(implementation = MeetingWithDetailsDTO.class)) })
     })
     @DeleteMapping("/user")
-    public ResponseEntity<CudResponse> deleteUser(@RequestHeader(value = "Authorization", required = false) String token, String password){
+    public ResponseEntity<CudResponse> deleteUser(@RequestHeader(value = "Authorization", required = false) String token, @RequestParam String password){
         CudResponse response = new CudResponse();
         int user_idx = jwtService.getId(token);
         User user = service.findUser(user_idx);
         System.out.println("+".repeat(80) + password);
 
-        if(user.getPassword() == passwordEncoder.encode(password)){
-            System.out.println("piz ".repeat(30));
-        }
-        boolean result = service.deleteUser(user_idx);
-//        User updaeUser = service.findUser(user_idx);
-//        boolean result = true;
-
-        if (result) {
-            response.setSuccess(true);
-            response.setMessage("저희 서비스를 이용해 주셔서 감사합니다!");
-        }
-        else{
+        if(passwordEncoder.matches(password, user.getPassword())) {
+            boolean result = service.deleteUser(user_idx);
+            if (result) {
+                response.setSuccess(true);
+                response.setMessage("저희 서비스를 이용해 주셔서 감사합니다!");
+            } else {
+                response.setSuccess(false);
+                response.setMessage("처리 도중 오류가 발생했습니다. \n다시 시도해 주세요.");
+            }
+        } else {
+            System.out.println("비번 일치 x");
             response.setSuccess(false);
-            response.setMessage("처리 도중 오류가 발생했습니다. \n다시 시도해 주세요.");
+            response.setMessage("비밀번호가 일치하지 않습니다. \n다시 확인해 주세요.");
         }
-        return new ResponseEntity<>(response, HttpStatus.RESET_CONTENT);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
