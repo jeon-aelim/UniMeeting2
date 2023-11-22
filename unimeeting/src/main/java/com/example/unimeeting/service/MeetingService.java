@@ -39,17 +39,16 @@ public class MeetingService {
 //        User user = userRepository.findById(user_idx)
 //                .orElseThrow(() -> new IllegalArgumentException);
 
-    public MeetingResponse getMeetingOne(Integer id, int user_idx){
-        User user = userRepository.findById(user_idx)
-                .orElseThrow(()-> new IllegalArgumentException());
-        MeetingResponse ms = new MeetingResponse(meetingRepository.findById(id)
+    public MeetingResponse getMeetingOne(Integer id, Integer user_idx){
+        User user = userRepository.findById(user_idx).
+                orElse(null);
+        return new MeetingResponse(meetingRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("not found : " + id)),
                 memberRepository.countByMeetingIdx(id),
                 getMeetingImages(id),
-                meetingRepository.existsByIdxAndUserNickname(id, user.getNickname()),
-                memberRepository.existsByMeetingIdxAndUserIdx(id, user.getIdx()),
-                scrapRepository.existsByMeetingIdxAndUserIdx(id, user.getIdx()));
-        return ms;
+                user != null && meetingRepository.existsByIdxAndUserNickname(id, user.getNickname()),
+                user != null && memberRepository.existsByMeetingIdxAndUserIdx(id, user.getIdx()),
+                user != null && scrapRepository.existsByMeetingIdxAndUserIdx(id, user.getIdx()));
     }
 
     public List<MeetingWithDetailsDTO> getAllMeeting(String search){
@@ -267,5 +266,19 @@ public class MeetingService {
         List<String> list = meetingImageRepository.findImageUrlByMeetingIdx(meeting_idx);
         return list;
     }
+
+    public boolean deleteImage(int meeting_idx, String url){
+        boolean isSuc = false;
+
+        try{
+            meetingImageRepository.deleteByMeetingIdxAndImageUrl(meeting_idx, url);
+            isSuc = true;
+        }catch (Exception e ){
+            e.printStackTrace();
+        }
+
+        return  isSuc;
+    }
+
 
 }

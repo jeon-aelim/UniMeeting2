@@ -82,17 +82,17 @@
             <label for="images" class="form-label">사진</label>
             <input class="form-control" type="file" id="images" @change="handleFileChange" multiple>
         </div>
-        <div v-if="meeting_idx">
-    <template v-for="url in oldImages">
+<div v-if="meeting_idx">
+    <template v-for="url in oldImaegs.values">
         <div class="position-relative" style="display: inline-block; margin: 5px;">
             <!-- 이미지 -->
             <img :src="'http://localhost:8090' + url" class="rounded m-2" style="width: 200px">
 
             <!-- 삭제 버튼 -->
-            <!-- <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0"
-                    @click="">
-                <i class="bi bi-trash"></i>
-            </button> -->
+            <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0"
+                    @click="deleteImage(url)">
+                <i class="bi bi-trash">X</i>
+            </button>
         </div>
     </template>
 </div>
@@ -119,7 +119,7 @@ let addMeeting = reactive({
     content: ''
 });
 const images = reactive([]);
-let oldImaegs = reactive([]);
+const oldImaegs = reactive([]);
 
 const props = defineProps(['meeting_idx']);
 let meeting_idx = props.meeting_idx;
@@ -135,7 +135,8 @@ if (meeting_idx) {
             addMeeting.recruits = oldMet.meeting.recruits;
             addMeeting.startDatetime = oldMet.meeting.startDatetime.slice(0, 10);
             addMeeting.content = oldMet.meeting.content;
-            oldImaegs = oldMet.imgUrl;
+            oldImaegs.values = oldMet.imgUrl;
+            console.log(oldImaegs.values)
 
         })
 }
@@ -183,7 +184,20 @@ const submitMeeting = (update) => {
         }).catch((e) => console.log(e));
     }
 }
+// deleteImage 구현해야함. 서버는 구현완
+const deleteImage = (url) => {
+    
+    // axios.post("http://localhost:8090/meetings", formData, {
+    //         headers: {
+    //             'Authorization': sessionStorage.getItem("token"),
+    //             'Content-Type': 'multipart/form-data;    boundary=----WebKitFormBoundaryYourBoundary',
+    //         },
+    //     }).then((resp) => {
+    //         window.alert(resp.data.message);
+    //         location.href = "http://localhost:5173/meetings"
+    //     }).catch((e) => console.log(e));
 
+}
 
 
 

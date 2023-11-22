@@ -1,6 +1,7 @@
 package com.example.unimeeting.controller;
 
 import com.auth0.jwt.interfaces.Claim;
+import com.example.unimeeting.config.jwt.JwtProperties;
 import com.example.unimeeting.domain.Meeting;
 import com.example.unimeeting.domain.Scrap;
 import com.example.unimeeting.dto.MeetingResponse;
@@ -12,6 +13,7 @@ import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import jakarta.validation.Valid;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -73,8 +75,11 @@ public class MeetingController {
 
     // 미팅 글 하나 조회
     @GetMapping("/{idx}")
-    public ResponseEntity<MeetingResponse> getOneMeeting(@RequestHeader (value = "Authorization", required = false) String token, @PathVariable int idx){
-        int user_idx = jwtService.getId(token);
+    public ResponseEntity<MeetingResponse> getOneMeeting(@RequestHeader (value = JwtProperties.HEADER_STRING, required = false) String token, @PathVariable int idx){
+        int user_idx = 0;
+        if(token!=null){
+            user_idx = jwtService.getId(token);
+        }
         MeetingResponse response = meetingService.getMeetingOne(idx,user_idx);
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -86,7 +91,7 @@ public class MeetingController {
     // JsonFormat, String 타입으로 전달되는 createdDateTime 을  LocalDateTime 타입으로 인식하기 위해 설정
     @PostMapping(consumes = "multipart/form-data")
 //    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm")
-    public ResponseEntity<CudResponse> uploadMeeting(@RequestHeader(value = "Authorization", required = false) String token, @RequestPart(value = "meetingData") @Valid AddMeetingRequest request, @RequestPart(value = "file", required = false) MultipartFile[] mreq) {
+    public ResponseEntity<CudResponse> uploadMeeting(@RequestHeader(value = JwtProperties.HEADER_STRING, required = false) String token, @RequestPart(value = "meetingData") @Valid AddMeetingRequest request, @RequestPart(value = "file", required = false) MultipartFile[] mreq) {
 
         CudResponse cudResponse = new CudResponse();
         int user_idx = jwtService.getId(token);
@@ -150,8 +155,9 @@ public class MeetingController {
                 .body(response);
     }
     @PostMapping("/apply/{meeting_idx}")
-    public ResponseEntity<CudResponse> addMember(@RequestHeader (value = "Authorization", required = false) String token, @PathVariable int meeting_idx){
+    public ResponseEntity<CudResponse> addMember(@RequestHeader (value = JwtProperties.HEADER_STRING, required = false) String token, @PathVariable int meeting_idx){
 
+        System.out.println("Controller token-------------------------"+token);
         CudResponse response = new CudResponse();
         if(token == null ){
             response.setSuccess(false);
@@ -276,6 +282,22 @@ public class MeetingController {
                 .body(response);
     }
 
+    @DeleteMapping("/{meeting_idx}/image/{image_url}")
+    public ResponseEntity<CudResponse> deleteImage(@PathVariable int meeting_idx,@PathVariable String image_url){
+        CudResponse response = new CudResponse();
+
+        if(meetingService.deleteImage(meeting_idx, image_url)){
+            response.setSuccess(true);
+            response.setMessage(("삭제되었습니다"));
+        }else{
+            response.setSuccess(false);
+            response.setMessage(("처리 도중 오류가 발생했습니다. \n다시 시도해 주세요."));
+        }
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(response);
+    }
 
 
 }
