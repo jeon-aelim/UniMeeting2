@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,6 +37,8 @@ public class MypageController {
 
     private final MypageService service;
     private final JwtServiceImpl jwtService;
+    private final PasswordEncoder passwordEncoder;
+
     @Operation(summary = "모임 리스트를 출력")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "참여 모임 리스트",
@@ -84,9 +87,10 @@ public class MypageController {
     public ResponseEntity<CudResponse> updateUser(@RequestHeader(value = "Authorization", required = false) String token, @RequestBody User user){
         CudResponse response = new CudResponse();
         int user_idx = jwtService.getId(token);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         System.out.println("+".repeat(80) +user);
-//        boolean result = service.updateUser(user, user_idx);
-        boolean result = true;
+        boolean result = service.updateUser(user, user_idx);
+//        boolean result = true;
         if (result){
             response.setSuccess(true);
             response.setMessage("정보 변경이 완료되었습니다!");
@@ -111,9 +115,13 @@ public class MypageController {
         int user_idx = jwtService.getId(token);
         User user = service.findUser(user_idx);
         System.out.println("+".repeat(80) + password);
-//        boolean result = service.deleteUser(user_idx);
+
+        if(user.getPassword() == passwordEncoder.encode(password)){
+            System.out.println("piz ".repeat(30));
+        }
+        boolean result = service.deleteUser(user_idx);
 //        User updaeUser = service.findUser(user_idx);
-        boolean result = true;
+//        boolean result = true;
 
         if (result) {
             response.setSuccess(true);
