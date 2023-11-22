@@ -1,8 +1,8 @@
 <template>
     <form @submit.prevent="updateUser" class='form_group'>
         <input type="hidden" name='idx' value="userObj.idx">
-        <span class='span_text'>아이디</span> <input type='text' name='id' class='input_box' disabled :value="userObj.userId"> <br>
-        <span class='span_text'>비밀번호</span> <input class='input_box input_chane_box' type='password' v-model="pwd" @input="checkPWD" id='pwd' placeholder = '변경할 비밀번호 입력' required> <br>
+        <span class='span_text'>아이디</span> <input type='text' name='userId' class='input_box' disabled :value="userObj.userId"> <br>
+        <span class='span_text'>비밀번호</span> <input class='input_box input_chane_box' type='password' v-model="password" @input="checkPWD" id='pwd' placeholder = '변경할 비밀번호 입력' required> <br>
         <span class='span_text'>비밀번호 확인</span> <input class='input_box input_chane_box' type='password' v-model="check_pwd" @input="checkPWD" id='c_pwd' placeholder = '비밀번호 확인' required> <br>
         <span class='span_text'>닉네임</span> <input class='input_box input_chane_box' type='text' name='nickname' placeholder = '변경할 닉네임 입력' required> <br>
         <div class='edit-category'>
@@ -37,7 +37,7 @@
             </div>
         </div>
         <span class='span_text'>이메일</span> <input class='input_box' type='text' name='email' disabled :value='userObj.email'> <br>
-        <span class='span_text'>휴대폰 번호</span> <input class='input_box' type='text' name='phone_num' disabled :value='userObj.phoneNumber'> <br>
+        <span class='span_text'>휴대폰 번호</span> <input class='input_box' type='text' name='phoneNumber' disabled :value='userObj.phoneNumber'> <br>
         <div class='submit_btn'>
             <input type='submit' value='정 보 변 경' id='submit_button' :disabled="!showBtn">
         </div> 
@@ -46,22 +46,26 @@
 
 <script setup>
     import { defineProps, ref } from 'vue'; 
-
+    import axios from 'axios';
     const p = defineProps({
         userObj : Object
     });
 
     let showBtn = ref(false)
-    let pwd = ref("")
+    let password = ref("")
     let check_pwd = ref("")
 
     const checkPWD = () => {
-        if (pwd != "")
-            showBtn.value = pwd.value === check_pwd.value;
+        if (password != "")
+            showBtn.value = password.value === check_pwd.value;
     }
 
     const updateUser = () => {
         console.log("UpdateForm")
-        // console.log(sessionStorage())
+        axios.put("http://localhost:8090/mypage/user", {
+                headers:{'Authorization':sessionStorage.getItem("token")}
+            }).then(response => {
+                console.log(response)
+            })
     }
 </script>

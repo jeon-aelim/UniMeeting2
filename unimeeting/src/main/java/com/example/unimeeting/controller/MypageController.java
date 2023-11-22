@@ -1,6 +1,7 @@
 package com.example.unimeeting.controller;
 
 import com.example.unimeeting.domain.User;
+import com.example.unimeeting.dto.CudResponse;
 import com.example.unimeeting.dto.MeetingWithDetailsDTO;
 import com.example.unimeeting.service.JwtService;
 import com.example.unimeeting.service.JwtServiceImpl;
@@ -21,8 +22,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -41,7 +44,6 @@ public class MypageController {
     })
     @GetMapping("/meetings/participated")
     public ResponseEntity<List<MeetingWithDetailsDTO>> attendList(@RequestHeader(value = "Authorization", required = false) String token) {
-        System.out.println("=".repeat(50)+jwtService.getId(token));
         ResponseEntity<List<MeetingWithDetailsDTO>> entity = new ResponseEntity<>(service.joinMeeting(
             jwtService.getId(token)), HttpStatus.OK);
 
@@ -56,7 +58,6 @@ public class MypageController {
     })
     @GetMapping("/meetings/created")
     public ResponseEntity<List<MeetingWithDetailsDTO>> createList(@RequestHeader(value = "Authorization", required = false) String token) {
-        System.out.println("=".repeat(50)+jwtService.getId(token));
         ResponseEntity<List<MeetingWithDetailsDTO>> entity = new ResponseEntity<>(service.createMeeting(jwtService.getId(token)), HttpStatus.OK);
         return entity;
     }
@@ -69,7 +70,6 @@ public class MypageController {
     })
     @GetMapping("/meetings/scraped")
     public ResponseEntity<List<MeetingWithDetailsDTO>> scrapList(@RequestHeader(value = "Authorization", required = false) String token) {
-        System.out.println("=".repeat(50)+jwtService.getId(token));
         ResponseEntity<List<MeetingWithDetailsDTO>> entity = new ResponseEntity<>(service.scrapMeeting(jwtService.getId(token)), HttpStatus.OK);
         return entity;
     }
@@ -80,14 +80,23 @@ public class MypageController {
             content = { @Content(mediaType = "application/json",
                 schema = @Schema(implementation = MeetingWithDetailsDTO.class)) })
     })
-    @PatchMapping("/users/{idx}")
-    public ResponseEntity<User> updateUser(User user, @PathVariable("idx")int idx){
-        boolean result = service.updateUser(user, idx);
-        User updaeUser = service.findUser(idx);
-        if (result)
-            return new ResponseEntity<>(updaeUser, HttpStatus.RESET_CONTENT);
-        else
-            return new ResponseEntity<>(updaeUser, HttpStatus.INTERNAL_SERVER_ERROR);
+    @PutMapping("/user")
+    public ResponseEntity<CudResponse> updateUser(@RequestHeader(value = "Authorization", required = false) String token, @RequestBody User user){
+        CudResponse response = new CudResponse();
+        int user_idx = jwtService.getId(token);
+        System.out.println("+".repeat(80) +user);
+//        boolean result = service.updateUser(user, user_idx);
+        boolean result = true;
+        if (result){
+            response.setSuccess(true);
+            response.setMessage("정보 변경이 완료되었습니다!");
+        }
+
+        else{
+            response.setSuccess(false);
+            response.setMessage("처리 도중 오류가 발생했습니다. \n다시 시도해 주세요.");
+        }
+        return new ResponseEntity<>(response, HttpStatus.RESET_CONTENT);
     }
 
     @Operation(summary = "유저 Delete")
@@ -96,14 +105,24 @@ public class MypageController {
             content = { @Content(mediaType = "application/json",
                 schema = @Schema(implementation = MeetingWithDetailsDTO.class)) })
     })
-    @DeleteMapping
-        ("/users/{idx}")
-    public ResponseEntity<User> deleteUser(@PathVariable("idx")int idx){
-        boolean result = service.deleteUser(idx);
-        User updaeUser = service.findUser(idx);
-        if (result)
-            return new ResponseEntity<>(updaeUser, HttpStatus.RESET_CONTENT);
-        else
-            return new ResponseEntity<>(updaeUser, HttpStatus.INTERNAL_SERVER_ERROR);
+    @DeleteMapping("/user")
+    public ResponseEntity<CudResponse> deleteUser(@RequestHeader(value = "Authorization", required = false) String token, String password){
+        CudResponse response = new CudResponse();
+        int user_idx = jwtService.getId(token);
+        User user = service.findUser(user_idx);
+        System.out.println("+".repeat(80) + password);
+//        boolean result = service.deleteUser(user_idx);
+//        User updaeUser = service.findUser(user_idx);
+        boolean result = true;
+
+        if (result) {
+            response.setSuccess(true);
+            response.setMessage("저희 서비스를 이용해 주셔서 감사합니다!");
+        }
+        else{
+            response.setSuccess(false);
+            response.setMessage("처리 도중 오류가 발생했습니다. \n다시 시도해 주세요.");
+        }
+        return new ResponseEntity<>(response, HttpStatus.RESET_CONTENT);
     }
 }
