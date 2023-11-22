@@ -33,8 +33,6 @@
 import { reactive } from 'vue';
 import axios from 'axios';
 import {usesessionStore} from '@/stores/sessionloginstore'
-    
-let sessionstore = usesessionStore()
 
 const request = reactive({
     userId : '',
@@ -51,7 +49,6 @@ const login = () => {
                 // 로그인 성공 시 메인 페이지로
                 console.log(response.headers.authorization);
                 sessionStorage.setItem("token", response.headers.authorization);
-                sessionstore.chageSession();
                 window.location.href = '/';
             } else {
                 console.log(response)

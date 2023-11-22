@@ -32,6 +32,7 @@
 
 .meeting-menu-item {
     padding: 12px 8px !important;
+    margin: 17px 0px;
     /* gap: 8px; */
     width: 224px !important;
     height: 48px !important;
@@ -68,7 +69,7 @@
 }
 
 .nav-link {
-    padding: 15px !important;
+    padding: 9px !important;
     display: inline-block !important;
     text-decoration: none !important;
     /* color: #6129FF; */
