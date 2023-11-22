@@ -66,3 +66,6 @@ const login = () => {
         });
 }
 </script>
+<style scoped>
+@import "@/assets/css/userLogin.css";
+</style>

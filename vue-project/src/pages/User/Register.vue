@@ -1,5 +1,6 @@
 <template>
 <UserRegister></UserRegister>
+<my-modal v-if="showModal" @close="showModal = false"></my-modal>
 </template>
 <script>
 // @ is an alias to /src

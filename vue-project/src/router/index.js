@@ -9,6 +9,7 @@ import Free from '@/pages/Board/Free.vue'
 import Notice from '@/pages/Board/Notice.vue'
 import Detail from '@/pages/Board/Detail.vue'
 import Write from '@/pages/Board/Write.vue'
+import Update from '@/pages/Board/Update.vue'
 //User
 import Register from '@/pages/User/Register.vue'
 import Login from '@/pages/User/Login.vue'
@@ -32,7 +33,8 @@ const router = createRouter({
         { path: '/user/login', component: Login },
         { path: '/meeting/goInsertMet', component: createMeeting },
         { path: '/meeting/goUpdateMet/:meeting_idx', component: updateMeeting },
-        // { path: '/boards/type/notice', component: Notice },
+        { path: '/boards/update/:idx', component:Update},
+        // { path: '/boards/type/notice', component: Notice },s
         // { path: '/boards/:idx', component:BoardDetail},
     ]
 })

@@ -14,7 +14,7 @@
 
     <router-link @click="deleteCurrentBoard" class="btn btn-danger btn-delete" :to="{ path: `/boards/type/${currentBoard.type}` }" >삭제</router-link
     >
-    <router-link class="btn btn-danger btn-delete" :to="{ path: `/updateWrite.html` }" >수정</router-link
+    <router-link class="btn btn-danger btn-delete" :to="{ path: `/boards/update/${currentBoard.idx}`}" >수정</router-link
     >
     <router-link class="btn btn-danger btn-delete" :to="{ path: `/boards/type/${currentBoard.type}` }" >목록</router-link
     >

@@ -10,11 +10,11 @@ export const useBoardListStore = defineStore('boardList', {
   }),
   actions: {
     // 특정 타입의 게시판 정보를 가져오는 액션
-    async fetchBoardListByType(boardType) {
+    async fetchBoardListByType(boardType,searchText) {
       try {
         // Axios를 사용하여 주어진 URL에서 게시판 정보를 가져옴.
-        const response = await axios.get(`http://localhost:8090/boards/type/${boardType}`);
-
+        const response = await axios.get(`http://localhost:8090/boards/type/${boardType}?search=${searchText?searchText:""}`);
+        
         // 가져온 정보를 boards 변수에 저장합니다.
         this.boards = response.data;
         console.log('게시판 정보', response.data);
@@ -23,6 +23,8 @@ export const useBoardListStore = defineStore('boardList', {
         console.error('게시판 정보를 가져오는 동안 오류 발생:', error);
       }
     },
+
+    
 
     async fetchBoardDetail(boardIdx) {
         try {

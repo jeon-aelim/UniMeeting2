@@ -7,6 +7,7 @@
 <script>
 // @ is an alias to /src
 import BoardList from '@/components/Boardlist.vue'
+import Paginate from "vuejs-paginate-next";
 
 export default {
   components: {
