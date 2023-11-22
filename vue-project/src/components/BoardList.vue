@@ -24,7 +24,17 @@
           </tr>
         </tbody>
       </table>
-
+      <paginate
+      :page-count="20"
+      :page-range="3"
+      :margin-pages="2"
+      :click-handler="clickCallback"
+      :prev-text="'Prev'"
+      :next-text="'Next'"
+      :container-class="'pagination'"
+      :page-class="'page-item'"
+>
+</paginate>
       <div >
         <router-link to="/boards/free/write" class="btn btn-primary">게시글 작성</router-link>
       </div>
@@ -34,18 +44,21 @@
 
 <script>
 import { useBoardListStore } from '@/stores/boardliststore.js'; 
+import { ref } from 'vue';
+import Paginate from "vuejs-paginate-next";
 
 export default {
   data() {
     return {
-      boardType: 'free', // 
+      boardType: 'free', 
+      searchText:ref(''),
+      paginate:Paginate,
     };
   },
   computed: {
     boards() {
       // 게시판 목록 스토어
       const boardListStore = useBoardListStore();
-
       // 현재 선택한 게시판 타입에 해당하는 게시판 글 목록을 반환.
       return boardListStore.boards.filter(board => board.type === this.boardType);
     },
@@ -56,12 +69,18 @@ export default {
       const boardListStore = useBoardListStore();
       await boardListStore.fetchBoardListByType(this.boardType);
     },
+    async search(){
+      const boardListStore = useBoardListStore();
+      await boardListStore.fetchBoardListByType(this.boardType,this.searchText);
+    },
+    click
   },
   mounted() {
     // 마운트되면 가져옴.
     this.fetchBoardList();
   },
 };
+
 </script>
 <style scoped>
 @import "@/assets/css/boardList.css";
