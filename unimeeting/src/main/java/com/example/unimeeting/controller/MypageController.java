@@ -17,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -94,6 +96,11 @@ public class MypageController {
         if (result){
             response.setSuccess(true);
             response.setMessage("정보 변경이 완료되었습니다!");
+
+            String newToken = jwtService.getToken("id", user_idx);
+            MultiValueMap<String, String> header = new LinkedMultiValueMap<>();
+            header.add("Authorization", token);
+            return new ResponseEntity<>(response, header, HttpStatus.OK);
         }
         else{
             response.setSuccess(false);

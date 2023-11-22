@@ -67,14 +67,15 @@
 
     const updateUser = () => {
         let f_data = JSON.parse(JSON.stringify(formData))
-        console.log(f_data.category);
         f_data.category = f_data.category.toString()
-        console.log(f_data);
         axios.put("http://localhost:8090/mypage/user", f_data, {
                 headers:{'Authorization': sessionStorage.getItem("token")}
             }).then(response => {
                 window.alert(response.data.message);
-                location.href = "http://localhost:5173";
+                console.log(response.headers.authorization);
+                // sessionStorage.removeItem("token");
+                sessionStorage.setItem("token", response.headers.authorization);
+                location.href = "/";
             })
     }
 </script>
