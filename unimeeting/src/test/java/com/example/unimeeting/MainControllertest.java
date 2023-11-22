@@ -2,12 +2,16 @@ package com.example.unimeeting;
 
 import com.example.unimeeting.controller.MainController;
 import com.example.unimeeting.domain.Meeting;
+import com.example.unimeeting.dto.MainDTO;
+import com.example.unimeeting.repository.MeetingImageRepository;
 import com.example.unimeeting.repository.MeetingRepository;
+import com.example.unimeeting.repository.MemberRepository;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-
+import com.example.unimeeting.repository.MeetingRepository;
+import java.util.ArrayList;
 import java.util.List;
 
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -17,6 +21,10 @@ public class MainControllertest {
 
     @Autowired
     private MeetingRepository repository;
+    @Autowired
+    MeetingImageRepository imageR;
+    @Autowired
+    MemberRepository memberR;
     @BeforeEach()
     void pr() {
         System.out.println("=".repeat(80));
@@ -57,12 +65,25 @@ public class MainControllertest {
         list.forEach(System.out::println);
     }
 
-    //@Test
-//    @Order(6)
-//    public void searchMeetingByOrderByTitle() {
-//        List<Meeting> list = repository.searchMeetingByOrderByTitle("환영합니다");
-//        list.forEach(System.out::println);
-//    }
+    @Test
+    @Order(6)
+    void testt1(){
+        List<Meeting> list = repository.findAllByOrderByTitle();
+        List<MainDTO> listDTO = new ArrayList<>();
+        MainDTO dto;
+
+        for(int i=0; i<list.size(); i++){
+            Meeting m = list.get(i);
+            List<String> imgUrls = imageR.findImageUrlByMeetingIdx(m.getIdx());
+            String imgUrl = imgUrls.isEmpty() ? "":imgUrls.get(0);
+            dto = new MainDTO(m, memberR.countByMeetingIdx(m.getIdx()) ,imgUrl);
+            listDTO.add(dto);
+        }
+        listDTO.stream().forEach(l -> {
+            System.out.println(l.getIdx()+"//" +l.getCreatedDatetime() + l.getImageUrl());
+        });
+    }
+
 
     //@Test
 //    @Order(7)
