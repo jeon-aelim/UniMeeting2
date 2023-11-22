@@ -84,6 +84,7 @@ public class MypageService {
         try {
             User ouser = userR.findById(idx).get();
             ouser.setNickname(user.getNickname());
+            ouser.setPassword(user.getPassword());
             ouser.setUserId(user.getUserId());
         } catch(Exception e) {
             System.out.println("수정 실패");
