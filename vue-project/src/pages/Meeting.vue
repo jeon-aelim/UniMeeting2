@@ -1,5 +1,4 @@
 <template>
-    모임 페이지
     <div class="page-container">
         <Side @chage-category="chageCategory"></Side>
 

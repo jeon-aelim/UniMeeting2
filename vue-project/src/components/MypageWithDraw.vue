@@ -19,8 +19,8 @@
         userObj : Object
     });
 
-    let showBtn = ref(false)
-    let password = ref("")
+    let showBtn = ref(false);
+    let password = "";
 
     // const checkPWD = () => {
     //     showBtn.value = password.value === p.userObj.password;
@@ -30,9 +30,9 @@
 
     function withDrawPassword() {
         // console.log("wfff");
-        axios.delete("http://localhost:8090/mypage/user", {
+        axios.delete("http://localhost:8090/mypage/user", password, {
                 headers:{'Authorization':sessionStorage.getItem("token")}
-            }, password).then(response => {
+            }).then(response => {
                 console.log(response)
             })
     }
