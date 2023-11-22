@@ -73,7 +73,6 @@ export default {
       const boardListStore = useBoardListStore();
       await boardListStore.fetchBoardListByType(this.boardType,this.searchText);
     },
-    click
   },
   mounted() {
     // 마운트되면 가져옴.
