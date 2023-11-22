@@ -2,6 +2,7 @@ package com.example.unimeeting.controller;
 
 
 import com.example.unimeeting.domain.Meeting;
+import com.example.unimeeting.dto.MainDTO;
 import com.example.unimeeting.dto.MeetingWithDetailsDTO;
 import com.example.unimeeting.service.MainService;
 import com.example.unimeeting.service.MypageService;
@@ -45,8 +46,8 @@ public class MainController {
 //        return entity;
 //    }
     @GetMapping("/meetings/title")
-    public ResponseEntity<List<Meeting>> titleSort() {
-        ResponseEntity<List<Meeting>> entity = new ResponseEntity<>(service.meetingtitle(), HttpStatus.OK);
+    public ResponseEntity<List<MainDTO>> titleSort() {
+        ResponseEntity<List<MainDTO>> entity = new ResponseEntity<>(service.meetingtitle(), HttpStatus.OK);
 
         return entity;
     }

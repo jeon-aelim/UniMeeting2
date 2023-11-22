@@ -62,7 +62,12 @@ public class SpringSecurityConfig {
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilter(jwtAuthorizationFilter())
                 .authorizeHttpRequests()
+<<<<<<< HEAD
                 .requestMatchers("/meetings/**").permitAll()
+=======
+                .requestMatchers("/**").permitAll()
+
+>>>>>>> DH
                 .anyRequest().authenticated();
         return http.build();
     }

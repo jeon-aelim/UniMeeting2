@@ -52,10 +52,12 @@ color: #545454;
   width: 510px;
 }
 .searching{
-  margin-top: 1px;
-  margin-left: 30px;
+   
+  margin-bottom: 10px;
+  margin-left: 115%;
   width:20px;
   height:20px;
+  border-bottom: 5px;
   background-repeat: no-repeat;
 }
 

@@ -49,6 +49,7 @@ public class Meeting {
         this.startDatetime = startDatetime;
         this.createdDatetime = createdDatetime;
         this.user = user;
+
     }
 
     public void update(String title, String content, String category, Integer recruits,String location, LocalDateTime startDatetime) {
