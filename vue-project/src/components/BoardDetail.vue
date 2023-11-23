@@ -12,7 +12,7 @@
       <p class="mt-4">{{ currentBoard.content }}</p>
     </div>
 
-    <router-link @click="deleteCurrentBoard" class="btn btn-danger btn-delete" :to="{ path: `/boards/type/${currentBoard.type}` }" >삭제</router-link
+    <router-link v-if= "currentBoard.writer" @click="deleteCurrentBoard" class="btn btn-danger btn-delete" :to="{ path: `/boards/type/${currentBoard.type}` }" >삭제</router-link
     >
     <router-link class="btn btn-danger btn-delete" :to="{ path: `/boards/update/${currentBoard.idx}`}" >수정</router-link
     >

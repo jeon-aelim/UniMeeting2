@@ -40,7 +40,11 @@ export const useBoardListStore = defineStore('boardList', {
 
       async deleteBoard(boardIdx) {
         try {
-          await axios.delete(`http://localhost:8090/boards/${boardIdx}`);
+          await axios.delete(`http://localhost:8090/boards/${boardIdx}`, {
+            headers:{
+              "Authorization":sessionStorage.getItem("token"),
+            }
+          });
           
           // 성공적으로 삭제되면 스토어에서도 제거
           this.boards = this.boards.filter(board => board.idx !== boardIdx);

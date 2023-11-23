@@ -26,7 +26,7 @@
         </table>
   
         <div>
-          <router-link to="/boardWrite.html" class="btn btn-primary">게시글 작성</router-link>
+          <router-link to="/boards/notice/write" class="btn btn-primary">게시글 작성</router-link>
         </div>
       </div>
     </div>
