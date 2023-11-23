@@ -58,8 +58,7 @@ public class MeetingController {
     // 미팅 글 리스트 조회
     @GetMapping
     public ResponseEntity<List<MeetingWithDetailsDTO>> getMeetings(@RequestParam(value ="ctgr", required = false) String category,
-                                                                   @RequestParam(defaultValue = "") String search,
-                                                                   @RequestParam String page){
+                                                                   @RequestParam(defaultValue = "") String search){
         List<MeetingWithDetailsDTO> response;
         System.out.println(category);
         // category 는 필수 요청이 아님, null 이라면 모든 글 조회. 전달된 값이 있다면 해당 category 글 조회

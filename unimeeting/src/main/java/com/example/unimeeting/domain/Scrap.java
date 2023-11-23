@@ -16,10 +16,9 @@ public class Scrap {
     private Integer idx;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_idx", foreignKey = @ForeignKey(name = "scrap_user_idx"))
     @NonNull
-    @JoinColumn(name = "user_idx")
     private User user;
-
 //    @ManyToOne
 //    @JoinColumn(name = "meeting_idx")
 //    private Meeting meeting;

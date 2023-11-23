@@ -16,7 +16,7 @@ public class Member {
     private boolean accepted;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_idx")
+    @JoinColumn(name = "user_idx", foreignKey = @ForeignKey(name = "member_ibfk_1"))
     private User user;
 
 
