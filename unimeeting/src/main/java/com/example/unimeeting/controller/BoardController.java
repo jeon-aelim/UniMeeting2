@@ -52,7 +52,7 @@ public class BoardController {
 
     //=============글 수정 ===========//
 
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<String> updateBoard(@PathVariable int id, @RequestBody Board board) {
         boardService.update(id, board);
         return ResponseEntity.ok("Board updated successfully");
