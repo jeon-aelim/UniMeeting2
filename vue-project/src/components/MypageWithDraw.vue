@@ -22,12 +22,6 @@
     let showBtn = ref(false);
     let password = "";
 
-    // const checkPWD = () => {
-    //     showBtn.value = password.value === p.userObj.password;
-    //     console.log(p.userObj.password)
-    //     console.log(showBtn.value);
-    // }
-
     function withDrawPassword() {
         console.log(password);
 

@@ -49,7 +49,6 @@ public class MeetingController {
     private final JwtServiceImpl jwtService;
 
     // Security 구현 전 테스트용 user 객체
-    User user = new User(54, "dohoi", "1234", "도히", "dohoi@gmail.com", "코딩,요리,게임", "01022222222", "USER");
 
     @GetMapping("/category")
     public ResponseEntity<List<String>> getCategory(){

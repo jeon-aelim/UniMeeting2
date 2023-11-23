@@ -29,6 +29,7 @@ public class MeetingWithDetailsDTO {
   private String writerNickname;
   private int memberNowRecruits;  // Member와의 연관성에서 나온 현재 참가자 수(현재 모임에 대한 참가자 수)
   private String imageUrl;            // MeetingImage와의 연관성에서 나온 이미지 URL(현재 모임에의 imageUrl 중 하나)
+  private LocalDateTime createdDatetime;
 
   public MeetingWithDetailsDTO(Meeting meeting, int cnt, String url) {
     this.idx = meeting.getIdx();
@@ -40,6 +41,7 @@ public class MeetingWithDetailsDTO {
     this.writerNickname = meeting.getUser().getNickname();  // Meeting과 User의 연관성에서 나온 작성자 닉네임
     this.memberNowRecruits = (cnt != 0) ? cnt : 0;  // Member가 없으면 0으로 처리
     this.imageUrl = url;
+    this.createdDatetime = meeting.getCreatedDatetime();
   }
 }
 

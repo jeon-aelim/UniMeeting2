@@ -52,7 +52,7 @@ function makeMeetingBlock(meeting) {
     recruits.classList.add("meeting-info", "user-card"); // h6에 class 추가
   
     const create_datetime = document.createElement('div');
-    create_datetime.textContent = elapsedTime(meeting.created_datetime);
+    create_datetime.textContent = elapsedTime(meeting.createdDatetime);
     create_datetime.style.color = "gray";
     create_datetime.classList.add("meeting-info", "user-thumb"); // h6에 class 추가
     
@@ -84,6 +84,7 @@ function makeMeetingBlock(meeting) {
   }
   
   function elapsedTime(date) {
+    console.log(date)
     const start = new Date(date);
     const end = new Date();
   
