@@ -63,7 +63,7 @@ public class MeetingController {
     public ResponseEntity<List<MeetingWithDetailsDTO>> getMeetings(@RequestParam(value ="ctgr", required = false) String category,
                                                                    @RequestParam(defaultValue = "") String search){
         List<MeetingWithDetailsDTO> response;
-
+        System.out.println(category);
         // category 는 필수 요청이 아님, null 이라면 모든 글 조회. 전달된 값이 있다면 해당 category 글 조회
         // search 는 default "". 아무 것도 전달 받지 않으면 SQL 에서 (SELECT ~ LIKE "") 이므로 검색어 없이 조회 가능.
         response = category == null? meetingService.getAllMeeting(search) : meetingService.getMeetingByCtgr(category,search);
@@ -282,11 +282,11 @@ public class MeetingController {
                 .body(response);
     }
 
-    @DeleteMapping("/{meeting_idx}/image/{image_url}")
-    public ResponseEntity<CudResponse> deleteImage(@PathVariable int meeting_idx,@PathVariable String image_url){
+    @DeleteMapping("/{meeting_idx}/image")
+    public ResponseEntity<CudResponse> deleteImage(@PathVariable int meeting_idx,@RequestParam String image){
         CudResponse response = new CudResponse();
 
-        if(meetingService.deleteImage(meeting_idx, image_url)){
+        if(meetingService.deleteImage(meeting_idx, image)){
             response.setSuccess(true);
             response.setMessage(("삭제되었습니다"));
         }else{

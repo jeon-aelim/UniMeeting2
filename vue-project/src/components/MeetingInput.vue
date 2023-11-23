@@ -80,13 +80,13 @@
         </div>
         <div class="mb-3">
             <label for="images" class="form-label">사진</label>
-            <input class="form-control" type="file" id="images" @change="handleFileChange" multiple>
+            <input class="form-control" type="file" id="images" @change="handleFileChange" multiple disabled>
         </div>
 <div v-if="meeting_idx">
     <template v-for="url in oldImaegs.values">
         <div class="position-relative" style="display: inline-block; margin: 5px;">
             <!-- 이미지 -->
-            <img :src="'http://localhost:8090' + url" class="rounded m-2" style="width: 200px">
+            <img :src="'http://localhost:8090' + url" class="rounded m-2" style="width: 200px" disabled >
 
             <!-- 삭제 버튼 -->
             <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0"
@@ -110,6 +110,8 @@
 import { reactive } from 'vue';
 import axios from 'axios';
 
+const server = "http://localhost:8090";
+const meeting_server = server + "/meetings/";
 let addMeeting = reactive({
     category: '',
     title: '',
@@ -124,7 +126,7 @@ const oldImaegs = reactive([]);
 const props = defineProps(['meeting_idx']);
 let meeting_idx = props.meeting_idx;
 if (meeting_idx) {
-    axios.get("http://localhost:8090/meetings/update/" + meeting_idx)
+    axios.get(`${meeting_server}update/` + meeting_idx)
         .then((resp) => {
             const oldMet = resp.data;
             console.log(oldMet)
@@ -163,7 +165,7 @@ const submitMeeting = (update) => {
     console.log(formData)
     if (update) {
 
-        axios.put("http://localhost:8090/meetings/" + meeting_idx, formData, {
+        axios.put(meeting_server + meeting_idx, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data;    boundary=----WebKitFormBoundaryYourBoundary',
             },})
@@ -173,7 +175,7 @@ const submitMeeting = (update) => {
         })
 
     } else {
-        axios.post("http://localhost:8090/meetings", formData, {
+        axios.post(meeting_server, formData, {
             headers: {
                 'Authorization': sessionStorage.getItem("token"),
                 'Content-Type': 'multipart/form-data;    boundary=----WebKitFormBoundaryYourBoundary',
@@ -187,15 +189,14 @@ const submitMeeting = (update) => {
 // deleteImage 구현해야함. 서버는 구현완
 const deleteImage = (url) => {
     
-    // axios.post("http://localhost:8090/meetings", formData, {
-    //         headers: {
-    //             'Authorization': sessionStorage.getItem("token"),
-    //             'Content-Type': 'multipart/form-data;    boundary=----WebKitFormBoundaryYourBoundary',
-    //         },
-    //     }).then((resp) => {
-    //         window.alert(resp.data.message);
-    //         location.href = "http://localhost:5173/meetings"
-    //     }).catch((e) => console.log(e));
+    axios.delete(`${meeting_server}${meeting_idx}/image?image=${url}`, {
+            headers: {
+                'Authorization': sessionStorage.getItem("token"),
+                'Content-Type': 'multipart/form-data;    boundary=----WebKitFormBoundaryYourBoundary',
+            },
+        }).then((resp) => {
+            window.alert(resp.data.message);
+        }).catch((e) => console.log(e));
 
 }
 

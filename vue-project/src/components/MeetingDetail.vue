@@ -307,10 +307,10 @@ const acceptApply = (accept, idx, nickname) => {
 const deleteApply = (type, user_idx, user_nickname) => {
 
     let url = `${meeting_server}apply/${meeting_idx}`;
-    
+    let alertMessage;
     if(type == 'writer'){
         url += `?user_idx=${user_idx}`
-        alertMessage.value = user_nickname + "님의 요청을 거절하시겠습니까?";
+        alertMessage = user_nickname + "님의 요청을 거절하시겠습니까?";
     }else{
         alertMessage = "신청을 취소하시겠습니까?"
     }

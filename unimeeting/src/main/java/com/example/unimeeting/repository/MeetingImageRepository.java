@@ -15,5 +15,5 @@ public interface MeetingImageRepository extends JpaRepository<MeetingImage, Inte
     @Query("select i.imageUrl from MeetingImage i where i.meetingIdx = :idx")
     public List<String> findImageUrlByMeetingIdx(@Param("idx") Integer idx);
 
-    public boolean deleteByMeetingIdxAndImageUrl(int meeting_idx, String image_url);
+    public MeetingImage findByMeetingIdxAndImageUrl(int meeting_idx, String image_url);
 }

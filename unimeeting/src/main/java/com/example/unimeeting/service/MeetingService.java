@@ -271,7 +271,8 @@ public class MeetingService {
         boolean isSuc = false;
 
         try{
-            meetingImageRepository.deleteByMeetingIdxAndImageUrl(meeting_idx, url);
+            MeetingImage image = meetingImageRepository.findByMeetingIdxAndImageUrl(meeting_idx, url);
+            meetingImageRepository.delete(image);
             isSuc = true;
         }catch (Exception e ){
             e.printStackTrace();
