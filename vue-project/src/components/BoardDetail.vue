@@ -42,7 +42,7 @@ export default {
 
       try {
         // Vuex 스토어를 통해 게시글 삭제
-        await boardListStore.deleteBoard(boardIdx);
+        boardListStore.deleteBoard(boardIdx);
         
         // 삭제 후 목록 화면으로 이동
         this.$router.push(`/boards/type/${this.currentBoard.type}`);
