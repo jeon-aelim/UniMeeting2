@@ -32,6 +32,7 @@
 <script setup>
 import { reactive } from 'vue';
 import axios from 'axios';
+import {usesessionStore} from '@/stores/sessionloginstore'
 
 const request = reactive({
     userId : '',
@@ -48,7 +49,7 @@ const login = () => {
                 // 로그인 성공 시 메인 페이지로
                 console.log(response.headers.authorization);
                 sessionStorage.setItem("token", response.headers.authorization);
-                window.location.href = '/mainPage';
+                window.location.href = '/';
             } else {
                 console.log(response)
                 // 로그인 실패 시 오류 메시지를 팝업 창으로 표시

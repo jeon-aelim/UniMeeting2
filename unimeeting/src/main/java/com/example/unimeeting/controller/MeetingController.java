@@ -1,6 +1,7 @@
 package com.example.unimeeting.controller;
 
 import com.auth0.jwt.interfaces.Claim;
+import com.example.unimeeting.config.jwt.JwtProperties;
 import com.example.unimeeting.domain.Meeting;
 import com.example.unimeeting.domain.Scrap;
 import com.example.unimeeting.dto.MeetingResponse;
@@ -8,9 +9,11 @@ import com.example.unimeeting.service.JwtService;
 import com.example.unimeeting.service.JwtServiceImpl;
 import com.example.unimeeting.service.MeetingService;
 import io.jsonwebtoken.Claims;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import jakarta.validation.Valid;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,7 +46,7 @@ import java.util.Map;
 public class MeetingController {
 
     private final MeetingService meetingService;
-    private final JwtService jwtService;
+    private final JwtServiceImpl jwtService;
 
     // Security 구현 전 테스트용 user 객체
     User user = new User(54, "dohoi", "1234", "도히", "dohoi@gmail.com", "코딩,요리,게임", "01022222222", "USER");
@@ -60,7 +63,7 @@ public class MeetingController {
     public ResponseEntity<List<MeetingWithDetailsDTO>> getMeetings(@RequestParam(value ="ctgr", required = false) String category,
                                                                    @RequestParam(defaultValue = "") String search){
         List<MeetingWithDetailsDTO> response;
-
+        System.out.println(category);
         // category 는 필수 요청이 아님, null 이라면 모든 글 조회. 전달된 값이 있다면 해당 category 글 조회
         // search 는 default "". 아무 것도 전달 받지 않으면 SQL 에서 (SELECT ~ LIKE "") 이므로 검색어 없이 조회 가능.
         response = category == null? meetingService.getAllMeeting(search) : meetingService.getMeetingByCtgr(category,search);
@@ -72,8 +75,11 @@ public class MeetingController {
 
     // 미팅 글 하나 조회
     @GetMapping("/{idx}")
-    public ResponseEntity<MeetingResponse> getOneMeeting(@RequestHeader (value = "Authorization", required = false) String token, @PathVariable int idx){
-        int user_idx = jwtService.getId(token);
+    public ResponseEntity<MeetingResponse> getOneMeeting(@RequestHeader (value = JwtProperties.HEADER_STRING, required = false) String token, @PathVariable int idx){
+        int user_idx = 0;
+        if(token!=null){
+            user_idx = jwtService.getId(token);
+        }
         MeetingResponse response = meetingService.getMeetingOne(idx,user_idx);
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -85,10 +91,11 @@ public class MeetingController {
     // JsonFormat, String 타입으로 전달되는 createdDateTime 을  LocalDateTime 타입으로 인식하기 위해 설정
     @PostMapping(consumes = "multipart/form-data")
 //    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm")
-    public ResponseEntity<CudResponse> uploadMeeting(@RequestPart(value = "meetingData") @Valid AddMeetingRequest request, @RequestPart(value = "file", required = false) MultipartFile[] mreq) {
+    public ResponseEntity<CudResponse> uploadMeeting(@RequestHeader(value = JwtProperties.HEADER_STRING, required = false) String token, @RequestPart(value = "meetingData") @Valid AddMeetingRequest request, @RequestPart(value = "file", required = false) MultipartFile[] mreq) {
 
         CudResponse cudResponse = new CudResponse();
-        boolean isSuc = meetingService.addMeeting(request, user, mreq);
+        int user_idx = jwtService.getId(token);
+        boolean isSuc = meetingService.addMeeting(request, user_idx, mreq);
         ResponseEntity<CudResponse> response;
         cudResponse.setSuccess(isSuc);
         cudResponse.setMessage(isSuc ? "글이 작성되었습니다.": "작성 도중 오류가 발생했습니다.");
@@ -100,22 +107,33 @@ public class MeetingController {
 
     // 수정할 글 불러오기
     @GetMapping("/update/{idx}")
-    public ResponseEntity<Meeting> getMeetingForUpdate(@PathVariable int idx){
-        Meeting response = meetingService.findById(idx);
+    public ResponseEntity<UpdateMeetingResponse> getMeetingForUpdate(@PathVariable int idx){
+        UpdateMeetingResponse response = new UpdateMeetingResponse();
+        response.setMeeting(meetingService.findById(idx));
+        response.setImgUrl(meetingService.getMeetingImages(idx));
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(response);
     }
 
     // 미팅 글 수정
-    @PutMapping("/{idx}")
+    @PutMapping(value = "/{idx}",consumes = "multipart/form-data")
     @Transactional
-    public ResponseEntity<Meeting> updateMeeting( @PathVariable int idx, @RequestBody UpdateMeetingRequest update){
-        System.out.println(update);
-        Meeting meeting = meetingService.updateMeeting(idx, update);
+    public ResponseEntity<CudResponse> updateMeeting( @PathVariable int idx, @RequestParam(value = "meetingData") @Valid  UpdateMeetingRequest update,@RequestPart(value = "file", required = false) MultipartFile[] mreq){
+        HttpStatus status;
+        CudResponse response = new CudResponse();
+        if (meetingService.updateMeeting(idx, update, mreq)){
+            status = HttpStatus.OK;
+            response.setSuccess(true);
+            response.setMessage("수정이 완료되었습니다.");
+        }else{
+            status = HttpStatus.BAD_REQUEST;
+            response.setSuccess(false);
+            response.setMessage("처리 도중 오류가 발생했습니다. \n다시 시도해 주세요.");
+        }
         return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(meeting);
+                .status(status)
+                .body(response);
     }
 
     // 미팅 글 삭제
@@ -136,10 +154,10 @@ public class MeetingController {
                 .status(status)
                 .body(response);
     }
-
     @PostMapping("/apply/{meeting_idx}")
-    public ResponseEntity<CudResponse> addMember(@RequestHeader (value = "Authorization", required = false) String token, @PathVariable int meeting_idx){
+    public ResponseEntity<CudResponse> addMember(@RequestHeader (value = JwtProperties.HEADER_STRING, required = false) String token, @PathVariable int meeting_idx){
 
+        System.out.println("Controller token-------------------------"+token);
         CudResponse response = new CudResponse();
         if(token == null ){
             response.setSuccess(false);
@@ -264,6 +282,22 @@ public class MeetingController {
                 .body(response);
     }
 
+    @DeleteMapping("/{meeting_idx}/image")
+    public ResponseEntity<CudResponse> deleteImage(@PathVariable int meeting_idx,@RequestParam String image){
+        CudResponse response = new CudResponse();
+
+        if(meetingService.deleteImage(meeting_idx, image)){
+            response.setSuccess(true);
+            response.setMessage(("삭제되었습니다"));
+        }else{
+            response.setSuccess(false);
+            response.setMessage(("처리 도중 오류가 발생했습니다. \n다시 시도해 주세요."));
+        }
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(response);
+    }
 
 
 }

@@ -1,11 +1,12 @@
 <template>
-    <form id="form" @submit.prevent="submitMeeting()" method="post" enctype="multipart/form-data"
+    <form id="form" @submit.prevent="submitMeeting(meeting_idx)" method="post" enctype="multipart/form-data"
         class="col-lg-8 mx-auto p-4 py-md-5">
         <fieldset class="row mb-3">
             <legend class="col-form-label col-sm-2 pt-0">카테고리</legend>
             <div class="col-sm-10">
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" v-model="addMeeting.category" id="gridRadios1" value="운동" required>
+                    <input class="form-check-input" type="radio" v-model="addMeeting.category" id="gridRadios1" value="운동"
+                        required>
                     <label class="form-check-label" for="gridRadios1">
                         운동
                     </label>
@@ -79,8 +80,22 @@
         </div>
         <div class="mb-3">
             <label for="images" class="form-label">사진</label>
-            <input class="form-control" type="file" id="images" @change="handleFileChange" multiple>
+            <input class="form-control" type="file" id="images" @change="handleFileChange" multiple disabled>
         </div>
+<div v-if="meeting_idx">
+    <template v-for="url in oldImaegs.values">
+        <div class="position-relative" style="display: inline-block; margin: 5px;">
+            <!-- 이미지 -->
+            <img :src="'http://localhost:8090' + url" class="rounded m-2" style="width: 200px" disabled >
+
+            <!-- 삭제 버튼 -->
+            <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0"
+                    @click="deleteImage(url)">
+                <i class="bi bi-trash">X</i>
+            </button>
+        </div>
+    </template>
+</div>
 
         <button id="submit" type="submit" class="btn btn-primary"
             @click="was_validated()">등록</button><!--    제목: <label><input id="title" name="title" /><br></label>-->
@@ -92,37 +107,45 @@
 </template> 
 
 <script setup>
-import {reactive} from 'vue';
+import { reactive } from 'vue';
 import axios from 'axios';
 
+const server = "http://localhost:8090";
+const meeting_server = server + "/meetings/";
 let addMeeting = reactive({
-    category:'',
-    title:'',
-    location:'',
-    recruits:0,
-    startDatetime:'',
-    content:''
+    category: '',
+    title: '',
+    location: '',
+    recruits: 0,
+    startDatetime: '',
+    content: ''
 });
 const images = reactive([]);
+const oldImaegs = reactive([]);
 
 const props = defineProps(['meeting_idx']);
 let meeting_idx = props.meeting_idx;
-if(meeting_idx){
-axios.get("http://localhost:8090/meetings/update/" + meeting_idx)
-.then((resp)=> {
-    const oldMet = resp.data;
+if (meeting_idx) {
+    axios.get(`${meeting_server}update/` + meeting_idx)
+        .then((resp) => {
+            const oldMet = resp.data;
+            console.log(oldMet)
 
-    addMeeting.category = oldMet.category;
-    addMeeting.title = oldMet.title;
-    addMeeting.location = oldMet.location;
-    addMeeting.recruits = oldMet.recruits;
-    addMeeting.startDatetime = oldMet.startDatetime.slice(0,10);
-    addMeeting.content = oldMet.content;
-})
+            addMeeting.category = oldMet.meeting.category;
+            addMeeting.title = oldMet.meeting.title;
+            addMeeting.location = oldMet.meeting.location;
+            addMeeting.recruits = oldMet.meeting.recruits;
+            addMeeting.startDatetime = oldMet.meeting.startDatetime.slice(0, 10);
+            addMeeting.content = oldMet.meeting.content;
+            oldImaegs.values = oldMet.imgUrl;
+            console.log(oldImaegs.values)
+
+        })
 }
 
 
-const submitMeeting = () => {
+const submitMeeting = (update) => {
+
     let formData = new FormData();
 
     if (images.values.length !== 0) {
@@ -137,20 +160,45 @@ const submitMeeting = () => {
     };
 
     // 파일과 다른 데이터를 함께 보내기 위해 FormData를 사용하고, 헤더 설정
-    
+
     formData.append('meetingData', new Blob([JSON.stringify(formattedData)], { type: 'application/json' }));
     console.log(formData)
-    axios.post("http://localhost:8090/meetings", formData, {
-        headers: {
-            'Authorization' : sessionStorage.getItem("token"),
-            'Content-Type': 'multipart/form-data;    boundary=----WebKitFormBoundaryYourBoundary',
-        },
-    }).then((resp) => {
-        window.alert(resp.data.message);
-        location.href = "http://localhost:5173/meetings"
-    }).catch((e) => console.log(e));
-}
+    if (update) {
 
+        axios.put(meeting_server + meeting_idx, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data;    boundary=----WebKitFormBoundaryYourBoundary',
+            },})
+        .then((resp) => {
+            window.alert(resp.data.message);
+            location.href = "http://localhost:5173/meeting/" + meeting_idx;
+        })
+
+    } else {
+        axios.post(meeting_server, formData, {
+            headers: {
+                'Authorization': sessionStorage.getItem("token"),
+                'Content-Type': 'multipart/form-data;    boundary=----WebKitFormBoundaryYourBoundary',
+            },
+        }).then((resp) => {
+            window.alert(resp.data.message);
+            location.href = "http://localhost:5173/meetings"
+        }).catch((e) => console.log(e));
+    }
+}
+// deleteImage 구현해야함. 서버는 구현완
+const deleteImage = (url) => {
+    
+    axios.delete(`${meeting_server}${meeting_idx}/image?image=${url}`, {
+            headers: {
+                'Authorization': sessionStorage.getItem("token"),
+                'Content-Type': 'multipart/form-data;    boundary=----WebKitFormBoundaryYourBoundary',
+            },
+        }).then((resp) => {
+            window.alert(resp.data.message);
+        }).catch((e) => console.log(e));
+
+}
 
 
 
@@ -160,10 +208,10 @@ const handleFileChange = (event) => {
 
 
 // 빈칸 입력 막기
-    const was_validated = () => {
-        const form = document.querySelector("#form");
-        form.classList.add("was-validated");
-    };
+const was_validated = () => {
+    const form = document.querySelector("#form");
+    form.classList.add("was-validated");
+};
 
 
 </script>

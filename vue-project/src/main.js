@@ -8,4 +8,8 @@ import router from './router'
 import VueAwesomePaginate from "vue-awesome-paginate";
 import "vue-awesome-paginate/dist/style.css";
 
-createApp(App).use(router).use(createPinia()).mount('#app')
+// import the necessary css file
+import "vue-awesome-paginate/dist/style.css";
+
+// Register the package
+createApp(App).use(router).use(createPinia()).use(VueAwesomePaginate).mount('#app');

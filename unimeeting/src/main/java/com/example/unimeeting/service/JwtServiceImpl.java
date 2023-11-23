@@ -19,7 +19,7 @@ public class JwtServiceImpl implements JwtService {
     public String getToken(String key, Object value) {
         Date d = new Date();
         log.info(d.toString() +" : " + d.getTime());
-        d.setTime(d.getTime()+(60*3*1000));  // 테스트를 위해서 3분간만 유효한 토큰을 만듬
+        d.setTime(d.getTime()+(60*10*1000));  // 테스트를 위해서 10분간만 유효한 토큰을 만듬
         log.info(d.toString() +" : " + d.getTime());
 
 
@@ -77,9 +77,10 @@ public class JwtServiceImpl implements JwtService {
         }
         return 0;
     }
-    public String getNickname(String token){
+
+    public String getNickname(String token) {
         Claims claims = this.getClaims(token);
-        if(claims !=null){
+        if(claims != null){
             return claims.get("nickname").toString();
         }
         return "";

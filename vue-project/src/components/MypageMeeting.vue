@@ -1,7 +1,7 @@
 <template>
     <div class="contents-right">
         <div id="info_result"></div>
-        <component :is="currentComponent" :userObj="user[0]" v-if="currentComponent"></component>
+        <component :is="currentComponent" :userObj="user" v-if="currentComponent"></component>
     </div>
 </template>
 
@@ -9,17 +9,23 @@
     import { defineProps, watch, computed, reactive  } from 'vue'; 
     
     import { api, cleardiv } from '@/public/common';
-    import { makeMeetingBlock, makeMyinfoBlock, makeWithDraw } from '@/public/makeBlock'
+    import { makeMeetingBlock } from '@/public/makeBlock'
+    import axios from 'axios';
     import MyInfo from '@/components/MypageMyInfo.vue';
     import Withdraw from '@/components/MypageWithDraw.vue';
 
     let url = "http://localhost:8090/mypage/meetings";
     let meetings = reactive([]);
-    api(url + "/participated", "get").then(data => {
-        for(let o of data){
+    
+    axios.get(url + '/participated', {
+        headers:{'Authorization':sessionStorage.getItem("token")}
+    }).then(response => {
+        for(let o of response.data){
             makeMeetingBlock(o);
         }
-    });   
+        // console.log(response.data)
+    })
+
     const p = defineProps({
         state : String
     });
@@ -31,8 +37,17 @@
       }
     )
 
-    let user = []
-    api("http://localhost:8090/user/minjae", "get", {}).then(data => {user.push(data)})
+    // let user = reactive([]);
+
+    // function chageUser(data){
+    //     user[0] = data
+    // }
+    let user = computed("")
+
+    axios.get('http://localhost:8090/user', {
+        headers:{'Authorization':sessionStorage.getItem("token")}
+    }).then(response => {user = response.data})
+    console.log(user);
 
     let currentComponent = null;
     function getMeeting(s, url) {
@@ -60,8 +75,10 @@
         }
 
         if(flag) {
-            api(url, "get").then(meetings => {
-                for(let o of meetings){
+            axios.get(url, {
+                headers:{'Authorization':sessionStorage.getItem("token")}
+            }).then(response => {
+                for(let o of response.data){
                     makeMeetingBlock(o);
                 }
             })

@@ -28,7 +28,7 @@ public interface MeetingRepository extends JpaRepository<Meeting, Integer> {
     public List<Meeting> searchMeetingInMemberIDX(@Param("idx") int idx);
 
     // 생성한 소모임 리스트
-    public List<Meeting> findByUserNickname(String nickname);
+    public List<Meeting> findByUserIdx(int idx);
 
     // 스크랩한 소모임 리스트
     @Query("select m from Meeting m where m.idx in (select s.meetingIdx from Scrap s where s.user.idx = :idx)")
@@ -53,6 +53,8 @@ public interface MeetingRepository extends JpaRepository<Meeting, Integer> {
     public List<Meeting> findAllByOrderByTitle();
     //시간순으로 정렬
     public List<Meeting> findAllByOrderByCreatedDatetimeDesc();
+
+    List<Meeting> findByUserNickname(String aa);
 
     //검색 결과만 정렬
 //    @Query("select m from Meeting m left join Scrap s on m.idx = s.meetingIdx")

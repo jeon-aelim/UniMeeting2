@@ -1,33 +1,35 @@
 <template>
     <h1 style="font-size:40px">UniMeeting 커뮤니티에서 자유롭게 이야기 나눠보세요!</h1>
     <div class="inner">
-        <form method = "get" action ="/search" class="search">
-            <input type = "search" name = "keyword" class="search-bar" placeholder="검색어를 입력해 주세요">
-            <input type = "image" v-bind:src="myFile" value = "검색" class="searching">
+        <form id="search" @submit.prevent="meetingForm" class="search">
+            <input v-model="search" type = "search"  class="search-bar" placeholder="검색어를 입력해 주세요">
+            <input type = "image" :src="icon" value = "검색" class="searching">
         </form>
     </div>
     <div class="list_container">
         <div class="form-select1">
-        <select name="changeTest" class="form-select form-select-sm" aria-label=".form-select-sm example">
+        <select v-model="selectedOption" @change="sortmeeting" name="changeTest" class="form-select form-select-sm" aria-label=".form-select-sm example">
             <option selected>menu</option>
             <option value="no">기본</option>
-            <option value="popular">인기순</option>
             <option value="title">제목순</option>
             <option value="start">최신순</option>
         </select>
         </div>
-            <div class="row row-cols-3 row-cols-md-3 g-4" th:if="${ list }" th:each="st : ${list}">
-                <div class="col">
+            <div class="row row-cols-3 row-cols-md-3 g-4" >
+                <div class="col" v-for="meeting in meetings.values">
                     <div class="card">
-                        <a th:href="@{/meeting/post(meeting_idx=${st.idx})}">
-                            <img th:src="${st.image_url}" onerror="this.src='/images/book.png';" class="card-img-top">
+                        <router-link v-bind:to="`/meeting/${meeting.idx}`">
+                        
+                            <img :src="'http://localhost:8090'+meeting.imageUrl"
+                            @error="this.src='/images/book.png';" class="card-img-top">
                             <div class="card-body">
-                                <h4 class="card-title" style="font-weight: bold">[[${st.title}]]</h4>
-                                <p class="card-text">[[${st.content_text}]]</p>
+                                <h4 class="card-title" style="font-weight: bold">{{ meeting.title }}</h4>
+                                <p class="card-text">{{ meeting.content }}</p>
 
                             </div>
-                            <div class="card-date" style="color: gray" th:data-created_datetime="${st.created_datetime}"></div>
-                        </a>
+                            <div class="card-date" style="color: gray" >{{ meeting.createdDatetime }}</div>
+                        
+                        </router-link>
 
                     </div>
                 </div>
@@ -37,18 +39,48 @@
 
 </template>
 
-<script>
-// import EduComp1 from '@/components/EduComp1.vue'
-// import  { ref } from Vue;
-// export default {
-//     setup(){
-//         const myFile = ref('/images/search_icon.png') 
+<script setup>
+    import { api, cleardiv } from '@/public/common';
+    import { onBeforeMount, reactive, ref } from 'vue';
+    import  icon from "../assets/images/search_icon.png";
+
+    const meetings = reactive([]);
+    let search = ""
+
+    const url1 = () => {
+    }
+    let selectedOption = ref('기본');
+
+    onBeforeMount( () => {
+        api("http://localhost:8090/meetings", "get", {})
+            .then(resp => {
+                meetings.values = resp;
+                console.log(meetings)
+            })
+    }
     
-//         return {
-//             myFile,
-//         }
-//     }    
-// }
+    )
+    const sortmeeting = () => {
+        console.log(selectedOption.value)
+        if (selectedOption.value === 'title') {
+            meetings.values.sort((a, b) => a.title.localeCompare(b.title));
+        } else if (selectedOption.value === 'start') {
+            meetings.values.sort((a, b) => new Date(a.createdDatetime) - new Date(b.createdDatetime)).reverse();
+        }
+        else {
+            meetings.values.sort((a,b) => new Date(a.createdDatetime) - new Date(b.createdDatetime));
+        }
+        meetings.values = [...meetings.values];
+    }
+
+    const meetingForm = () => {
+        api(`http://localhost:8090/meetings?search=${search}`, "get")
+            .then(resp => {
+                meetings.values = resp;
+            })
+        
+    }
+    
 </script>
 
 <style scoped>

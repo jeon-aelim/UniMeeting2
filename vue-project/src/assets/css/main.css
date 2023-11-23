@@ -33,8 +33,9 @@ color: #545454;
 .inner {
   position: relative;
   width: 600px;
-  height: 40px;
-  margin: 20px auto;
+  height: 60px;
+  border-top: 10px;
+  margin: 30px auto;
   border: 1px solid #bdc1c6;
   border-radius: 20px;
 
@@ -42,7 +43,7 @@ color: #545454;
 .search {
   height: 90%;
   margin-left: 15px;
-  margin-top: 6px;
+  margin-top: 10px;
   border: 1px;
   font-size: 18x;
 }
@@ -52,10 +53,12 @@ color: #545454;
   width: 510px;
 }
 .searching{
-  margin-top: 1px;
-  margin-left: 30px;
+   
+  margin-bottom: 10px;
+  margin-left: 115%;
   width:20px;
   height:20px;
+  border-bottom: 5px;
   background-repeat: no-repeat;
 }
 
@@ -80,7 +83,7 @@ color: #545454;
    margin-left:88%;
    width:100px;
    height:30px;
-   font-size: 20px;
+   font-size: 15px;
 }
 
 /* 상품 목록 */

@@ -44,11 +44,11 @@
                     <!--                and v-if=${apply} -> 해당 소모임에 참가 신청을 하지 않은 경우, 신청 버튼 보이기 -->
                     <!--                and v-if=${apply} -> 해당 소모임에 참가 신청을 한 경우, 신청 취소 버튼 보이기 -->
                     <div class="col-auto offset-md-4" v-if="!applicant">
-                        <a class="btn btn-primary btn-lg px-4 btn-color"
+                        <a class="btn btn-primary btn-lg px-4 btn-color" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
                             @click="apply">신청</a>
                     </div>
                     <div class="col-auto offset-md-4" v-else>
-                        <a class="btn btn-primary btn-lg px-4 btn-color"
+                        <a class="btn btn-primary btn-lg px-4 btn-color" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
                         @click="deleteApply('applicant')">신청 취소</a>
                     </div>
 
@@ -131,15 +131,52 @@
 
             </div>
 
+</div>
+    <!-- <div class="modal fade" id="staticBackdrop" ref="confirmModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">{{title}}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        {{ modalMessage }}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" @click="confirmAction()">Yes</button>
+      </div>
     </div>
+  </div>
+</div> 
+
+<div class="modal fade" id="exampleModal" ref="alertModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">{{title}}</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        {{ modalMessage }}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>  
+      </div>
+    </div>
+  </div>
+</div>  -->
 </template>
 <script setup>
-import { ref, onBeforeMount, defineProps } from 'vue';
+import { ref, onBeforeMount, defineProps     } from 'vue';
 import { api } from '@/common.js'
 import axios from 'axios';
 
 const props = defineProps(['meeting_idx']);
 let meeting_idx = props.meeting_idx;
+
+const server = "http://localhost:8090";
+const meeting_server = server + "/meetings/";
 
 const title = ref('');
 const content = ref('');
@@ -155,14 +192,33 @@ const writer = ref(false);
 const scrap = ref(false);
 const members = ref([]);
 
-const server = "http://localhost:8090";
-const meeting_server = server + "/meetings/";
+// const confirmModal = ref(null);
+// const alertModal = ref(null);
+// let modalMessage = ref('');
 
+// const confirmCallback = ref(null)
+// const showAlertModal = (message) => {
+//   modalMessage.value = message;
+//   alertModal.value.show();
+// }
 
+// const showConfirmModal = (message, confirmAction) => {
+//   modalMessage.value = message;
+//   confirmCallback.value = confirmAction;
+//   confirmModal.value.style.display = "none";
+// };
+
+// const confirmAction = () => {
+//   if (confirmCallback.value) {
+//     confirmCallback.value();
+//   }
+//   confirmModal.value.style.display = "block";
+// }
 onBeforeMount(() => {
+    // if (token) {
     axios.get(meeting_server + meeting_idx, {
-        headers : {
-            'Authorization' : sessionStorage.getItem("token")
+        headers: {
+            'Authorization': sessionStorage.getItem("token")
         }
     })
         .then((response) => {
@@ -180,14 +236,18 @@ onBeforeMount(() => {
             writer.value = resp.writer;
             scrap.value = resp.scrap;
 
-            if(resp.writer){
-                api(meeting_server + "applicants/" +meeting_idx, "GET", {})
-                .then((member_resp)=> {
-                    members.value = member_resp;
-                    console.log(member_resp)
-                })
+            if (resp.writer) {
+                api(meeting_server + "applicants/" + meeting_idx, "GET", {})
+                    .then((member_resp) => {
+                        members.value = member_resp;
+                        console.log(member_resp)
+                    })
             }
         })
+
+    // }else{
+    // }
+
 })
 
 const deleteMeeting = () => {
@@ -202,18 +262,33 @@ const deleteMeeting = () => {
 }
 
 const apply = () => {
-    if (window.confirm("이 모임에 신청 요청을 보내겠습니까?")) {
-        axios.post(meeting_server + "apply/" + meeting_idx, {},{
-            headers: {
-                'Authorization' : sessionStorage.getItem("token")
-            }
-        } )
-            .then((resp) => {
-                console.log(resp.data)
-                window.alert(resp.data.message);
-                document.location.href = "/meeting/" + meeting_idx;
-            })
-    }
+    // showConfirmModal("이 모임에 신청 요청을 보내겠습니까?")
+
+    // console.log(resp)
+    // if (confirmAction) {
+    //     axios.post(meeting_server + "apply/" + meeting_idx, {}, {
+    //         headers: {
+    //             'Authorization': sessionStorage.getItem("token")
+    //         }
+    //     })
+    //         .then((resp) => {
+    //             console.log(resp.data)
+    //             window.alert(resp.data.message);
+    //             document.location.href = "/meeting/" + meeting_idx;
+    //         })
+
+    // }
+    axios.post(meeting_server + "apply/" + meeting_idx, {}, {
+        headers: {
+            'Authorization': sessionStorage.getItem("token")
+        }
+    })
+        .then((resp) => {
+            console.log(resp.data)
+            window.alert(resp.data.message);
+            document.location.href = "/meeting/" + meeting_idx;
+        })
+
 }
 
 const acceptApply = (accept, idx, nickname) => {
@@ -233,7 +308,6 @@ const deleteApply = (type, user_idx, user_nickname) => {
 
     let url = `${meeting_server}apply/${meeting_idx}`;
     let alertMessage;
-    
     if(type == 'writer'){
         url += `?user_idx=${user_idx}`
         alertMessage = user_nickname + "님의 요청을 거절하시겠습니까?";
