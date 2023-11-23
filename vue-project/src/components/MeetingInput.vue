@@ -80,7 +80,7 @@
         </div>
         <div class="mb-3">
             <label for="images" class="form-label">사진</label>
-            <input class="form-control" type="file" id="images" @change="handleFileChange" multiple disabled>
+            <input class="form-control" type="file" id="images" @change="handleFileChange" multiple >
         </div>
 <div v-if="meeting_idx">
     <template v-for="url in oldImaegs.values">
@@ -175,7 +175,8 @@ const submitMeeting = (update) => {
         })
 
     } else {
-        axios.post(meeting_server, formData, {
+        console.log("this")
+        axios.post(server + "/meetings", formData, {
             headers: {
                 'Authorization': sessionStorage.getItem("token"),
                 'Content-Type': 'multipart/form-data;    boundary=----WebKitFormBoundaryYourBoundary',

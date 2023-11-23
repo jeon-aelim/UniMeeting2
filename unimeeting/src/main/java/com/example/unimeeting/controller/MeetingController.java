@@ -119,7 +119,7 @@ public class MeetingController {
     // 미팅 글 수정
     @PutMapping(value = "/{idx}",consumes = "multipart/form-data")
     @Transactional
-    public ResponseEntity<CudResponse> updateMeeting( @PathVariable int idx, @RequestParam(value = "meetingData") @Valid  UpdateMeetingRequest update,@RequestPart(value = "file", required = false) MultipartFile[] mreq){
+    public ResponseEntity<CudResponse> updateMeeting( @PathVariable int idx, @RequestPart(value = "meetingData") @Valid  UpdateMeetingRequest update,@RequestPart(value = "file", required = false) MultipartFile[] mreq){
         HttpStatus status;
         CudResponse response = new CudResponse();
         if (meetingService.updateMeeting(idx, update, mreq)){
