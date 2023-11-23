@@ -72,10 +72,8 @@
                 headers:{'Authorization': sessionStorage.getItem("token")}
             }).then(response => {
                 window.alert(response.data.message);
-                console.log(response.headers.authorization);
-                // sessionStorage.removeItem("token");
-                sessionStorage.setItem("token", response.headers.authorization);
-                location.href = "/";
+                sessionStorage.removeItem("token")
+                window.location.href = "/";
             })
     }
 </script>

@@ -43,7 +43,7 @@
 
     const meetingForm = () => {
         cleardiv()
-        api(url.value + `&search=${search}`, "get").then(meetings => {
+        api(`${url.value}${category.value == "" ? '?' : '&'}search=${search}`, "get").then(meetings => {
             for(let o of meetings){
                 makeMeetingBlock(o);
             }

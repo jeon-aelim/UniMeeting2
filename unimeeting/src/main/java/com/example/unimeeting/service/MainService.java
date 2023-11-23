@@ -28,6 +28,9 @@ public class MainService {
 
         return meetingRepository.searchByList(keyword);
     }
+//    public List<MeetingWithDetailsDTO> getMeetings() {
+//
+//    }
 
 //    public List<Meeting> meetingpopular(){
 //

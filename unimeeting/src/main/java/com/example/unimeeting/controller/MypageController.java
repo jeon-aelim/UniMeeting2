@@ -90,17 +90,12 @@ public class MypageController {
         CudResponse response = new CudResponse();
         int user_idx = jwtService.getId(token);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        System.out.println("+".repeat(80) +user);
         boolean result = service.updateUser(user, user_idx);
-//        boolean result = true;
         if (result){
             response.setSuccess(true);
-            response.setMessage("정보 변경이 완료되었습니다!");
+            response.setMessage("정보 변경이 완료되었습니다! \n 다시 로그인 해주세요~!");
 
-            String newToken = jwtService.getToken("id", user_idx);
-            MultiValueMap<String, String> header = new LinkedMultiValueMap<>();
-            header.add("Authorization", token);
-            return new ResponseEntity<>(response, header, HttpStatus.OK);
+            return new ResponseEntity<>(response, HttpStatus.OK);
         }
         else{
             response.setSuccess(false);
