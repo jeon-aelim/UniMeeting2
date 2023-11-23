@@ -14,7 +14,17 @@
             </div>
 
             <Contain :category="getCategory"></Contain>
+            <nav aria-label="Page navigation example">
+                <ul style="text-align: center;" class="pagination">
+                    <template v-for="index in countMeeting">
+
+                        <li class="page-item"><a class="page-link">{{ index }}</a></li>
+
+                    </template>
+                </ul>
+            </nav>
         </div>
+        
     </div>
 </template>
 
@@ -28,9 +38,12 @@
     let url = ref("http://localhost:8090/meetings");
 
     let search = "";
-
+    const countMeeting = ref(0);
+    const page = ref(1);
     api(url.value, "get").then(meetings => {
         cleardiv()
+        countMeeting.value = meetings.length / 4;
+        console.log(countMeeting.value)
         for(let o of meetings){
             makeMeetingBlock(o);
         }
@@ -44,6 +57,8 @@
     const meetingForm = () => {
         cleardiv()
         api(`${url.value}${category.value == "" ? '?' : '&'}search=${search}`, "get").then(meetings => {
+        countMeeting.value = meetings.length / 4;
+        console.log(countMeeting.value)
             for(let o of meetings){
                 makeMeetingBlock(o);
             }
