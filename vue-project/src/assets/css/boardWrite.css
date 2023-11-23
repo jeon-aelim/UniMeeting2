@@ -15,8 +15,9 @@
 button.btn.btn-primary {
     background-color: #5302FE;
     border-radius: 10px;
-    width: 72px;
+    width: 87px;
     height: 40px;
+    margin-top: 20px;
 }
 body {
     background-color: #f8f9fa !important;
