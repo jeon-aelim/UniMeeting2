@@ -19,9 +19,7 @@
                 <div class="col" v-for="meeting in meetings.values">
                     <div class="card">
                         <router-link v-bind:to="`/meeting/${meeting.idx}`">
-                        
-                            <img :src="'http://localhost:8090'+meeting.imageUrl"
-                            @error="this.src='/images/book.png';" class="card-img-top">
+                            <img :src="'http://localhost:8090'+meeting.imageUrl" @error="src='@/images/book.png';" class="card-img-top">
                             <div class="card-body">
                                 <h4 class="card-title" style="font-weight: bold">{{ meeting.title }}</h4>
                                 <p class="card-text">{{ meeting.content }}</p>
