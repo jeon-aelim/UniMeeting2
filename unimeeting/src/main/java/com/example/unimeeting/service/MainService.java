@@ -28,6 +28,9 @@ public class MainService {
 
         return meetingRepository.searchByList(keyword);
     }
+//    public List<MeetingWithDetailsDTO> getMeetings() {
+//
+//    }
 
 //    public List<Meeting> meetingpopular(){
 //
@@ -50,9 +53,20 @@ public class MainService {
 
     }
 
-    public List<Meeting> meetingdatetime(){
+    public List<MainDTO> meetingdatetime(){
+        List<Meeting> list = meetingRepository.findAllByOrderByCreatedDatetimeDesc();
+        List<MainDTO> listDTO = new ArrayList<>();
+        MainDTO dto;
 
-        return meetingRepository.findAllByOrderByCreatedDatetimeDesc();
+        for(int i=0; i<list.size(); i++){
+            Meeting m = list.get(i);
+            List<String> imgUrls = imageR.findImageUrlByMeetingIdx(m.getIdx());
+            String imgUrl = imgUrls.isEmpty() ? "":imgUrls.get(0);
+            dto = new MainDTO(m, memberR.countByMeetingIdx(m.getIdx()) ,imgUrl);
+            listDTO.add(dto);
+        }
+        return listDTO;
+
     }
 
 }

@@ -1,7 +1,7 @@
 <template>
     <div class="contents-right">
         <div id="info_result"></div>
-        <component :is="currentComponent" :userObj="user[0]" v-if="currentComponent"></component>
+        <component :is="currentComponent" :userObj="user" v-if="currentComponent"></component>
     </div>
 </template>
 
@@ -37,11 +37,16 @@
       }
     )
 
-    let user = [];
+    // let user = reactive([]);
+
+    // function chageUser(data){
+    //     user[0] = data
+    // }
+    let user = computed("")
 
     axios.get('http://localhost:8090/user', {
         headers:{'Authorization':sessionStorage.getItem("token")}
-    }).then(response => {user.push(response.data)})
+    }).then(response => {user = response.data})
     console.log(user);
 
     let currentComponent = null;

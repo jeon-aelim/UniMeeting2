@@ -19,8 +19,8 @@
         userObj : Object
     });
 
-    let showBtn = ref(false)
-    let password = ref("")
+    let showBtn = ref(false);
+    let password = "";
 
     // const checkPWD = () => {
     //     showBtn.value = password.value === p.userObj.password;
@@ -29,11 +29,17 @@
     // }
 
     function withDrawPassword() {
-        // console.log("wfff");
-        axios.delete("http://localhost:8090/mypage/user", {
+        console.log(password);
+
+        axios.delete(`http://localhost:8090/mypage/user?password=${password}`, {
                 headers:{'Authorization':sessionStorage.getItem("token")}
-            }, password).then(response => {
+            }).then(response => {
                 console.log(response)
+                window.alert(response.data.message);
+                if(response.data.success){
+                    sessionStorage.removeItem("token")
+                    window.location.href = "/"
+                }
             })
     }
 </script>

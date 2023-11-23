@@ -52,8 +52,8 @@ public class MainController {
         return entity;
     }
     @GetMapping("/meetings/datetime")
-    public ResponseEntity<List<Meeting>> datetimeSort() {
-        ResponseEntity<List<Meeting>> entity = new ResponseEntity<>(service.meetingdatetime(), HttpStatus.OK);
+    public ResponseEntity<List<MainDTO>> datetimeSort() {
+        ResponseEntity<List<MainDTO>> entity = new ResponseEntity<>(service.meetingdatetime(), HttpStatus.OK);
 
         return entity;
     }

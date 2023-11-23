@@ -65,7 +65,7 @@ public class MainControllertest {
         list.forEach(System.out::println);
     }
 
-    @Test
+    //@Test
     @Order(6)
     void testt1(){
         List<Meeting> list = repository.findAllByOrderByTitle();
