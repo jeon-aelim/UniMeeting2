@@ -48,9 +48,6 @@ public class MeetingController {
     private final MeetingService meetingService;
     private final JwtServiceImpl jwtService;
 
-    // Security 구현 전 테스트용 user 객체
-    User user = new User(54, "dohoi", "1234", "도히", "dohoi@gmail.com", "코딩,요리,게임", "01022222222", "USER");
-
     @GetMapping("/category")
     public ResponseEntity<List<String>> getCategory(){
         return ResponseEntity
@@ -61,7 +58,8 @@ public class MeetingController {
     // 미팅 글 리스트 조회
     @GetMapping
     public ResponseEntity<List<MeetingWithDetailsDTO>> getMeetings(@RequestParam(value ="ctgr", required = false) String category,
-                                                                   @RequestParam(defaultValue = "") String search){
+                                                                   @RequestParam(defaultValue = "") String search,
+                                                                   @RequestParam String page){
         List<MeetingWithDetailsDTO> response;
         System.out.println(category);
         // category 는 필수 요청이 아님, null 이라면 모든 글 조회. 전달된 값이 있다면 해당 category 글 조회

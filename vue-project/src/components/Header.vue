@@ -1,5 +1,5 @@
 <template>
-    <nav class="base-header-group">
+    <nav class="base-header-group" style="width: 100%;">
         <div class="logo">
             <img alt="" src="@/assets/images/meeting.png" class="logo-image">
             <span class="logo-text">UniMeeting</span>

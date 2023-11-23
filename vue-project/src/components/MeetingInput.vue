@@ -111,7 +111,7 @@ import { reactive } from 'vue';
 import axios from 'axios';
 
 const server = "http://localhost:8090";
-const meeting_server = server + "/meetings/";
+const meeting_server = server + "/meetings";
 let addMeeting = reactive({
     category: '',
     title: '',
@@ -126,7 +126,7 @@ const oldImaegs = reactive([]);
 const props = defineProps(['meeting_idx']);
 let meeting_idx = props.meeting_idx;
 if (meeting_idx) {
-    axios.get(`${meeting_server}update/` + meeting_idx)
+    axios.get(`${meeting_server}/update/` + meeting_idx)
         .then((resp) => {
             const oldMet = resp.data;
             console.log(oldMet)
@@ -165,7 +165,7 @@ const submitMeeting = (update) => {
     console.log(formData)
     if (update) {
 
-        axios.put(meeting_server + meeting_idx, formData, {
+        axios.put(`${meeting_server}/${meeting_idx}`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data;    boundary=----WebKitFormBoundaryYourBoundary',
             },})
@@ -176,7 +176,7 @@ const submitMeeting = (update) => {
 
     } else {
         console.log("this")
-        axios.post(server + "/meetings", formData, {
+        axios.post(meeting_server, formData, {
             headers: {
                 'Authorization': sessionStorage.getItem("token"),
                 'Content-Type': 'multipart/form-data;    boundary=----WebKitFormBoundaryYourBoundary',
@@ -190,7 +190,7 @@ const submitMeeting = (update) => {
 // deleteImage 구현해야함. 서버는 구현완
 const deleteImage = (url) => {
     
-    axios.delete(`${meeting_server}${meeting_idx}/image?image=${url}`, {
+    axios.delete(`${meeting_server}/${meeting_idx}/image?image=${url}`, {
             headers: {
                 'Authorization': sessionStorage.getItem("token"),
                 'Content-Type': 'multipart/form-data;    boundary=----WebKitFormBoundaryYourBoundary',
