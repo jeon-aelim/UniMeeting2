@@ -35,10 +35,6 @@ public class MeetingService {
                 .orElseThrow(() -> new IllegalArgumentException("not found : " + id));
     }
 
-//    public MeetingResponse getMeetingOne(Integer id, Integer user_idx){
-//        User user = userRepository.findById(user_idx)
-//                .orElseThrow(() -> new IllegalArgumentException);
-
     public MeetingResponse getMeetingOne(Integer id, Integer user_idx){
         User user = userRepository.findById(user_idx).
                 orElse(null);

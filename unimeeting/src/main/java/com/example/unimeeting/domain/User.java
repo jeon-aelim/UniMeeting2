@@ -67,5 +67,8 @@ public class User  {
     public static User createUser(String userId, String password, PasswordEncoder passwordEncoder, String nickname, String email, String category, String phoneNumber, String role) {
         return new User(null, userId, passwordEncoder.encode(password), nickname, email, category, phoneNumber, role);
     }
+    public Integer getId(){
+        return idx;
+    }
 }
 

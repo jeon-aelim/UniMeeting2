@@ -24,7 +24,6 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     List<User> findByUserIdStartingWithOrNicknameStartingWith(String user_id, String nickname);
 
     User findByIdx(int idx);
-
     //
 
 

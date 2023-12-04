@@ -95,6 +95,10 @@ public class UserController {
         List<User> users = userDetailService.findByUserIdStartingWithOrNicknameStartingWith(user_id, nickname);
         return ResponseEntity.ok(users);
     }
+    //유저정보 가져오기//////////////////////////////////
+
+
+
 
     //===============회원가입=============//
     @PostMapping("/register")

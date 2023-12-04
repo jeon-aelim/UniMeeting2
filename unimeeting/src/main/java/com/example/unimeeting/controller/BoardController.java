@@ -1,7 +1,9 @@
 package com.example.unimeeting.controller;
 
+import com.example.unimeeting.config.jwt.JwtProperties;
 import com.example.unimeeting.domain.Board;
 import com.example.unimeeting.domain.User;
+import com.example.unimeeting.dto.BoardResponse;
 import com.example.unimeeting.repository.UserRepository;
 import com.example.unimeeting.service.BoardService;
 import com.example.unimeeting.service.JwtService;
@@ -36,8 +38,14 @@ public class BoardController {
 
     //=============글 상세 ===========//
     @GetMapping("/{id}")
-    public ResponseEntity<Board> getBoardById(@PathVariable int id) {
-        Board board = boardService.findById(id);
+    public ResponseEntity<BoardResponse> getBoardById(@PathVariable int id,@RequestHeader(required = false,value= JwtProperties.HEADER_STRING )String token) {
+        int user_id;
+        if (token==null){
+            user_id=0;
+        }else{
+            user_id = jwtService.getId(token);
+        }
+        BoardResponse board = boardService.findById(id,user_id);
         return ResponseEntity.ok(board);
     }
     //=============글 쓰기 ===========//
